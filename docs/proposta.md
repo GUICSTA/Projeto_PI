@@ -74,7 +74,8 @@ Essas imagens sintéticas **não substituem** as fotos reais exigidas pela M1 �
 
 ### Alternativas consideradas
 
-
+```mermaid
+flowchart LR
     A[Símbolo segmentado] --> B1[Regras sobre descritores de forma - ATUAL]
     A --> B2[Template matching - comparar com símbolo de referência]
     A --> B3[Classificador k-NN sobre vetor de descritores]
@@ -82,7 +83,7 @@ Essas imagens sintéticas **não substituem** as fotos reais exigidas pela M1 �
     B1 --> C[Comparar acurácia e robustez]
     B2 --> C
     B3 --> C
-
+```
 
 Optamos por começar pela abordagem de regras (B1) por ser totalmente explicável e não exigir dados de treinamento. Template matching (B2) e um classificador leve (B3) ficam como alternativas a comparar durante a M2, especialmente se as regras fixas não generalizarem bem para fotos reais com variação de iluminação e ângulo.
 
