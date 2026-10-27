@@ -305,12 +305,12 @@ Figura 4 — Falha esperada em `coringa_preto_01.jpg`. As letras "JOKER" estão 
 
 | Tarefa | Responsável | Evidência esperada |
 |---|---|---|
-| Fotografar um segundo conjunto (outro fundo e outra luz, cartas inclinadas) e usá-lo só como teste externo | | novas fotos em `images/input/`, acurácia e matriz de confusão |
-| Criar máscaras de referência manuais do símbolo para parte das fotos e medir Dice/IoU | | máscaras em `images/reference/`, tabela de IoU |
-| Tornar a segmentação robusta a ruído forte (abertura com raio adaptado, filtro de mediana antes de Otsu) | | Experimento 2 repetido com σ = 60 |
-| Reconhecer o valor da carta (template matching dos dígitos e letras já localizados) | | acurácia por valor e matriz 13 × 13 |
-| Detectar o coringa como classe própria | | coringas classificados corretamente |
-| Atualizar relatório, README e gravar o vídeo da M3 | | `docs/relatorio_m3.md`, link do vídeo |
+| Fotografar um segundo conjunto (outro fundo e outra luz, cartas inclinadas) e usá-lo só como teste externo | Vinicius Lohn Ramires | novas fotos em `images/input/`, acurácia e matriz de confusão |
+| Criar máscaras de referência manuais do símbolo para parte das fotos e medir Dice/IoU | Guilherme Pires | máscaras em `images/reference/`, tabela de IoU |
+| Tornar a segmentação robusta a ruído forte (abertura com raio adaptado, filtro de mediana antes de Otsu) | Guilherme Pires | Experimento 2 repetido com σ = 60 |
+| Reconhecer o valor da carta (template matching dos dígitos e letras já localizados) | Vinicius Lohn Ramires | acurácia por valor e matriz 13 × 13 |
+| Detectar o coringa como classe própria | Vinicius Lohn Ramires | coringas classificados corretamente |
+| Atualizar relatório, README e gravar o vídeo da M3 | Guilherme Cassettari (revisão), todos (vídeo) | `docs/relatorio_m3.md`, link do vídeo |
 
 ## 9. Contribuições dos integrantes
 
