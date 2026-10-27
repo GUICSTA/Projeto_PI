@@ -207,10 +207,10 @@ def split_value_and_symbol(elements):
 
     ordered = sorted(elements, key=lambda c: (c["bbox"][0], c["bbox"][2]))
     first = ordered[0]["bbox"]
-    first_width = first[3] - first[2] + 1
+    first_height = first[1] - first[0] + 1
     value = [
         c for c in ordered
-        if _vertical_overlap(c["bbox"], first) and c["bbox"][2] <= first[3] + first_width
+        if _vertical_overlap(c["bbox"], first) and c["bbox"][2] <= first[3] + first_height
     ]
     value_box = _union([c["bbox"] for c in value])
 
@@ -222,7 +222,7 @@ def split_value_and_symbol(elements):
     ]
     if not below:
         raise ValueError("Nenhum símbolo de naipe encontrado abaixo do valor.")
-    symbol = min(below, key=lambda c: c["bbox"][0])
+    symbol = max(below, key=lambda c: c["area"])
     return value, symbol
 
 

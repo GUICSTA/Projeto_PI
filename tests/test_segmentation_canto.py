@@ -79,6 +79,23 @@ def test_value_groups_multiple_elements_and_ignores_others():
     assert found["label"] == 3
 
 
+def test_value_groups_narrow_digit_with_distant_zero():
+    one = {"label": 1, "area": 200, "bbox": (10, 70, 10, 16)}
+    zero = {"label": 2, "area": 1500, "bbox": (11, 70, 40, 80)}
+    symbol = {"label": 3, "area": 1800, "bbox": (90, 140, 15, 60)}
+    value, found = segmentation.split_value_and_symbol([one, zero, symbol])
+    assert sorted(c["label"] for c in value) == [1, 2]
+    assert found["label"] == 3
+
+
+def test_symbol_is_largest_element_below_value():
+    value = {"label": 1, "area": 900, "bbox": (10, 60, 10, 50)}
+    noise = {"label": 2, "area": 150, "bbox": (65, 72, 12, 20)}
+    symbol = {"label": 3, "area": 1500, "bbox": (75, 120, 12, 48)}
+    _, found = segmentation.split_value_and_symbol([value, noise, symbol])
+    assert found["label"] == 3
+
+
 def test_split_without_symbol_raises():
     with pytest.raises(ValueError):
         segmentation.split_value_and_symbol([{"label": 1, "area": 300, "bbox": (10, 60, 10, 20)}])
