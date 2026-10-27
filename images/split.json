@@ -1,0 +1,28 @@
+{
+  "seed": 42,
+  "test_ratio": 0.4,
+  "ajuste": [
+    "copas_00.png",
+    "copas_02.png",
+    "copas_04.png",
+    "espadas_00.png",
+    "espadas_01.png",
+    "espadas_04.png",
+    "ouros_00.png",
+    "ouros_02.png",
+    "ouros_04.png",
+    "paus_00.png",
+    "paus_03.png",
+    "paus_04.png"
+  ],
+  "teste": [
+    "copas_01.png",
+    "copas_03.png",
+    "espadas_02.png",
+    "espadas_03.png",
+    "ouros_01.png",
+    "ouros_03.png",
+    "paus_01.png",
+    "paus_02.png"
+  ]
+}
