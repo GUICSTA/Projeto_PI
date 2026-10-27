@@ -9,7 +9,8 @@
       60
     ],
     "ruido_semente": 7,
-    "raio_morfologia": 1
+    "raio_morfologia": 1,
+    "iou_minimo": 0.5
   },
   "experimento_1_limiares": {
     "limiares_sinteticos": {
@@ -82,6 +83,8 @@
       "segmentacao_ok": 40,
       "falhas_segmentacao": [],
       "proporcao_segmentada": 1.0,
+      "iou_medio_naipe": 1.0,
+      "naipe_localizado_iou_0_5": 1.0,
       "acerto_cor": 1.0,
       "acerto_naipe": 1.0
     },
@@ -91,6 +94,8 @@
       "segmentacao_ok": 40,
       "falhas_segmentacao": [],
       "proporcao_segmentada": 1.0,
+      "iou_medio_naipe": 0.9996,
+      "naipe_localizado_iou_0_5": 1.0,
       "acerto_cor": 1.0,
       "acerto_naipe": 1.0
     },
@@ -100,6 +105,8 @@
       "segmentacao_ok": 40,
       "falhas_segmentacao": [],
       "proporcao_segmentada": 1.0,
+      "iou_medio_naipe": 0.9817,
+      "naipe_localizado_iou_0_5": 1.0,
       "acerto_cor": 1.0,
       "acerto_naipe": 1.0
     },
@@ -109,6 +116,8 @@
       "segmentacao_ok": 40,
       "falhas_segmentacao": [],
       "proporcao_segmentada": 1.0,
+      "iou_medio_naipe": 0.9855,
+      "naipe_localizado_iou_0_5": 1.0,
       "acerto_cor": 1.0,
       "acerto_naipe": 1.0
     },
@@ -227,6 +236,8 @@
         }
       ],
       "proporcao_segmentada": 0.325,
+      "iou_medio_naipe": 0.2232,
+      "naipe_localizado_iou_0_5": 0.275,
       "acerto_cor": 0.275,
       "acerto_naipe": 0.275
     },
@@ -269,6 +280,8 @@
         }
       ],
       "proporcao_segmentada": 0.8,
+      "iou_medio_naipe": 0.5734,
+      "naipe_localizado_iou_0_5": 0.6,
       "acerto_cor": 0.7,
       "acerto_naipe": 0.625
     }

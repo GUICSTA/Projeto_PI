@@ -43,7 +43,7 @@
         }
       },
       "erros": [],
-      "tempo_decisao_ms": 0.0011
+      "tempo_decisao_ms": 0.0005
     },
     "template_matching": {
       "acertos": 40,
@@ -76,7 +76,7 @@
         }
       },
       "erros": [],
-      "tempo_decisao_ms": 0.1058
+      "tempo_decisao_ms": 0.1202
     },
     "knn": {
       "acertos": 40,
@@ -109,7 +109,7 @@
         }
       },
       "erros": [],
-      "tempo_decisao_ms": 0.0253
+      "tempo_decisao_ms": 0.0274
     }
   }
 }

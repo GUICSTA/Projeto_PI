@@ -28,3 +28,9 @@ def test_saved_experiments_use_same_test_set():
     assert all(r["total"] == total for r in saved["experimento_1_limiares"].values())
     for r in saved["experimento_2_morfologia_com_ruido"].values():
         assert r["segmentacao_ok"] + len(r["falhas_segmentacao"]) == total
+
+
+def test_box_iou():
+    assert experiments.box_iou((0, 9, 0, 9), (0, 9, 0, 9)) == 1.0
+    assert experiments.box_iou((0, 9, 0, 9), (20, 29, 20, 29)) == 0.0
+    assert abs(experiments.box_iou((0, 9, 0, 9), (0, 9, 5, 14)) - 50 / 150) < 1e-9
