@@ -1,0 +1,20 @@
+{
+  "divisao": "split_reais.json",
+  "conjunto": "ajuste",
+  "regras": {
+    "vermelho": {
+      "feature": "width_profile_ratio",
+      "limiar": 1.6471,
+      "acima": "copas",
+      "abaixo": "ouros",
+      "acerto_ajuste": 1.0
+    },
+    "preto": {
+      "feature": "width_profile_ratio",
+      "limiar": 0.8007,
+      "acima": "paus",
+      "abaixo": "espadas",
+      "acerto_ajuste": 1.0
+    }
+  }
+}

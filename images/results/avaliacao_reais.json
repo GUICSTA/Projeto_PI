@@ -1,0 +1,274 @@
+{
+  "conjunto": "teste",
+  "acertos": 40,
+  "total": 40,
+  "acuracia": 1.0,
+  "matriz_confusao": {
+    "copas": {
+      "copas": 10,
+      "espadas": 0,
+      "ouros": 0,
+      "paus": 0
+    },
+    "espadas": {
+      "copas": 0,
+      "espadas": 10,
+      "ouros": 0,
+      "paus": 0
+    },
+    "ouros": {
+      "copas": 0,
+      "espadas": 0,
+      "ouros": 10,
+      "paus": 0
+    },
+    "paus": {
+      "copas": 0,
+      "espadas": 0,
+      "ouros": 0,
+      "paus": 10
+    }
+  },
+  "previsoes": [
+    {
+      "arquivo": "copas_3_01.jpg",
+      "naipe_esperado": "copas",
+      "naipe_previsto": "copas",
+      "cor": "vermelho"
+    },
+    {
+      "arquivo": "copas_3_02.jpg",
+      "naipe_esperado": "copas",
+      "naipe_previsto": "copas",
+      "cor": "vermelho"
+    },
+    {
+      "arquivo": "copas_7_01.jpg",
+      "naipe_esperado": "copas",
+      "naipe_previsto": "copas",
+      "cor": "vermelho"
+    },
+    {
+      "arquivo": "copas_7_02.jpg",
+      "naipe_esperado": "copas",
+      "naipe_previsto": "copas",
+      "cor": "vermelho"
+    },
+    {
+      "arquivo": "copas_8_01.jpg",
+      "naipe_esperado": "copas",
+      "naipe_previsto": "copas",
+      "cor": "vermelho"
+    },
+    {
+      "arquivo": "copas_8_02.jpg",
+      "naipe_esperado": "copas",
+      "naipe_previsto": "copas",
+      "cor": "vermelho"
+    },
+    {
+      "arquivo": "copas_A_01.jpg",
+      "naipe_esperado": "copas",
+      "naipe_previsto": "copas",
+      "cor": "vermelho"
+    },
+    {
+      "arquivo": "copas_A_02.jpg",
+      "naipe_esperado": "copas",
+      "naipe_previsto": "copas",
+      "cor": "vermelho"
+    },
+    {
+      "arquivo": "copas_Q_01.jpg",
+      "naipe_esperado": "copas",
+      "naipe_previsto": "copas",
+      "cor": "vermelho"
+    },
+    {
+      "arquivo": "copas_Q_02.jpg",
+      "naipe_esperado": "copas",
+      "naipe_previsto": "copas",
+      "cor": "vermelho"
+    },
+    {
+      "arquivo": "espadas_3_01.jpg",
+      "naipe_esperado": "espadas",
+      "naipe_previsto": "espadas",
+      "cor": "preto"
+    },
+    {
+      "arquivo": "espadas_3_02.jpg",
+      "naipe_esperado": "espadas",
+      "naipe_previsto": "espadas",
+      "cor": "preto"
+    },
+    {
+      "arquivo": "espadas_6_01.jpg",
+      "naipe_esperado": "espadas",
+      "naipe_previsto": "espadas",
+      "cor": "preto"
+    },
+    {
+      "arquivo": "espadas_6_02.jpg",
+      "naipe_esperado": "espadas",
+      "naipe_previsto": "espadas",
+      "cor": "preto"
+    },
+    {
+      "arquivo": "espadas_7_01.jpg",
+      "naipe_esperado": "espadas",
+      "naipe_previsto": "espadas",
+      "cor": "preto"
+    },
+    {
+      "arquivo": "espadas_7_02.jpg",
+      "naipe_esperado": "espadas",
+      "naipe_previsto": "espadas",
+      "cor": "preto"
+    },
+    {
+      "arquivo": "espadas_8_01.jpg",
+      "naipe_esperado": "espadas",
+      "naipe_previsto": "espadas",
+      "cor": "preto"
+    },
+    {
+      "arquivo": "espadas_8_02.jpg",
+      "naipe_esperado": "espadas",
+      "naipe_previsto": "espadas",
+      "cor": "preto"
+    },
+    {
+      "arquivo": "espadas_9_01.jpg",
+      "naipe_esperado": "espadas",
+      "naipe_previsto": "espadas",
+      "cor": "preto"
+    },
+    {
+      "arquivo": "espadas_9_02.jpg",
+      "naipe_esperado": "espadas",
+      "naipe_previsto": "espadas",
+      "cor": "preto"
+    },
+    {
+      "arquivo": "ouros_4_01.jpg",
+      "naipe_esperado": "ouros",
+      "naipe_previsto": "ouros",
+      "cor": "vermelho"
+    },
+    {
+      "arquivo": "ouros_4_02.jpg",
+      "naipe_esperado": "ouros",
+      "naipe_previsto": "ouros",
+      "cor": "vermelho"
+    },
+    {
+      "arquivo": "ouros_8_01.jpg",
+      "naipe_esperado": "ouros",
+      "naipe_previsto": "ouros",
+      "cor": "vermelho"
+    },
+    {
+      "arquivo": "ouros_8_02.jpg",
+      "naipe_esperado": "ouros",
+      "naipe_previsto": "ouros",
+      "cor": "vermelho"
+    },
+    {
+      "arquivo": "ouros_9_01.jpg",
+      "naipe_esperado": "ouros",
+      "naipe_previsto": "ouros",
+      "cor": "vermelho"
+    },
+    {
+      "arquivo": "ouros_9_02.jpg",
+      "naipe_esperado": "ouros",
+      "naipe_previsto": "ouros",
+      "cor": "vermelho"
+    },
+    {
+      "arquivo": "ouros_J_01.jpg",
+      "naipe_esperado": "ouros",
+      "naipe_previsto": "ouros",
+      "cor": "vermelho"
+    },
+    {
+      "arquivo": "ouros_J_02.jpg",
+      "naipe_esperado": "ouros",
+      "naipe_previsto": "ouros",
+      "cor": "vermelho"
+    },
+    {
+      "arquivo": "ouros_K_01.jpg",
+      "naipe_esperado": "ouros",
+      "naipe_previsto": "ouros",
+      "cor": "vermelho"
+    },
+    {
+      "arquivo": "ouros_K_02.jpg",
+      "naipe_esperado": "ouros",
+      "naipe_previsto": "ouros",
+      "cor": "vermelho"
+    },
+    {
+      "arquivo": "paus_3_01.jpg",
+      "naipe_esperado": "paus",
+      "naipe_previsto": "paus",
+      "cor": "preto"
+    },
+    {
+      "arquivo": "paus_3_02.jpg",
+      "naipe_esperado": "paus",
+      "naipe_previsto": "paus",
+      "cor": "preto"
+    },
+    {
+      "arquivo": "paus_8_01.jpg",
+      "naipe_esperado": "paus",
+      "naipe_previsto": "paus",
+      "cor": "preto"
+    },
+    {
+      "arquivo": "paus_8_02.jpg",
+      "naipe_esperado": "paus",
+      "naipe_previsto": "paus",
+      "cor": "preto"
+    },
+    {
+      "arquivo": "paus_9_01.jpg",
+      "naipe_esperado": "paus",
+      "naipe_previsto": "paus",
+      "cor": "preto"
+    },
+    {
+      "arquivo": "paus_9_02.jpg",
+      "naipe_esperado": "paus",
+      "naipe_previsto": "paus",
+      "cor": "preto"
+    },
+    {
+      "arquivo": "paus_K_01.jpg",
+      "naipe_esperado": "paus",
+      "naipe_previsto": "paus",
+      "cor": "preto"
+    },
+    {
+      "arquivo": "paus_K_02.jpg",
+      "naipe_esperado": "paus",
+      "naipe_previsto": "paus",
+      "cor": "preto"
+    },
+    {
+      "arquivo": "paus_Q_01.jpg",
+      "naipe_esperado": "paus",
+      "naipe_previsto": "paus",
+      "cor": "preto"
+    },
+    {
+      "arquivo": "paus_Q_02.jpg",
+      "naipe_esperado": "paus",
+      "naipe_previsto": "paus",
+      "cor": "preto"
+    }
+  ]
+}

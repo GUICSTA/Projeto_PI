@@ -50,3 +50,19 @@ def test_saved_split_matches_images_on_disk():
     on_disk = set(split.list_images())
     assert set(saved["ajuste"]).isdisjoint(saved["teste"])
     assert set(saved["ajuste"]) | set(saved["teste"]) == on_disk
+
+
+def test_photos_of_same_card_stay_in_same_set():
+    names = [f"{suit}_{value}_{i:02d}.jpg" for suit in SUITS for value in "A23456" for i in (1, 2)]
+    result = split.create_split(names)
+    for name in result["teste"]:
+        assert split.card_of(name) not in {split.card_of(n) for n in result["ajuste"]}
+
+
+def test_real_split_matches_photos_and_excludes_jokers():
+    saved = split.load_split(split.REAL_SPLIT_PATH)
+    adjust_cards = {split.card_of(n) for n in saved["ajuste"]}
+    test_cards = {split.card_of(n) for n in saved["teste"]}
+    assert adjust_cards.isdisjoint(test_cards)
+    assert set(saved["ajuste"]) | set(saved["teste"]) == set(split.list_images(split.REAL_DIR))
+    assert not any(split.suit_of(n) == "coringa" for n in saved["ajuste"] + saved["teste"])
