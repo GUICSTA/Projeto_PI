@@ -94,3 +94,12 @@ def test_full_pipeline_classifies_suit(suit):
         f"Acurácia baixa para {suit}: {accuracy:.2f} "
         f"(esperado nas sintéticas; fotos reais vão exigir recalibração)"
     )
+
+
+def test_main_runs_on_real_photo(tmp_path, capsys):
+    from src import main
+    photo = os.path.join(os.path.dirname(__file__), "..", "images", "input", "reais", "copas_Q_01.jpg")
+    main.main([photo, "--saida", str(tmp_path)])
+    out = capsys.readouterr().out
+    assert "Naipe identificado: copas" in out
+    assert (tmp_path / "4_valor_e_naipe.png").exists()
