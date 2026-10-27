@@ -1,0 +1,332 @@
+{
+  "divisao": "split_reais.json",
+  "imagens_ajuste": 64,
+  "imagens_teste": 40,
+  "parametros": {
+    "ruido_sigma": [
+      0,
+      30,
+      60
+    ],
+    "ruido_semente": 7,
+    "raio_morfologia": 1
+  },
+  "experimento_1_limiares": {
+    "limiares_sinteticos": {
+      "acertos": 23,
+      "total": 40,
+      "acuracia": 0.575,
+      "matriz_confusao": {
+        "copas": {
+          "copas": 10,
+          "espadas": 0,
+          "ouros": 0,
+          "paus": 0
+        },
+        "espadas": {
+          "copas": 0,
+          "espadas": 0,
+          "ouros": 0,
+          "paus": 10
+        },
+        "ouros": {
+          "copas": 0,
+          "espadas": 0,
+          "ouros": 10,
+          "paus": 0
+        },
+        "paus": {
+          "copas": 0,
+          "espadas": 7,
+          "ouros": 0,
+          "paus": 3
+        }
+      }
+    },
+    "limiares_calibrados": {
+      "acertos": 40,
+      "total": 40,
+      "acuracia": 1.0,
+      "matriz_confusao": {
+        "copas": {
+          "copas": 10,
+          "espadas": 0,
+          "ouros": 0,
+          "paus": 0
+        },
+        "espadas": {
+          "copas": 0,
+          "espadas": 10,
+          "ouros": 0,
+          "paus": 0
+        },
+        "ouros": {
+          "copas": 0,
+          "espadas": 0,
+          "ouros": 10,
+          "paus": 0
+        },
+        "paus": {
+          "copas": 0,
+          "espadas": 0,
+          "ouros": 0,
+          "paus": 10
+        }
+      }
+    }
+  },
+  "experimento_2_morfologia_com_ruido": {
+    "sigma_0_sem_morfologia": {
+      "sigma": 0,
+      "morfologia": "nenhuma",
+      "segmentacao_ok": 40,
+      "falhas_segmentacao": [],
+      "proporcao_segmentada": 1.0,
+      "acerto_cor": 1.0,
+      "acerto_naipe": 1.0
+    },
+    "sigma_0_abertura": {
+      "sigma": 0,
+      "morfologia": "abertura",
+      "segmentacao_ok": 40,
+      "falhas_segmentacao": [],
+      "proporcao_segmentada": 1.0,
+      "acerto_cor": 1.0,
+      "acerto_naipe": 1.0
+    },
+    "sigma_30_sem_morfologia": {
+      "sigma": 30,
+      "morfologia": "nenhuma",
+      "segmentacao_ok": 40,
+      "falhas_segmentacao": [],
+      "proporcao_segmentada": 1.0,
+      "acerto_cor": 1.0,
+      "acerto_naipe": 1.0
+    },
+    "sigma_30_abertura": {
+      "sigma": 30,
+      "morfologia": "abertura",
+      "segmentacao_ok": 40,
+      "falhas_segmentacao": [],
+      "proporcao_segmentada": 1.0,
+      "acerto_cor": 1.0,
+      "acerto_naipe": 1.0
+    },
+    "sigma_60_sem_morfologia": {
+      "sigma": 60,
+      "morfologia": "nenhuma",
+      "segmentacao_ok": 13,
+      "falhas_segmentacao": [
+        {
+          "arquivo": "copas_3_01.jpg",
+          "motivo": "Nenhum elemento encontrado no canto da carta."
+        },
+        {
+          "arquivo": "copas_3_02.jpg",
+          "motivo": "Nenhum elemento encontrado no canto da carta."
+        },
+        {
+          "arquivo": "copas_7_01.jpg",
+          "motivo": "Nenhum símbolo de naipe encontrado abaixo do valor."
+        },
+        {
+          "arquivo": "copas_7_02.jpg",
+          "motivo": "Nenhum símbolo de naipe encontrado abaixo do valor."
+        },
+        {
+          "arquivo": "copas_8_01.jpg",
+          "motivo": "Nenhum elemento encontrado no canto da carta."
+        },
+        {
+          "arquivo": "copas_8_02.jpg",
+          "motivo": "Nenhum símbolo de naipe encontrado abaixo do valor."
+        },
+        {
+          "arquivo": "copas_A_01.jpg",
+          "motivo": "Nenhum elemento encontrado no canto da carta."
+        },
+        {
+          "arquivo": "copas_A_02.jpg",
+          "motivo": "Nenhum elemento encontrado no canto da carta."
+        },
+        {
+          "arquivo": "espadas_3_01.jpg",
+          "motivo": "Nenhum elemento encontrado no canto da carta."
+        },
+        {
+          "arquivo": "espadas_3_02.jpg",
+          "motivo": "Nenhum elemento encontrado no canto da carta."
+        },
+        {
+          "arquivo": "espadas_6_01.jpg",
+          "motivo": "Nenhum símbolo de naipe encontrado abaixo do valor."
+        },
+        {
+          "arquivo": "espadas_7_02.jpg",
+          "motivo": "Nenhum elemento encontrado no canto da carta."
+        },
+        {
+          "arquivo": "espadas_8_01.jpg",
+          "motivo": "Nenhum elemento encontrado no canto da carta."
+        },
+        {
+          "arquivo": "espadas_8_02.jpg",
+          "motivo": "Nenhum elemento encontrado no canto da carta."
+        },
+        {
+          "arquivo": "ouros_4_01.jpg",
+          "motivo": "Nenhum símbolo de naipe encontrado abaixo do valor."
+        },
+        {
+          "arquivo": "ouros_4_02.jpg",
+          "motivo": "Nenhum símbolo de naipe encontrado abaixo do valor."
+        },
+        {
+          "arquivo": "ouros_8_01.jpg",
+          "motivo": "Nenhum símbolo de naipe encontrado abaixo do valor."
+        },
+        {
+          "arquivo": "ouros_8_02.jpg",
+          "motivo": "Nenhum elemento encontrado no canto da carta."
+        },
+        {
+          "arquivo": "ouros_9_02.jpg",
+          "motivo": "Nenhum elemento encontrado no canto da carta."
+        },
+        {
+          "arquivo": "ouros_J_01.jpg",
+          "motivo": "Nenhum símbolo de naipe encontrado abaixo do valor."
+        },
+        {
+          "arquivo": "ouros_K_01.jpg",
+          "motivo": "Nenhum símbolo de naipe encontrado abaixo do valor."
+        },
+        {
+          "arquivo": "ouros_K_02.jpg",
+          "motivo": "Nenhum elemento encontrado no canto da carta."
+        },
+        {
+          "arquivo": "paus_3_01.jpg",
+          "motivo": "Nenhum elemento encontrado no canto da carta."
+        },
+        {
+          "arquivo": "paus_3_02.jpg",
+          "motivo": "Nenhum símbolo de naipe encontrado abaixo do valor."
+        },
+        {
+          "arquivo": "paus_8_01.jpg",
+          "motivo": "Nenhum elemento encontrado no canto da carta."
+        },
+        {
+          "arquivo": "paus_9_01.jpg",
+          "motivo": "Nenhum símbolo de naipe encontrado abaixo do valor."
+        },
+        {
+          "arquivo": "paus_K_01.jpg",
+          "motivo": "Nenhum símbolo de naipe encontrado abaixo do valor."
+        }
+      ],
+      "proporcao_segmentada": 0.325,
+      "acerto_cor": 0.275,
+      "acerto_naipe": 0.275
+    },
+    "sigma_60_abertura": {
+      "sigma": 60,
+      "morfologia": "abertura",
+      "segmentacao_ok": 32,
+      "falhas_segmentacao": [
+        {
+          "arquivo": "copas_3_01.jpg",
+          "motivo": "Nenhum símbolo de naipe encontrado abaixo do valor."
+        },
+        {
+          "arquivo": "copas_A_02.jpg",
+          "motivo": "Nenhum elemento encontrado no canto da carta."
+        },
+        {
+          "arquivo": "copas_Q_02.jpg",
+          "motivo": "Nenhum símbolo de naipe encontrado abaixo do valor."
+        },
+        {
+          "arquivo": "espadas_8_01.jpg",
+          "motivo": "Nenhum símbolo de naipe encontrado abaixo do valor."
+        },
+        {
+          "arquivo": "ouros_9_02.jpg",
+          "motivo": "Nenhum símbolo de naipe encontrado abaixo do valor."
+        },
+        {
+          "arquivo": "ouros_K_02.jpg",
+          "motivo": "Nenhum símbolo de naipe encontrado abaixo do valor."
+        },
+        {
+          "arquivo": "paus_3_01.jpg",
+          "motivo": "Nenhum símbolo de naipe encontrado abaixo do valor."
+        },
+        {
+          "arquivo": "paus_9_01.jpg",
+          "motivo": "Nenhum símbolo de naipe encontrado abaixo do valor."
+        }
+      ],
+      "proporcao_segmentada": 0.8,
+      "acerto_cor": 0.7,
+      "acerto_naipe": 0.625
+    }
+  },
+  "experimento_3_metodos_com_ruido": {
+    "sigma_0": {
+      "regras": {
+        "acertos": 40,
+        "total": 40,
+        "acuracia": 1.0
+      },
+      "template_matching": {
+        "acertos": 40,
+        "total": 40,
+        "acuracia": 1.0
+      },
+      "knn": {
+        "acertos": 40,
+        "total": 40,
+        "acuracia": 1.0
+      },
+      "falhas_segmentacao": 0
+    },
+    "sigma_30": {
+      "regras": {
+        "acertos": 40,
+        "total": 40,
+        "acuracia": 1.0
+      },
+      "template_matching": {
+        "acertos": 40,
+        "total": 40,
+        "acuracia": 1.0
+      },
+      "knn": {
+        "acertos": 39,
+        "total": 40,
+        "acuracia": 0.975
+      },
+      "falhas_segmentacao": 0
+    },
+    "sigma_60": {
+      "regras": {
+        "acertos": 11,
+        "total": 40,
+        "acuracia": 0.275
+      },
+      "template_matching": {
+        "acertos": 11,
+        "total": 40,
+        "acuracia": 0.275
+      },
+      "knn": {
+        "acertos": 8,
+        "total": 40,
+        "acuracia": 0.2
+      },
+      "falhas_segmentacao": 27
+    }
+  }
+}
