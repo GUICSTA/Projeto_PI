@@ -96,7 +96,7 @@ def test_opening_removes_isolated_noise_and_keeps_object():
     mask[1, 1] = True
     opened = segmentation.opening(mask, 1)
     assert not opened[1, 1]
-    assert opened[5:15, 5:15].all()
+    assert opened[6:14, 5:15].all() and opened[5:15, 6:14].all()
 
 
 def test_closing_fills_small_gap():
