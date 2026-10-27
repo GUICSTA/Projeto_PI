@@ -1,5 +1,7 @@
 # Proposta — Identificação do Naipe em Cartas de Baralho
 
+> **Revisão M2.** Esta proposta foi atualizada após a devolutiva da M1: imagens reais, segmentação do canto, divisão ajuste/teste e comparação de métodos. A resposta ponto a ponto à devolutiva e os resultados estão em [`relatorio_m2.md`](relatorio_m2.md). A versão da M1 fica no histórico do Git (commit `83500d1`).
+
 ## 7.1 Problema
 
 O problema é: **dada uma foto de uma carta de baralho francês (52 cartas), identificar automaticamente a qual dos quatro naipes ela pertence — copas, ouros, paus ou espadas.**
@@ -9,7 +11,7 @@ Isso envolve processamento e análise de imagem porque a informação de naipe e
 - **cor** do símbolo impresso na carta (vermelho para copas/ouros, preto para paus/espadas);
 - **forma** do símbolo (coração, losango, trevo, pique), que distingue os dois naipes dentro de cada cor.
 
-**Situação inicial:** uma foto de uma carta individual, tirada de cima, com a carta centralizada e a câmera fixa.
+**Situação inicial:** uma foto de uma carta individual, tirada de cima, com a carta inteira visível sobre a mesa; inclinação moderada é tolerada.
 
 **Informação a ser produzida:** um rótulo entre `{copas, ouros, paus, espadas}`.
 
@@ -33,15 +35,17 @@ Um contexto  para essa solução é a **automação de jogos de cartas** : uma c
 ## 7.4 Entrada e saída esperadas
 
 ```
-imagem da carta (foto, câmera fixa, carta centralizada)
+foto da carta (RGB)
    ↓
-pré-processamento (RGB -> cinza -> binarização por Otsu)
+localização da carta (papel claro × fundo) e recorte do canto superior esquerdo
    ↓
-segmentação (bounding box do símbolo, recorte, cor dominante)
+binarização do canto (Otsu sobre min(R,G,B)) + morfologia opcional
    ↓
-extração de características de forma (fill_ratio, simetria vertical, perfil de largura)
+componentes conectados → valor (pode ter vários elementos) e símbolo do naipe
    ↓
-classificação por regras (cor + forma)
+cor dominante + descritores de forma (fill_ratio, simetria vertical, perfil de largura)
+   ↓
+classificação por regras calibradas no conjunto de ajuste
    ↓
 resultado: naipe ∈ {copas, ouros, paus, espadas}
 ```
@@ -50,27 +54,27 @@ resultado: naipe ∈ {copas, ouros, paus, espadas}
 
 ## 8. Imagens e dados
 
-**Estado atual (M1):** o pipeline foi desenvolvido e validado com um conjunto de **20 imagens sintéticas** (5 por naipe), geradas programaticamente, desenhando os símbolos de cada naipe na cor correta com pequena variação de posição e tamanho para simular a variação que fotos reais teriam.
+**Estado atual (M2):** 108 fotos reais do baralho físico do grupo em `images/input/reais/`: as 52 cartas fotografadas 2 vezes cada, mais 4 coringas. Celular, de cima, mesa de madeira, luz ambiente, 960 × 1280 px. Nomes no formato `naipe_valor_nn.jpg`.
 
-Essas imagens sintéticas **não substituem** as fotos reais exigidas pela M1 — servem para permitir desenvolver e testar o pipeline (segmentação, extração de cor, extração de forma, regras de classificação) antes da sessão de fotos com o baralho físico do grupo, que é o **próximo passo imediato**.
+- **Avaliação:** só com as fotos reais. As 20 imagens sintéticas da M1 continuam só como teste de regressão.
+- **Divisão:** 64 fotos de ajuste e 40 de teste, estratificada por naipe e agrupada por carta, para que as duas fotos da mesma carta nunca fiquem separadas (`images/split_reais.json`).
+- **Coringas:** ficam fora da avaliação de naipe e são usados como caso de falha esperada.
+- **Restrições de uso:** baralho do grupo, sem restrição de redistribuição.
 
-**Plano para as imagens reais:**
-- Origem: baralho físico de um dos integrantes do grupo.
-- Forma de obtenção: fotos tiradas com celular, câmera fixa (tripé ou apoio), carta centralizada sobre fundo de contraste uniforme (ex.: pano verde ou preto), boa iluminação.
-- Quantidade planejada: pelo menos 3-5 fotos por naipe (13 cartas × 3-5 fotos = ~40-65 imagens), variando levemente ângulo e iluminação para dar robustez.
-- Formato: JPEG/PNG, resolução de celular padrão (redimensionada para processamento).
-- Restrições de uso: baralho de propriedade do grupo — sem restrição de redistribuição; as fotos serão incluídas diretamente no repositório.
+Detalhes do protocolo: seção 3 do [relatório da M2](relatorio_m2.md).
 
 ## 9. Pipeline preliminar
 
 
 
-| Etapa | Finalidade | Técnica considerada | Entrada | Saída | Dúvidas em aberto |
+| Etapa | Finalidade | Técnica | Entrada | Saída | Situação na M2 |
 |---|---|---|---|---|---|
-| Pré-processamento | Normalizar imagem, isolar símbolo do fundo | Conversão RGB→cinza (luminância), binarização por Otsu (implementado manualmente) | Imagem RGB | Imagem binarizada (símbolo vs. fundo) | Threshold de Otsu vai se comportar bem com o fundo real (pano) e reflexos do verniz da carta? |
-| Segmentação | Localizar e recortar a região do símbolo | Bounding box dos pixels não-zero da máscara binária; cor dominante por média dos canais RGB nos pixels do símbolo | Imagem binarizada + RGB original | Recorte RGB + máscara do símbolo, rótulo de cor | Com fotos reais, pode haver mais de uma região de símbolo (ex. dois cantos visíveis) — vai ser preciso escolher/agrupar regiões |
-| Extração de forma | Gerar descritores que diferenciem os naipes de mesma cor | `fill_ratio`, `vertical_symmetry`, `width_profile_ratio` (implementados manualmente a partir da máscara) | Máscara recortada | Vetor de características | Os limiares calibrados nas imagens sintéticas provavelmente vão precisar de reajuste com fotos reais |
-| Classificação | Decidir o naipe final | Regras com limiares sobre cor + descritores de forma | Cor + vetor de características | Rótulo de naipe | Regras fixas podem não generalizar bem; alternativa a considerar na M2: comparação por template matching ou um classificador simples treinado (ex. k-NN sobre os descritores) |
+| Localização da carta | Separar a carta do fundo | papel = `min(R,G,B) ≥ 115`, maior componente, preenchimento de buracos | RGB | máscara da carta | implementado |
+| Recorte do canto | Isolar o índice (valor + símbolo) | região a partir do vértice superior esquerdo da carta | RGB + máscara | recorte do canto | implementado |
+| Binarização e morfologia | Separar tinta do papel | Otsu manual sobre `min(R,G,B)`; abertura/fechamento opcionais | recorte | máscara de tinta | implementado; abertura avaliada com ruído |
+| Componentes e seleção | Separar valor, símbolo e demais elementos | componentes conectados (8-viz.), filtros de área e borda, agrupamento por linha | máscara | caixas do valor e do naipe | implementado |
+| Extração de forma | Diferenciar naipes da mesma cor | `fill_ratio`, `vertical_symmetry`, `width_profile_ratio` | máscara do símbolo | vetor de 3 descritores | implementado |
+| Classificação | Decidir o naipe | regras calibradas no ajuste; template matching e k-NN comparados | cor + descritores | naipe | implementado; reconhecimento do valor pendente (M3) |
 
 ### Alternativas consideradas
 
@@ -85,7 +89,7 @@ flowchart LR
     B3 --> C
 ```
 
-Optamos por começar pela abordagem de regras (B1) por ser totalmente explicável e não exigir dados de treinamento. Template matching (B2) e um classificador leve (B3) ficam como alternativas a comparar durante a M2, especialmente se as regras fixas não generalizarem bem para fotos reais com variação de iluminação e ângulo.
+Na M1 começamos pelas regras (B1), por serem explicáveis e não exigirem treinamento. Na M2 as três alternativas foram comparadas nas mesmas imagens (Experimento 3 do relatório). As três empatam em 100% nas fotos limpas, e o k-NN é o primeiro a errar com ruído. As regras foram mantidas.
 
 ## 10. Arquitetura preliminar
 
@@ -118,37 +122,29 @@ Organização de módulos (cada um com responsabilidade única, testável isolad
 - `main.py`: ponto de entrada via linha de comando.
 - `generate_synthetic_cards.py`: gerador de dados sintéticos de desenvolvimento (temporário, até termos fotos reais).
 
-## 11. Estudo inicial de viabilidade
+## 11. Viabilidade (atualizada na M2)
 
-Evidências reunidas até o momento:
+- **Pipeline completo em fotos reais:** roda sem ajuste manual por imagem e localiza valor e naipe nas 104 fotos com naipe.
+- **Teste congelado:** com as regras calibradas só no ajuste, 40/40 fotos de teste corretas, com matriz de confusão por naipe publicada em `images/results/avaliacao_reais.json`.
+- **Limiares da M1:** os limiares das sintéticas acertam só 23/40 nas fotos, o que confirma o alerta da M1 de que 100% nas sintéticas não estimava o desempenho real.
+- **Testes automatizados:** cobrem segmentação, calibração, comparação e experimentos.
 
-1. **Prototipagem funcional completa**: o pipeline foi implementado ponta a ponta (pré-processamento → segmentação → features → classificação) e roda sem erros sobre um conjunto de imagens de teste.
-2. **Testes automatizados (pytest)**: 9 testes cobrindo binarização, segmentação, detecção de cor e classificação completa, todos passando.
-3. **Resultado preliminar quantitativo**: 100% de acerto (20/20) nas imagens sintéticas de desenvolvimento. Esse número é esperado ser mais alto que o obtido com fotos reais, já que as imagens sintéticas têm cor e forma muito mais limpas/controladas que uma foto real (sem sombra, reflexo ou variação de iluminação).
-4. **Inspeção manual da lógica**: os descritores de forma escolhidos (simetria vertical, perfil de largura topo/base) têm justificativa geométrica clara e observável nos símbolos reais dos naipes (ouros é simétrico como um losango; copas tem reentrância no topo; paus é mais largo na base pelos três lóbulos; espadas é mais afilado no topo).
-5. **Baralho físico disponível**: o grupo tem acesso a um baralho completo para a sessão de fotos reais, sem dependência de datasets externos ou problemas de direitos autorais.
+**Riscos para a M3:**
+- um único baralho, fundo e luz;
+- teste pequeno (5 cartas por naipe);
+- segmentação frágil com ruído forte (σ = 60): localiza 27,5% dos símbolos sem morfologia e 60% com abertura.
 
-**Riscos identificados para a M2:**
-- Fotos reais terão ruído (sombra, reflexo no verniz, variação de ângulo) que as imagens sintéticas não têm — os limiares de decisão precisarão ser recalibrados, e pode ser necessário trocar de abordagem de regras fixas para algo mais robusto (template matching ou classificador leve).
-- A posição do símbolo do naipe na carta real (geralmente no canto, pequeno, ao lado do valor) é diferente da posição centralizada usada nas imagens sintéticas — o pipeline de segmentação vai precisar lidar com o recorte da região do canto especificamente.
+## 12. Resultados
 
-## 12. Resultados/experimentos preliminares
+Os experimentos da M2 (limiares, morfologia com ruído e comparação de métodos) estão no [relatório da M2](relatorio_m2.md), seção 6.
 
-**Experimento:** classificação de naipe em 20 imagens sintéticas.
+## Próximos passos (para M3)
 
-- **Entrada:** imagens 200×200, símbolo desenhado em cor e posição levemente variadas.
-- **Método:** pipeline completo (Otsu → segmentação → 3 descritores de forma → regras de decisão).
-- **Parâmetros:** threshold de binarização calculado automaticamente por Otsu em cada imagem; limiares de classificação fixos (`vertical_symmetry > 0.75` para separar ouros/copas; `width_profile_ratio < 0.9` para separar paus/espadas).
-- **Saída:** ver `images/results/resultados_sinteticos.json`.
-- **Interpretação:** 100% de acerto nas sintéticas confirma que a lógica de decisão é internamente consistente com os descritores escolhidos. Isso é um resultado esperado e não deve ser interpretado como desempenho final do sistema — é evidência de que o *pipeline funciona*, não de que ele vai generalizar bem para fotos reais. A validação real acontecerá na próxima etapa, com fotos do baralho físico.
-
-## Próximos passos (para M2)
-
-1. Fotografar o baralho físico (13 cartas × 3-5 fotos cada) com câmera fixa.
-2. Adaptar a segmentação para recortar o símbolo do **canto** da carta (não o centro).
-3. Recalibrar os limiares de `classify.py` com base nas fotos reais.
-4. Avaliar se as regras fixas continuam suficientes ou se vale migrar para template matching / k-NN.
-5. (Extensão futura, fora do escopo da M1) considerar reconhecimento do valor da carta além do naipe.
+1. Fotografar um segundo conjunto, com outro fundo e outra luz, para teste externo.
+2. Criar máscaras de referência manuais do símbolo e medir IoU/Dice.
+3. Tornar a segmentação robusta a ruído forte.
+4. Reconhecer o valor da carta, que já é localizado no canto.
+5. Detectar o coringa como classe própria.
 
 ## Referências
 
