@@ -179,4 +179,4 @@ pytest tests/ -v
 ## Vídeos
 
 - M1: https://youtu.be/Elav2VKWgt4
-- M2: *(link a ser adicionado)*
+- M2: https://www.youtube.com/watch?v=mVwQDrMyRRI
