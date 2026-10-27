@@ -1,6 +1,8 @@
 # Identificação de Naipe em Cartas de Baralho
 
-Projeto aplicado longitudinal — disciplina de Processamento de Imagens (2026-02), etapa M1.
+Projeto aplicado longitudinal — disciplina de Processamento de Imagens (2026-02), **etapa M2**.
+
+O registro da entrega M1 está em [`docs/README_M1.md`](docs/README_M1.md).
 
 ## Integrantes
 
@@ -8,86 +10,171 @@ Projeto aplicado longitudinal — disciplina de Processamento de Imagens (2026-0
 - Guilherme Cassettari
 - Guilherme Pires
 
-## Problema investigado
+As contribuições de cada integrante estão em [`docs/contribuicoes.md`](docs/contribuicoes.md).
 
-Dada uma foto de uma carta de baralho francês, identificar automaticamente a qual dos quatro naipes ela pertence: **copas, ouros, paus ou espadas**. O reconhecimento do valor da carta (A–K) fica fora do escopo desta etapa.
+## Problema
 
-## Contexto de aplicação
+Dada uma foto de uma carta de baralho francês, identificar automaticamente o naipe: **copas, ouros, espadas ou paus**. O valor da carta (A–K) é localizado no canto, mas ainda não é reconhecido. O reconhecimento do valor está planejado para a M3.
 
-Automação de jogos de cartas : uma câmera fixa sobre uma mesa identifica as cartas conforme são reveladas. 
-## Objetivo geral
+**Contexto:** automação de jogos de cartas, em que uma câmera sobre a mesa identifica as cartas conforme são reveladas.
 
-Implementar um pipeline clássico de PDI (sem aprendizado de máquina) que combine **cor dominante** e **descritores de forma** do símbolo do naipe para classificá-lo corretamente. 
+## Objetivos
 
-## Visão resumida da solução
+- Identificar o naipe em fotos reais a partir do índice do canto da carta (valor + símbolo), com um pipeline clássico de PDI, explicável e sem ajuste manual por imagem.
+- Avaliar em um conjunto de teste congelado, separado do conjunto usado para ajustar os parâmetros, e publicar a matriz de confusão por naipe.
 
-```
-foto da carta → pré-processamento (RGB→cinza→Otsu) → segmentação (recorte + cor)
-→ extração de forma (simetria, perfil de largura) → classificação por regras → naipe
-```
+## Entradas e saídas
 
-## Conjunto de imagens
+- **Entrada:** foto RGB (JPEG/PNG) de uma carta inteira vista de cima.
+- **Saída:**
+  - naipe e cor;
+  - descritores de forma;
+  - caixas do valor e do naipe;
+  - opcionalmente, as saídas intermediárias: máscara da carta, recorte do canto, componentes rotulados, caixas e máscara do símbolo.
 
-**Estágio atual:** pipeline validado com 20 imagens **sintéticas**, usadas apenas para desenvolvimento. As fotos reais do baralho físico do grupo ainda serão capturadas.
-
-## Estágio atual do projeto
-
-- [x] Definição do problema e escopo (apenas naipe, não valor)
-- [x] Pipeline completo implementado (pré-processamento, segmentação, features, classificação)
-- [x] Testes automatizados (pytest) — 9/9 passando
-- [x] Validação preliminar com imagens sintéticas
-- [ ] Captura de fotos reais do baralho físico
-- [ ] Recalibração dos limiares com dados reais
-- [ ] Gravação do vídeo da M1
-
-## Organização do repositório
+## Pipeline
 
 ```
-projeto-cartas-naipes/
-├── README.md
-├── docs/
-│   └── proposta.md          # proposta detalhada (problema, objetivo, pipeline, viabilidade)
-├── images/
-│   ├── input/
-│   │   └── sinteticas/      # imagens sintéticas de desenvolvimento (temporárias)
-│   └── results/
-│       └── resultados_sinteticos.json
-├── src/
-│   ├── preprocessing.py     # RGB, escala de cinza, binarização (Otsu manual)
-│   ├── segmentation.py      # bounding box, recorte, cor dominante
-│   ├── features.py          # descritores de forma
-│   ├── classify.py          # regra de decisão (cor + forma)
-│   ├── main.py               # CLI
-│   └── generate_synthetic_cards.py  # gerador de dados sintéticos de dev
-├── tests/
-│   └── test_pipeline.py     # 9 testes pytest
-├── AI_USAGE.md
-├── requirements.txt
-└── .gitignore
+foto RGB → máscara da carta → recorte do canto → Otsu sobre min(R,G,B) (+ abertura opcional)
+→ componentes conectados → valor (1 ou mais elementos) e símbolo do naipe
+→ cor dominante + descritores de forma → regras calibradas → naipe
 ```
+
+O pipeline completo, a fundamentação e os parâmetros estão no [relatório da M2](docs/relatorio_m2.md).
+
+## Estágio atual
+
+- [x] 108 fotos reais do baralho físico (52 cartas × 2 + 4 coringas)
+- [x] Divisão ajuste/teste congelada, estratificada por naipe e agrupada por carta
+- [x] Segmentação do canto com valor, símbolo e múltiplos elementos
+- [x] Limiares recalibrados só no conjunto de ajuste
+- [x] Comparação entre regras, template matching e k-NN nas mesmas imagens
+- [x] Experimento de morfologia (abertura) com ruído, medido por IoU
+- [x] Saídas intermediárias e tabela de features por imagem
+- [ ] Reconhecimento do valor da carta (M3)
+- [ ] Teste externo com outro fundo e outra iluminação (M3)
+- [ ] Robustez a ruído forte (M3)
+
+## Resultados principais
+
+Conjunto de teste: 40 fotos, com 5 cartas por naipe que não aparecem no ajuste.
+
+| Experimento | Configuração | Resultado |
+|---|---|---|
+| Limiares | sintéticos (M1) × calibrados no ajuste | 23/40 × **40/40** |
+| Métodos (fotos limpas) | regras × template matching × k-NN | 100% × 100% × 100% |
+| Morfologia, ruído σ = 60 | sem × com abertura (naipes localizados com IoU ≥ 0,5) | 27,5% × **60%** |
+
+Matriz de confusão por naipe: [`images/results/avaliacao_reais.json`](images/results/avaliacao_reais.json). A análise completa, com casos de sucesso e falha, está no [relatório](docs/relatorio_m2.md).
 
 ## Tecnologias
 
-- **Python 3**
-- **Pillow** — leitura/gravação de imagens
-- **NumPy** — operações em array (infraestrutura; toda lógica de PDI — binarização, bounding box, descritores de forma — é implementada manualmente, sem funções prontas de reconhecimento)
-- **pytest** — testes automatizados
+Testado com **Python 3.12.10**. As versões exatas estão em `requirements-lock.txt`.
 
-## Como reproduzir
+| Biblioteca | Versão testada | Uso |
+|---|---|---|
+| Pillow | 13.0.0 | leitura, gravação e redimensionamento de imagens; desenho das figuras |
+| NumPy | 2.5.4 | arrays |
+| pytest | 9.1.1 | testes |
+
+Otsu, componentes conectados, erosão/dilatação, descritores, calibração, template matching e k-NN estão implementados no próprio projeto, sem OpenCV ou scikit-learn.
+
+## Estrutura
+
+```
+├── README.md
+├── requirements.txt / requirements-lock.txt
+├── AI_USAGE.md                       # declaração de uso de IA
+├── docs/
+│   ├── relatorio_m2.md               # relatório parcial da M2
+│   ├── proposta.md                   # proposta revisada
+│   ├── contribuicoes.md              # contribuições dos integrantes
+│   └── README_M1.md                  # registro da entrega M1
+├── images/
+│   ├── input/reais/                  # 108 fotos reais (naipe_valor_nn.jpg)
+│   ├── input/sinteticas/             # 20 imagens sintéticas da M1 (regressão)
+│   ├── split.json / split_reais.json # divisões ajuste/teste
+│   └── results/
+│       ├── limiares_reais.json       # regras calibradas no ajuste
+│       ├── avaliacao_reais.json      # avaliação no teste + matriz de confusão
+│       ├── comparacao_metodos.json   # regras × template × k-NN
+│       ├── experimentos.json         # experimentos 1, 2 e 3
+│       ├── tabela_features.csv       # features por imagem
+│       └── intermediarias/           # saídas intermediárias de casos típicos e difíceis
+├── src/
+│   ├── preprocessing.py              # RGB, cinza, Otsu
+│   ├── segmentation.py               # carta, canto, morfologia, componentes, valor/naipe
+│   ├── features.py                   # descritores de forma
+│   ├── classify.py                   # extração + decisão
+│   ├── split.py                      # divisão ajuste/teste
+│   ├── calibrate.py                  # calibração das regras e avaliação
+│   ├── compare.py                    # regras × template matching × k-NN
+│   ├── experiments.py                # experimentos controlados
+│   ├── visualize.py                  # saídas intermediárias e tabela
+│   ├── main.py                       # linha de comando
+│   └── generate_synthetic_cards.py   # imagens sintéticas da M1
+└── tests/                            # testes pytest
+```
+
+## Dados
+
+As fotos foram tiradas pelo grupo com o próprio baralho, sem restrição de redistribuição, e estão no repositório. A origem, as condições de aquisição, a referência de avaliação e a divisão estão na seção 3 do [relatório](docs/relatorio_m2.md).
+
+## Instalação
 
 ```bash
+python -m venv .venv
 pip install -r requirements.txt
+```
 
-# gerar imagens sintéticas de desenvolvimento (se ainda não existirem)
-python -m src.generate_synthetic_cards
+## Execução
 
-# rodar o pipeline numa imagem
-python -m src.main images/input/sinteticas/copas_00.png
+Exemplo mínimo, numa foto real:
 
-# rodar os testes
+```bash
+python -m src.main images/input/reais/copas_Q_01.jpg --saida saida_exemplo
+```
+
+Saída esperada:
+
+```
+Imagem: images/input/reais/copas_Q_01.jpg
+Tipo: foto (segmentação do canto)
+Naipe identificado: copas
+Cor detectada: vermelho
+Threshold (Otsu): 140
+Características: {'fill_ratio': 0.5336, 'vertical_symmetry': 0.578, 'width_profile_ratio': 2.2068}
+Caixa do valor (y0, y1, x0, x1): (201, 351, 193, 302)
+Caixa do naipe (y0, y1, x0, x1): (378, 498, 195, 298)
+Saídas intermediárias salvas em: saida_exemplo
+```
+
+A opção `--morfologia abertura` aplica a abertura na máscara do canto.
+
+Para reproduzir todos os resultados, nesta ordem:
+
+```bash
+python -m src.split reais        # divisão ajuste/teste (já versionada)
+python -m src.calibrate          # calibra no ajuste e avalia no teste
+python -m src.compare            # regras × template matching × k-NN
+python -m src.experiments        # experimentos 1, 2 e 3
+python -m src.visualize          # saídas intermediárias e tabela de features
+```
+
+Testes:
+
+```bash
 pytest tests/ -v
 ```
 
-## Vídeo da M1
+## Documentação
 
-https://youtu.be/Elav2VKWgt4
+- [Relatório parcial da M2](docs/relatorio_m2.md)
+- [Proposta revisada](docs/proposta.md)
+- [Registro da M1](docs/README_M1.md)
+- [Declaração de uso de IA](AI_USAGE.md)
+
+## Vídeos
+
+- M1: https://youtu.be/Elav2VKWgt4
+- M2: *(link a ser adicionado)*
