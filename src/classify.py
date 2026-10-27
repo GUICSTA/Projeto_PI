@@ -25,12 +25,12 @@ def load_rules(path=CALIBRATED_RULES_PATH):
         return json.load(f)["regras"]
 
 
-def extract(rgb):
+def extract(rgb, morphology=None, radius=1):
     card = segmentation.card_mask(rgb)
     photo = segmentation.has_background(card)
 
     if photo:
-        corner = segmentation.segment_corner(rgb, card)
+        corner = segmentation.segment_corner(rgb, card, morphology=morphology, radius=radius)
         rgb_crop, mask_crop = corner["simbolo_rgb"], corner["simbolo_mascara"]
         threshold = corner["threshold"]
     else:

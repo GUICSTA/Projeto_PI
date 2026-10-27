@@ -88,3 +88,25 @@ def test_split_without_symbol_raises():
 def test_joker_has_no_suit_symbol(name):
     with pytest.raises(ValueError):
         segmentation.segment_corner(_load(name))
+
+
+def test_opening_removes_isolated_noise_and_keeps_object():
+    mask = np.zeros((20, 20), dtype=bool)
+    mask[5:15, 5:15] = True
+    mask[1, 1] = True
+    opened = segmentation.opening(mask, 1)
+    assert not opened[1, 1]
+    assert opened[5:15, 5:15].all()
+
+
+def test_closing_fills_small_gap():
+    mask = np.zeros((20, 20), dtype=bool)
+    mask[5:15, 5:15] = True
+    mask[10, 10] = False
+    assert segmentation.closing(mask, 1)[10, 10]
+
+
+@pytest.mark.parametrize("morphology", ["abertura", "fechamento"])
+def test_corner_segmentation_with_morphology(morphology):
+    corner = segmentation.segment_corner(_load(SUIT_PHOTOS[0]), morphology=morphology)
+    assert corner["naipe"][0] > corner["valor"][1]

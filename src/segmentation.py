@@ -94,6 +94,29 @@ def erode(mask, radius):
     return result
 
 
+def dilate(mask, radius):
+    result = mask.copy()
+    for _ in range(radius):
+        grown = result.copy()
+        grown[1:] |= result[:-1]
+        grown[:-1] |= result[1:]
+        grown[:, 1:] |= result[:, :-1]
+        grown[:, :-1] |= result[:, 1:]
+        result = grown
+    return result
+
+
+def opening(mask, radius):
+    return dilate(erode(mask, radius), radius)
+
+
+def closing(mask, radius):
+    return erode(dilate(mask, radius), radius)
+
+
+MORPHOLOGY = {"abertura": opening, "fechamento": closing}
+
+
 def card_mask(rgb_array, scale=CARD_SCALE):
     h, w = rgb_array.shape[:2]
     small = rgb_array[::scale, ::scale]
@@ -162,10 +185,12 @@ def _offset(bbox, y0, x0):
     return (bbox[0] + y0, bbox[1] + y0, bbox[2] + x0, bbox[3] + x0)
 
 
-def corner_elements(rgb_crop, inside):
+def corner_elements(rgb_crop, inside, morphology=None, radius=1):
     ink_level = np.where(inside, rgb_crop.min(axis=2), 255).astype(np.uint8)
     binary, threshold = preprocessing.binarize(ink_level)
     binary[~inside] = 0
+    if morphology:
+        binary = MORPHOLOGY[morphology](binary > 0, radius).astype(np.uint8) * 255
 
     labels, components = connected_components(binary)
     min_area = MIN_ELEMENT_AREA_RATIO * binary.size
@@ -201,11 +226,11 @@ def split_value_and_symbol(elements):
     return value, symbol
 
 
-def segment_corner(rgb_array, card=None, margin=5):
+def segment_corner(rgb_array, card=None, margin=5, morphology=None, radius=1):
     if card is None:
         card = card_mask(rgb_array)
     rgb_crop, inside, (y0, y1, x0, x1) = corner_region(rgb_array, card)
-    labels, elements, threshold = corner_elements(rgb_crop, inside)
+    labels, elements, threshold = corner_elements(rgb_crop, inside, morphology, radius)
     value, symbol = split_value_and_symbol(elements)
 
     sy0, sy1, sx0, sx1 = symbol["bbox"]
