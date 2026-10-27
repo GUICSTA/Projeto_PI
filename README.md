@@ -84,12 +84,13 @@ Otsu, componentes conectados, erosão/dilatação, descritores, calibração, te
 ```
 ├── README.md
 ├── requirements.txt / requirements-lock.txt
-├── AI_USAGE.md                       # declaração de uso de IA
+├── AI_USAGE.md                       # declaração de uso de IA da M2
 ├── docs/
 │   ├── relatorio_m2.md               # relatório parcial da M2
 │   ├── proposta.md                   # proposta revisada
 │   ├── contribuicoes.md              # contribuições dos integrantes
-│   └── README_M1.md                  # registro da entrega M1
+│   ├── README_M1.md                  # registro da entrega M1
+│   └── AI_USAGE_M1.md                # declaração de uso de IA da M1
 ├── images/
 │   ├── input/reais/                  # 108 fotos reais (naipe_valor_nn.jpg)
 │   ├── input/sinteticas/             # 20 imagens sintéticas da M1 (regressão)
@@ -172,7 +173,8 @@ pytest tests/ -v
 - [Relatório parcial da M2](docs/relatorio_m2.md)
 - [Proposta revisada](docs/proposta.md)
 - [Registro da M1](docs/README_M1.md)
-- [Declaração de uso de IA](AI_USAGE.md)
+- [Declaração de uso de IA da M2](AI_USAGE.md)
+- [Declaração de uso de IA da M1](docs/AI_USAGE_M1.md)
 
 ## Vídeos
 
