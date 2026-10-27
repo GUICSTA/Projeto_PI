@@ -18,6 +18,7 @@ def extract_samples(filenames, directory=split.REAL_DIR):
             "naipe": split.suit_of(name),
             "cor": extracted["cor"],
             "features": extracted["features"],
+            "mascara": extracted["mascara"],
         })
     return samples
 

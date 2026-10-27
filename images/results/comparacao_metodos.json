@@ -1,0 +1,115 @@
+{
+  "divisao": "split_reais.json",
+  "imagens_ajuste": 64,
+  "imagens_teste": 40,
+  "parametros": {
+    "template_tamanho": 32,
+    "knn_k": 3,
+    "knn_features": [
+      "fill_ratio",
+      "vertical_symmetry",
+      "width_profile_ratio"
+    ]
+  },
+  "metodos": {
+    "regras": {
+      "acertos": 40,
+      "total": 40,
+      "acuracia": 1.0,
+      "matriz_confusao": {
+        "copas": {
+          "copas": 10,
+          "espadas": 0,
+          "ouros": 0,
+          "paus": 0
+        },
+        "espadas": {
+          "copas": 0,
+          "espadas": 10,
+          "ouros": 0,
+          "paus": 0
+        },
+        "ouros": {
+          "copas": 0,
+          "espadas": 0,
+          "ouros": 10,
+          "paus": 0
+        },
+        "paus": {
+          "copas": 0,
+          "espadas": 0,
+          "ouros": 0,
+          "paus": 10
+        }
+      },
+      "erros": [],
+      "tempo_decisao_ms": 0.0011
+    },
+    "template_matching": {
+      "acertos": 40,
+      "total": 40,
+      "acuracia": 1.0,
+      "matriz_confusao": {
+        "copas": {
+          "copas": 10,
+          "espadas": 0,
+          "ouros": 0,
+          "paus": 0
+        },
+        "espadas": {
+          "copas": 0,
+          "espadas": 10,
+          "ouros": 0,
+          "paus": 0
+        },
+        "ouros": {
+          "copas": 0,
+          "espadas": 0,
+          "ouros": 10,
+          "paus": 0
+        },
+        "paus": {
+          "copas": 0,
+          "espadas": 0,
+          "ouros": 0,
+          "paus": 10
+        }
+      },
+      "erros": [],
+      "tempo_decisao_ms": 0.1058
+    },
+    "knn": {
+      "acertos": 40,
+      "total": 40,
+      "acuracia": 1.0,
+      "matriz_confusao": {
+        "copas": {
+          "copas": 10,
+          "espadas": 0,
+          "ouros": 0,
+          "paus": 0
+        },
+        "espadas": {
+          "copas": 0,
+          "espadas": 10,
+          "ouros": 0,
+          "paus": 0
+        },
+        "ouros": {
+          "copas": 0,
+          "espadas": 0,
+          "ouros": 10,
+          "paus": 0
+        },
+        "paus": {
+          "copas": 0,
+          "espadas": 0,
+          "ouros": 0,
+          "paus": 10
+        }
+      },
+      "erros": [],
+      "tempo_decisao_ms": 0.0253
+    }
+  }
+}

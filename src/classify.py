@@ -43,6 +43,7 @@ def extract(rgb):
         "cor": segmentation.dominant_color(rgb_crop, mask_crop),
         "threshold_otsu": threshold,
         "features": features.extract_features(mask_crop),
+        "mascara": mask_crop,
     }
 
 
