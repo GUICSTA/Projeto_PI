@@ -242,6 +242,10 @@ def segment_corner(rgb_array, card=None, margin=5, morphology=None, radius=1, me
     sy1, sx1 = min(h, sy1 + margin + 1), min(w, sx1 + margin + 1)
     symbol_mask = (labels[sy0:sy1, sx0:sx1] == symbol["label"]).astype(np.uint8) * 255
 
+    vy0, vy1, vx0, vx1 = _union([c["bbox"] for c in value])
+    value_labels = [c["label"] for c in value]
+    value_mask = np.isin(labels[vy0:vy1 + 1, vx0:vx1 + 1], value_labels).astype(np.uint8) * 255
+
     return {
         "regiao": (y0, y1, x0, x1),
         "elementos": [_offset(c["bbox"], y0, x0) for c in elements],
@@ -249,5 +253,7 @@ def segment_corner(rgb_array, card=None, margin=5, morphology=None, radius=1, me
         "naipe": _offset(symbol["bbox"], y0, x0),
         "simbolo_rgb": rgb_crop[sy0:sy1, sx0:sx1],
         "simbolo_mascara": symbol_mask,
+        "valor_mascara": value_mask,
+        "valor_elementos": len(value),
         "threshold": threshold,
     }
