@@ -196,6 +196,7 @@ pytest tests/ -v
 ## Documentação
 
 - [Relatório final (M3)](docs/relatorio_final.md)
+- [Slides da M3](Slides_M3.pdf) ([pptx](Slides_M3.pptx)) e [roteiro por integrante](docs/roteiro_m3/)
 - [Relatório parcial da M2](docs/relatorio_m2.md)
 - [Proposta revisada](docs/proposta.md)
 - [Registro da M1](docs/README_M1.md)
