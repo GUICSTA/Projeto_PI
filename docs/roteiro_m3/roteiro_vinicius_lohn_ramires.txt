@@ -1,0 +1,28 @@
+﻿ROTEIRO — Vinicius Lohn Ramires
+Apresentação M3 · Identificação de Naipe e Valor em Cartas de Baralho
+Slides: 5, 6, 7, 8  ·  ~3 min de fala (404 palavras a ~140/min)
+
+=== Slide 5 — Execução real ===
+Aqui está uma execução real, sem nenhum ajuste por imagem. Para a dama de copas, o sistema responde naipe copas e valor Q.
+Para o coringa colorido, a resposta é coringa, sem naipe.
+O programa também salva as saídas intermediárias. Na imagem ao lado, o retângulo verde é o valor e o azul é o naipe. No rei de paus, o desenho da figura toca a borda do recorte e é descartado.
+A opção baseline M2 roda a configuração anterior, para comparação. Os comandos para reproduzir tudo estão no README.
+
+=== Slide 6 — Valor ===
+Para reconhecer o valor, comparamos a máscara do valor, redimensionada para 32 por 32, com a média das máscaras de cada valor no conjunto de ajuste.
+Só com template, o baseline acerta 32 de 40. Todos os erros são o 8, que não aparece no ajuste, e por isso o template o confunde com o 6.
+Por isso usamos duas regras estruturais, que não dependem de exemplos: o 10 é o único valor com dois elementos, o um e o zero; e o 8 é o único com dois buracos de tamanho parecido. A dama também tem dois buracos, mas o segundo é pequeno, fechado pela perna da letra.
+Com as regras, chegamos a 40 de 40. Uma ressalva honesta: a primeira versão da regra do 8 errou as damas do teste. A correção foi verificada no ajuste, mas foi motivada pelo teste, e por isso esse resultado é otimista.
+
+=== Slide 7 — Coringa ===
+O coringa não tem naipe. No canto, as letras JOKER empilhadas formam um único componente que ocupa cerca de 78% da altura do canto.
+Nas 104 cartas com naipe, o maior elemento ocupa no máximo 33%. Por isso a regra é: se um elemento passa de 55% da altura, a carta é coringa.
+Resultado: os quatro coringas foram reconhecidos e nenhuma carta normal virou coringa. Mas temos só quatro fotos, as mesmas que usamos para escolher o limiar, então essa avaliação é exploratória.
+
+=== Slide 8 — Condições simuladas ===
+Como não fotografamos outro ambiente, simulamos condições de captura sobre as 40 fotos de teste, uma variável por vez.
+Gradiente de luz e escala de 50% não afetam o resultado. Com iluminação fraca, a configuração da M2 errava tudo e a da M3 acerta tudo.
+A rotação de 25 graus e o fundo claro continuam falhando, e o Guilherme Pires vai explicar por quê.
+Essas simulações isolam cada fator, mas não substituem fotos reais de outro baralho e de outro ambiente.
+
+(Ao terminar, passe a palavra para Guilherme Pires.)

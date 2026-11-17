@@ -1,0 +1,30 @@
+﻿ROTEIRO — Guilherme Cassettari
+Apresentação M3 · Identificação de Naipe e Valor em Cartas de Baralho
+Slides: 1, 2, 3, 4  ·  ~3 min de fala (422 palavras a ~140/min)
+
+=== Slide 1 — Título ===
+Olá, nós somos o grupo 13. Eu sou o Guilherme Cassettari, e comigo estão o Guilherme Pires e o Vinicius Lohn Ramires.
+Este é o vídeo da etapa M3, a versão final do nosso projeto. O sistema recebe a foto de uma carta de baralho e identifica o naipe, o valor e também o coringa.
+Eu começo pelo escopo, pelos dados e pelo pipeline. O Vinicius mostra a execução, o reconhecimento do valor, o coringa e as condições de captura. E o Guilherme Pires fecha com a avaliação da segmentação, as ablações, as limitações e a conclusão.
+
+=== Slide 2 — Escopo final: da M1 à M3 ===
+Na M1 trabalhamos só com vinte imagens sintéticas e limiares definidos à mão.
+Na M2, seguindo a devolutiva, passamos para 108 fotos reais, separamos ajuste e teste antes de calibrar, segmentamos o canto da carta e chegamos a quarenta acertos em quarenta no naipe.
+Na M3, ampliamos o escopo: agora o valor da carta é reconhecido, de A a K, e o coringa virou uma classe própria. Também deixamos o pré-processamento mais robusto e fizemos a avaliação com baseline, ablações e máscaras de referência.
+Uma mudança em relação ao plano: o teste externo com fotos novas foi substituído por condições de captura simuladas. Isso está declarado no relatório como limitação.
+
+=== Slide 3 — Dados e protocolo ===
+Os dados são as mesmas 108 fotos da M2: as 52 cartas fotografadas duas vezes, mais quatro coringas.
+A divisão continua congelada: 64 fotos de ajuste e 40 de teste, e as duas fotos da mesma carta ficam sempre no mesmo conjunto.
+Na M3, tudo o que foi ajustado — os templates do valor e a escolha das configurações de pré-processamento — usou só o ajuste. O teste serve apenas para medir.
+Para avaliar a segmentação, criamos vinte máscaras de referência do símbolo, com um método independente do pipeline, e conferimos cada uma visualmente.
+Duas ressalvas: o teste não tem nenhuma carta 2, 5 ou 10, e os coringas são avaliados à parte.
+
+=== Slide 4 — Pipeline final ===
+Este é o pipeline final. Em vermelho estão as etapas novas ou alteradas na M3.
+Primeiro localizamos a carta, agora com Otsu em vez do limiar fixo 115. Depois recortamos o canto, onde ficam o valor e o símbolo.
+Na binarização, o Otsu passou a usar só os pixels da região útil, e aplicamos uma abertura morfológica para remover ruído.
+Nos componentes conectados verificamos o coringa. Se não for coringa, o naipe sai da cor e dos três descritores de forma, como na M2.
+E o valor sai de duas regras estruturais e de template matching, que o Vinicius vai explicar agora.
+
+(Ao terminar, passe a palavra para Vinicius Lohn Ramires.)
