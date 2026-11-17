@@ -29,6 +29,33 @@
       "paus": 10
     }
   },
+  "metricas_por_classe": {
+    "copas": {
+      "suporte": 10,
+      "precisao": 1.0,
+      "revocacao": 1.0,
+      "f1": 1.0
+    },
+    "espadas": {
+      "suporte": 10,
+      "precisao": 1.0,
+      "revocacao": 1.0,
+      "f1": 1.0
+    },
+    "ouros": {
+      "suporte": 10,
+      "precisao": 1.0,
+      "revocacao": 1.0,
+      "f1": 1.0
+    },
+    "paus": {
+      "suporte": 10,
+      "precisao": 1.0,
+      "revocacao": 1.0,
+      "f1": 1.0
+    }
+  },
+  "f1_macro": 1.0,
   "previsoes": [
     {
       "arquivo": "copas_3_01.jpg",

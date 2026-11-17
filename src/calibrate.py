@@ -2,7 +2,7 @@ import json
 import os
 import sys
 
-from . import classify, preprocessing, split
+from . import classify, metricas, preprocessing, split
 
 RESULTS_DIR = os.path.join(os.path.dirname(__file__), "..", "images", "results")
 EVALUATION_PATH = os.path.join(RESULTS_DIR, "avaliacao_reais.json")
@@ -78,6 +78,8 @@ def evaluate(rules, samples):
         "total": len(predictions),
         "acuracia": round(correct / len(predictions), 4) if predictions else 0.0,
         "matriz_confusao": confusion,
+        "metricas_por_classe": metricas.per_class(confusion),
+        "f1_macro": metricas.macro_f1(metricas.per_class(confusion)),
         "previsoes": predictions,
     }
 

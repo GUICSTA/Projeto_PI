@@ -68,6 +68,87 @@
         "previsto": "6"
       }
     ],
+    "metricas_por_classe": {
+      "A": {
+        "suporte": 2,
+        "precisao": 1.0,
+        "revocacao": 1.0,
+        "f1": 1.0
+      },
+      "2": {
+        "suporte": 0,
+        "precisao": null,
+        "revocacao": null,
+        "f1": null
+      },
+      "3": {
+        "suporte": 6,
+        "precisao": 1.0,
+        "revocacao": 1.0,
+        "f1": 1.0
+      },
+      "4": {
+        "suporte": 2,
+        "precisao": 1.0,
+        "revocacao": 1.0,
+        "f1": 1.0
+      },
+      "5": {
+        "suporte": 0,
+        "precisao": null,
+        "revocacao": null,
+        "f1": null
+      },
+      "6": {
+        "suporte": 2,
+        "precisao": 0.2,
+        "revocacao": 1.0,
+        "f1": 0.3333
+      },
+      "7": {
+        "suporte": 4,
+        "precisao": 1.0,
+        "revocacao": 1.0,
+        "f1": 1.0
+      },
+      "8": {
+        "suporte": 8,
+        "precisao": null,
+        "revocacao": 0.0,
+        "f1": 0.0
+      },
+      "9": {
+        "suporte": 6,
+        "precisao": 1.0,
+        "revocacao": 1.0,
+        "f1": 1.0
+      },
+      "10": {
+        "suporte": 0,
+        "precisao": null,
+        "revocacao": null,
+        "f1": null
+      },
+      "J": {
+        "suporte": 2,
+        "precisao": 1.0,
+        "revocacao": 1.0,
+        "f1": 1.0
+      },
+      "Q": {
+        "suporte": 4,
+        "precisao": 1.0,
+        "revocacao": 1.0,
+        "f1": 1.0
+      },
+      "K": {
+        "suporte": 4,
+        "precisao": 1.0,
+        "revocacao": 1.0,
+        "f1": 1.0
+      }
+    },
+    "f1_macro": 0.8333,
     "matriz_confusao": {
       "A": {
         "A": 2,
@@ -271,6 +352,87 @@
     "total": 40,
     "acuracia": 1.0,
     "erros": [],
+    "metricas_por_classe": {
+      "A": {
+        "suporte": 2,
+        "precisao": 1.0,
+        "revocacao": 1.0,
+        "f1": 1.0
+      },
+      "2": {
+        "suporte": 0,
+        "precisao": null,
+        "revocacao": null,
+        "f1": null
+      },
+      "3": {
+        "suporte": 6,
+        "precisao": 1.0,
+        "revocacao": 1.0,
+        "f1": 1.0
+      },
+      "4": {
+        "suporte": 2,
+        "precisao": 1.0,
+        "revocacao": 1.0,
+        "f1": 1.0
+      },
+      "5": {
+        "suporte": 0,
+        "precisao": null,
+        "revocacao": null,
+        "f1": null
+      },
+      "6": {
+        "suporte": 2,
+        "precisao": 1.0,
+        "revocacao": 1.0,
+        "f1": 1.0
+      },
+      "7": {
+        "suporte": 4,
+        "precisao": 1.0,
+        "revocacao": 1.0,
+        "f1": 1.0
+      },
+      "8": {
+        "suporte": 8,
+        "precisao": 1.0,
+        "revocacao": 1.0,
+        "f1": 1.0
+      },
+      "9": {
+        "suporte": 6,
+        "precisao": 1.0,
+        "revocacao": 1.0,
+        "f1": 1.0
+      },
+      "10": {
+        "suporte": 0,
+        "precisao": null,
+        "revocacao": null,
+        "f1": null
+      },
+      "J": {
+        "suporte": 2,
+        "precisao": 1.0,
+        "revocacao": 1.0,
+        "f1": 1.0
+      },
+      "Q": {
+        "suporte": 4,
+        "precisao": 1.0,
+        "revocacao": 1.0,
+        "f1": 1.0
+      },
+      "K": {
+        "suporte": 4,
+        "precisao": 1.0,
+        "revocacao": 1.0,
+        "f1": 1.0
+      }
+    },
+    "f1_macro": 1.0,
     "matriz_confusao": {
       "A": {
         "A": 2,

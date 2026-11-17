@@ -16,7 +16,7 @@ import sys
 import numpy as np
 from PIL import Image
 
-from . import preprocessing, segmentation, split
+from . import metricas, preprocessing, segmentation, split
 
 RANKS = ("A", "2", "3", "4", "5", "6", "7", "8", "9", "10", "J", "Q", "K")
 TEMPLATE_SIZE = 32
@@ -116,6 +116,8 @@ def evaluate(templates, samples, total, structural=True):
         "total": total,
         "acuracia": round(hits / total, 4) if total else 0.0,
         "erros": errors,
+        "metricas_por_classe": metricas.per_class(matrix),
+        "f1_macro": metricas.macro_f1(metricas.per_class(matrix)),
         "matriz_confusao": matrix,
     }
 
