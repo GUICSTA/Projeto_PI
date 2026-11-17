@@ -1,8 +1,8 @@
 # Identificação de Naipe em Cartas de Baralho
 
-Projeto aplicado longitudinal — disciplina de Processamento de Imagens (2026-02), **etapa M2**.
+Projeto aplicado longitudinal — disciplina de Processamento de Imagens (2026-02), **etapa M3 (versão final)**.
 
-O registro da entrega M1 está em [`docs/README_M1.md`](docs/README_M1.md).
+Registros das entregas anteriores: [`docs/README_M2.md`](docs/README_M2.md) e [`docs/README_M1.md`](docs/README_M1.md).
 
 ## Integrantes
 
@@ -14,58 +14,64 @@ As contribuições de cada integrante estão em [`docs/contribuicoes.md`](docs/c
 
 ## Problema
 
-Dada uma foto de uma carta de baralho francês, identificar automaticamente o naipe: **copas, ouros, espadas ou paus**. O valor da carta (A–K) é localizado no canto, mas ainda não é reconhecido. O reconhecimento do valor está planejado para a M3.
+Dada uma foto de uma carta de baralho francês, identificar automaticamente o **naipe** (copas, ouros, espadas ou paus), o **valor** (A, 2–10, J, Q, K) e o **coringa**.
 
 **Contexto:** automação de jogos de cartas, em que uma câmera sobre a mesa identifica as cartas conforme são reveladas.
 
 ## Objetivos
 
-- Identificar o naipe em fotos reais a partir do índice do canto da carta (valor + símbolo), com um pipeline clássico de PDI, explicável e sem ajuste manual por imagem.
-- Avaliar em um conjunto de teste congelado, separado do conjunto usado para ajustar os parâmetros, e publicar a matriz de confusão por naipe.
+- Reconhecer naipe e valor em fotos reais a partir do índice do canto da carta, com um pipeline clássico de PDI, explicável e sem ajuste manual por imagem.
+- Avaliar num conjunto de teste congelado, separado do conjunto de ajuste, com baseline, ablações, métricas por classe e análise de erros.
 
 ## Entradas e saídas
 
-- **Entrada:** foto RGB (JPEG/PNG) de uma carta inteira vista de cima.
+- **Entrada:** foto RGB (JPEG/PNG) de uma carta inteira vista de cima, sobre fundo mais escuro que o papel.
 - **Saída:**
-  - naipe e cor;
-  - descritores de forma;
-  - caixas do valor e do naipe;
+  - naipe e valor, ou "coringa";
+  - cor, descritores de forma e caixas do valor e do naipe;
   - opcionalmente, as saídas intermediárias: máscara da carta, recorte do canto, componentes rotulados, caixas e máscara do símbolo.
 
-## Pipeline
+## Pipeline final
 
 ```
-foto RGB → máscara da carta → recorte do canto → Otsu sobre min(R,G,B) (+ abertura opcional)
-→ componentes conectados → valor (1 ou mais elementos) e símbolo do naipe
-→ cor dominante + descritores de forma → regras calibradas → naipe
+foto RGB → máscara da carta (Otsu sobre min(R,G,B)) → recorte do canto
+→ Otsu só na região útil + abertura → componentes conectados
+→ coringa? (elemento > 55% da altura do canto)
+→ valor (1 ou mais elementos) e símbolo do naipe
+→ naipe: cor dominante + descritores de forma + regras calibradas
+→ valor: 2 elementos → 10; 2 buracos parecidos → 8; senão template matching
 ```
 
-O pipeline completo, a fundamentação e os parâmetros estão no [relatório da M2](docs/relatorio_m2.md).
+A fundamentação, os parâmetros e os experimentos estão no [relatório final](docs/relatorio_final.md).
 
-## Estágio atual
+## Estágio atual (final)
 
-- [x] 108 fotos reais do baralho físico (52 cartas × 2 + 4 coringas)
-- [x] Divisão ajuste/teste congelada, estratificada por naipe e agrupada por carta
-- [x] Segmentação do canto com valor, símbolo e múltiplos elementos
-- [x] Limiares recalibrados só no conjunto de ajuste
-- [x] Comparação entre regras, template matching e k-NN nas mesmas imagens
-- [x] Experimento de morfologia (abertura) com ruído, medido por IoU
-- [x] Saídas intermediárias e tabela de features por imagem
-- [ ] Reconhecimento do valor da carta (M3)
-- [ ] Teste externo com outro fundo e outra iluminação (M3)
-- [ ] Robustez a ruído forte (M3)
+- [x] 108 fotos reais (52 cartas × 2 + 4 coringas), divisão ajuste/teste congelada
+- [x] Naipe calibrado no ajuste e avaliado no teste
+- [x] Reconhecimento do valor da carta (M3)
+- [x] Coringa como classe própria (M3)
+- [x] Máscaras de referência do símbolo e Dice/IoU (M3)
+- [x] Robustez a ruído e a iluminação fraca, com ablação escolhida no ajuste (M3)
+- [x] Condições de captura simuladas: fundo claro, luz, rotação, escala (M3)
+- [ ] Teste com fotos de outro baralho/ambiente (substituído por simulação; ver limitações)
+- [ ] Fundo claro e rotações fortes (limitações conhecidas)
 
 ## Resultados principais
 
-Conjunto de teste: 40 fotos, com 5 cartas por naipe que não aparecem no ajuste.
+Conjunto de teste: 40 fotos, 5 cartas por naipe que não aparecem no ajuste.
 
-| Experimento | Configuração | Resultado |
+| Tarefa | Baseline (M2) | Final (M3) |
 |---|---|---|
-| Limiares | sintéticos (M1) × calibrados no ajuste | 23/40 × **40/40** |
-| Métodos (fotos limpas) | regras × template matching × k-NN | 100% × 100% × 100% |
-| Morfologia, ruído σ = 60 | sem × com abertura (naipes localizados com IoU ≥ 0,5) | 27,5% × **60%** |
+| Naipe, fotos limpas | 40/40 | **40/40** (F1 = 1,00) |
+| Valor, fotos limpas | 32/40 (só template) | **40/40** (otimista; ver relatório, 3.4) |
+| Coringa | rejeitado com erro | **4/4** (exploratório) |
+| Segmentação do naipe (Dice, 20 máscaras), limpas | 0,998 | 0,998 |
+| Naipe com ruído σ = 60 | 27,5% | **62,5%** |
+| Naipe com iluminação fraca (×0,55) | 0% | **100%** |
+| Naipe com rotação de 25° | 50% | 50% |
+| Fundo claro | 0% | 0% |
 
-Matriz de confusão por naipe: [`images/results/avaliacao_reais.json`](images/results/avaliacao_reais.json). A análise completa, com casos de sucesso e falha, está no [relatório](docs/relatorio_m2.md).
+Matrizes de confusão: [`avaliacao_reais.json`](images/results/avaliacao_reais.json) (naipe) e [`avaliacao_valor.json`](images/results/avaliacao_valor.json) (valor). Experimentos da M3: [`experimentos_m3.json`](images/results/experimentos_m3.json).
 
 ## Tecnologias
 
@@ -73,45 +79,56 @@ Testado com **Python 3.12.10**. As versões exatas estão em `requirements-lock.
 
 | Biblioteca | Versão testada | Uso |
 |---|---|---|
-| Pillow | 13.0.0 | leitura, gravação e redimensionamento de imagens; desenho das figuras |
+| Pillow | 13.0.0 | leitura, gravação, redimensionamento e rotação de imagens; desenho das figuras |
 | NumPy | 2.5.4 | arrays |
 | pytest | 9.1.1 | testes |
 
-Otsu, componentes conectados, erosão/dilatação, descritores, calibração, template matching e k-NN estão implementados no próprio projeto, sem OpenCV ou scikit-learn.
+Otsu, componentes conectados, erosão/dilatação, mediana, descritores, calibração, template matching, k-NN e métricas estão implementados no próprio projeto, sem OpenCV ou scikit-learn.
 
 ## Estrutura
 
 ```
 ├── README.md
 ├── requirements.txt / requirements-lock.txt
-├── AI_USAGE.md                       # declaração de uso de IA da M2
+├── AI_USAGE.md                       # declaração de uso de IA da M3
 ├── docs/
+│   ├── relatorio_final.md            # relatório final (M3)
 │   ├── relatorio_m2.md               # relatório parcial da M2
 │   ├── proposta.md                   # proposta revisada
 │   ├── contribuicoes.md              # contribuições dos integrantes
-│   ├── README_M1.md                  # registro da entrega M1
-│   └── AI_USAGE_M1.md                # declaração de uso de IA da M1
+│   ├── README_M1.md / README_M2.md   # registros das entregas anteriores
+│   └── AI_USAGE_M1.md / AI_USAGE_M2.md
 ├── images/
 │   ├── input/reais/                  # 108 fotos reais (naipe_valor_nn.jpg)
 │   ├── input/sinteticas/             # 20 imagens sintéticas da M1 (regressão)
+│   ├── reference/                    # máscaras de referência do símbolo + folha de conferência
 │   ├── split.json / split_reais.json # divisões ajuste/teste
 │   └── results/
-│       ├── limiares_reais.json       # regras calibradas no ajuste
-│       ├── avaliacao_reais.json      # avaliação no teste + matriz de confusão
-│       ├── comparacao_metodos.json   # regras × template × k-NN
-│       ├── experimentos.json         # experimentos 1, 2 e 3
+│       ├── limiares_reais.json       # regras do naipe calibradas no ajuste
+│       ├── templates_valor.npz       # templates do valor (ajuste)
+│       ├── avaliacao_reais.json      # naipe no teste: matriz + P/R/F1
+│       ├── avaliacao_valor.json      # valor no teste: baseline × final, matriz 13×13 + P/R/F1
+│       ├── experimentos.json         # experimentos 1–3 (M2)
+│       ├── experimentos_m3.json      # experimentos 4–6 (M3)
+│       ├── erros_rotacao_25.json     # análise de erros da rotação
+│       ├── comparacao_metodos.json   # regras × template × k-NN (M2)
 │       ├── tabela_features.csv       # features por imagem
-│       └── intermediarias/           # saídas intermediárias de casos típicos e difíceis
+│       ├── intermediarias/           # saídas intermediárias da M2
+│       └── intermediarias_m3/        # sucessos e falhas da M3
 ├── src/
-│   ├── preprocessing.py              # RGB, cinza, Otsu
-│   ├── segmentation.py               # carta, canto, morfologia, componentes, valor/naipe
+│   ├── preprocessing.py              # RGB, cinza, Otsu, mediana
+│   ├── segmentation.py               # carta, canto, morfologia, componentes, valor/naipe, coringa
 │   ├── features.py                   # descritores de forma
-│   ├── classify.py                   # extração + decisão
+│   ├── classify.py                   # extração + decisão do naipe; configurações final e baseline
+│   ├── rank.py                       # reconhecimento do valor
 │   ├── split.py                      # divisão ajuste/teste
 │   ├── calibrate.py                  # calibração das regras e avaliação
-│   ├── compare.py                    # regras × template matching × k-NN
-│   ├── experiments.py                # experimentos controlados
-│   ├── visualize.py                  # saídas intermediárias e tabela
+│   ├── metricas.py                   # precisão, revocação, F1
+│   ├── reference.py                  # máscaras de referência e Dice/IoU
+│   ├── compare.py                    # regras × template × k-NN (M2)
+│   ├── experiments.py                # experimentos 1–3 (M2)
+│   ├── robustez.py                   # experimentos 4–6 (M3)
+│   ├── visualize.py / figuras_m3.py  # saídas intermediárias
 │   ├── main.py                       # linha de comando
 │   └── generate_synthetic_cards.py   # imagens sintéticas da M1
 └── tests/                            # testes pytest
@@ -119,7 +136,7 @@ Otsu, componentes conectados, erosão/dilatação, descritores, calibração, te
 
 ## Dados
 
-As fotos foram tiradas pelo grupo com o próprio baralho, sem restrição de redistribuição, e estão no repositório. A origem, as condições de aquisição, a referência de avaliação e a divisão estão na seção 3 do [relatório](docs/relatorio_m2.md).
+As fotos foram tiradas pelo grupo com o próprio baralho, sem restrição de redistribuição, e estão no repositório. A origem, as condições de aquisição, as referências de avaliação (incluindo as máscaras do símbolo), a divisão e as condições simuladas estão na seção 3 do [relatório final](docs/relatorio_final.md).
 
 ## Instalação
 
@@ -130,7 +147,7 @@ pip install -r requirements.txt
 
 ## Execução
 
-Exemplo mínimo, numa foto real:
+Exemplo mínimo, numa foto real (configuração final da M3):
 
 ```bash
 python -m src.main images/input/reais/copas_Q_01.jpg --saida saida_exemplo
@@ -142,25 +159,33 @@ Saída esperada:
 Imagem: images/input/reais/copas_Q_01.jpg
 Tipo: foto (segmentação do canto)
 Naipe identificado: copas
+Valor identificado: Q
 Cor detectada: vermelho
-Threshold (Otsu): 140
-Características: {'fill_ratio': 0.5336, 'vertical_symmetry': 0.578, 'width_profile_ratio': 2.2068}
+Threshold (Otsu): 134
+Características: {'fill_ratio': 0.5321, 'vertical_symmetry': 0.5792, 'width_profile_ratio': 2.2097}
 Caixa do valor (y0, y1, x0, x1): (201, 351, 193, 302)
 Caixa do naipe (y0, y1, x0, x1): (378, 498, 195, 298)
 Saídas intermediárias salvas em: saida_exemplo
 ```
 
-A opção `--morfologia abertura` aplica a abertura na máscara do canto.
+`--baseline-m2` usa a configuração da M2. Num coringa a saída é `Carta identificada: coringa (sem naipe)`.
 
 Para reproduzir todos os resultados, nesta ordem:
 
 ```bash
 python -m src.split reais        # divisão ajuste/teste (já versionada)
-python -m src.calibrate          # calibra no ajuste e avalia no teste
-python -m src.compare            # regras × template matching × k-NN
-python -m src.experiments        # experimentos 1, 2 e 3
-python -m src.visualize          # saídas intermediárias e tabela de features
+python -m src.calibrate          # regras do naipe + avaliação no teste
+python -m src.rank               # templates do valor + avaliação no teste
+python -m src.compare            # regras × template matching × k-NN (M2)
+python -m src.experiments        # experimentos 1, 2 e 3 (M2)
+python -m src.reference gerar    # máscaras de referência (já versionadas)
+python -m src.robustez           # experimentos 4 e 5 (M3)
+python -m src.robustez carta     # experimento 6 (M3)
+python -m src.visualize          # saídas intermediárias e tabela de features (M2)
+python -m src.figuras_m3         # sucessos, falhas e erros da M3
 ```
+
+Os experimentos 4–6 levam alguns minutos (a rotulação de componentes é em Python puro). Sementes: divisão 42; ruído `7 + índice`.
 
 Testes:
 
@@ -170,13 +195,16 @@ pytest tests/ -v
 
 ## Documentação
 
+- [Relatório final (M3)](docs/relatorio_final.md)
 - [Relatório parcial da M2](docs/relatorio_m2.md)
 - [Proposta revisada](docs/proposta.md)
 - [Registro da M1](docs/README_M1.md)
-- [Declaração de uso de IA da M2](AI_USAGE.md)
+- [Declaração de uso de IA da M3](AI_USAGE.md)
+- [Declaração de uso de IA da M2](docs/AI_USAGE_M2.md)
 - [Declaração de uso de IA da M1](docs/AI_USAGE_M1.md)
 
 ## Vídeos
 
 - M1: https://youtu.be/Elav2VKWgt4
 - M2: https://www.youtube.com/watch?v=mVwQDrMyRRI
+- M3: (link a adicionar)
