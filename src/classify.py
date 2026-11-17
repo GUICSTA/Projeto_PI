@@ -1,7 +1,7 @@
 import json
 import os
 
-from . import preprocessing, segmentation, features
+from . import features, preprocessing, rank, segmentation
 
 RED_SUITS = ("copas", "ouros")
 BLACK_SUITS = ("espadas", "paus")
@@ -34,6 +34,7 @@ def extract(rgb, morphology=None, radius=1, median=0):
         rgb_crop, mask_crop = corner["simbolo_rgb"], corner["simbolo_mascara"]
         threshold = corner["threshold"]
     else:
+        corner = None
         gray = preprocessing.to_grayscale(rgb)
         binary, threshold = preprocessing.binarize(gray)
         rgb_crop, mask_crop = segmentation.crop_symbol(rgb, binary)
@@ -44,6 +45,7 @@ def extract(rgb, morphology=None, radius=1, median=0):
         "threshold_otsu": threshold,
         "features": features.extract_features(mask_crop),
         "mascara": mask_crop,
+        "canto": corner,
     }
 
 
@@ -59,12 +61,15 @@ def classify_suit(image_path, rules=None):
     try:
         extracted = extract(preprocessing.load_rgb(image_path))
     except segmentation.JokerFound:
-        return {"naipe": JOKER, "cor": None, "threshold_otsu": None, "features": None}
+        return {"naipe": JOKER, "valor": JOKER, "cor": None, "threshold_otsu": None, "features": None}
     if rules is None:
         rules = (load_rules() if extracted["foto"] else None) or SYNTHETIC_RULES
 
+    templates = rank.load_templates()
+    value = rank.recognize(extracted["canto"], templates) if extracted["canto"] and templates else None
     return {
         "naipe": decide(extracted["cor"], extracted["features"], rules),
+        "valor": value,
         "cor": extracted["cor"],
         "threshold_otsu": extracted["threshold_otsu"],
         "features": extracted["features"],

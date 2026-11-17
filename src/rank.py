@@ -16,12 +16,13 @@ import sys
 import numpy as np
 from PIL import Image
 
-from . import calibrate, preprocessing, segmentation, split
+from . import preprocessing, segmentation, split
 
 RANKS = ("A", "2", "3", "4", "5", "6", "7", "8", "9", "10", "J", "Q", "K")
 TEMPLATE_SIZE = 32
-RANK_PATH = os.path.join(calibrate.RESULTS_DIR, "avaliacao_valor.json")
-TEMPLATES_PATH = os.path.join(calibrate.RESULTS_DIR, "templates_valor.npz")
+RESULTS_DIR = os.path.join(os.path.dirname(__file__), "..", "images", "results")
+RANK_PATH = os.path.join(RESULTS_DIR, "avaliacao_valor.json")
+TEMPLATES_PATH = os.path.join(RESULTS_DIR, "templates_valor.npz")
 
 
 def rank_of(filename):
