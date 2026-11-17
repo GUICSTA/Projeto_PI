@@ -1,0 +1,350 @@
+{
+  "configuracao": "final",
+  "rotacao_graus": 25,
+  "erros": [
+    {
+      "arquivo": "copas_3_01.jpg",
+      "naipe": [
+        "copas",
+        "ouros"
+      ],
+      "valor": [
+        "3",
+        "5"
+      ],
+      "width_profile_ratio": 1.432
+    },
+    {
+      "arquivo": "copas_3_02.jpg",
+      "naipe": [
+        "copas",
+        "ouros"
+      ],
+      "valor": [
+        "3",
+        "5"
+      ],
+      "width_profile_ratio": 1.487
+    },
+    {
+      "arquivo": "copas_7_01.jpg",
+      "naipe": [
+        "copas",
+        "ouros"
+      ],
+      "valor": [
+        "7",
+        "Q"
+      ],
+      "width_profile_ratio": 1.421
+    },
+    {
+      "arquivo": "copas_7_02.jpg",
+      "naipe": [
+        "copas",
+        "ouros"
+      ],
+      "valor": [
+        "7",
+        "Q"
+      ],
+      "width_profile_ratio": 1.455
+    },
+    {
+      "arquivo": "copas_8_01.jpg",
+      "naipe": [
+        "copas",
+        "ouros"
+      ],
+      "valor": [
+        "8",
+        "8"
+      ],
+      "width_profile_ratio": 1.395
+    },
+    {
+      "arquivo": "copas_8_02.jpg",
+      "naipe": [
+        "copas",
+        "ouros"
+      ],
+      "valor": [
+        "8",
+        "8"
+      ],
+      "width_profile_ratio": 1.415
+    },
+    {
+      "arquivo": "copas_A_01.jpg",
+      "naipe": [
+        "copas",
+        "ouros"
+      ],
+      "valor": [
+        "A",
+        "K"
+      ],
+      "width_profile_ratio": 1.289
+    },
+    {
+      "arquivo": "copas_A_02.jpg",
+      "naipe": [
+        "copas",
+        "ouros"
+      ],
+      "valor": [
+        "A",
+        "K"
+      ],
+      "width_profile_ratio": 1.446
+    },
+    {
+      "arquivo": "copas_Q_01.jpg",
+      "naipe": [
+        "copas",
+        "ouros"
+      ],
+      "valor": [
+        "Q",
+        "A"
+      ],
+      "width_profile_ratio": 1.412
+    },
+    {
+      "arquivo": "copas_Q_02.jpg",
+      "naipe": [
+        "copas",
+        "ouros"
+      ],
+      "valor": [
+        "Q",
+        "A"
+      ],
+      "width_profile_ratio": 1.383
+    },
+    {
+      "arquivo": "espadas_3_01.jpg",
+      "naipe": [
+        "espadas",
+        "paus"
+      ],
+      "valor": [
+        "3",
+        "5"
+      ],
+      "width_profile_ratio": 0.956
+    },
+    {
+      "arquivo": "espadas_3_02.jpg",
+      "naipe": [
+        "espadas",
+        "paus"
+      ],
+      "valor": [
+        "3",
+        "5"
+      ],
+      "width_profile_ratio": 0.931
+    },
+    {
+      "arquivo": "espadas_6_01.jpg",
+      "naipe": [
+        "espadas",
+        "paus"
+      ],
+      "valor": [
+        "6",
+        "6"
+      ],
+      "width_profile_ratio": 0.952
+    },
+    {
+      "arquivo": "espadas_6_02.jpg",
+      "naipe": [
+        "espadas",
+        "paus"
+      ],
+      "valor": [
+        "6",
+        "6"
+      ],
+      "width_profile_ratio": 0.93
+    },
+    {
+      "arquivo": "espadas_7_01.jpg",
+      "falha": "Nenhum símbolo de naipe encontrado abaixo do valor."
+    },
+    {
+      "arquivo": "espadas_7_02.jpg",
+      "falha": "Nenhum símbolo de naipe encontrado abaixo do valor."
+    },
+    {
+      "arquivo": "espadas_8_01.jpg",
+      "naipe": [
+        "espadas",
+        "paus"
+      ],
+      "valor": [
+        "8",
+        "8"
+      ],
+      "width_profile_ratio": 0.915
+    },
+    {
+      "arquivo": "espadas_8_02.jpg",
+      "naipe": [
+        "espadas",
+        "paus"
+      ],
+      "valor": [
+        "8",
+        "8"
+      ],
+      "width_profile_ratio": 0.964
+    },
+    {
+      "arquivo": "espadas_9_01.jpg",
+      "naipe": [
+        "espadas",
+        "paus"
+      ],
+      "valor": [
+        "9",
+        "9"
+      ],
+      "width_profile_ratio": 0.922
+    },
+    {
+      "arquivo": "espadas_9_02.jpg",
+      "naipe": [
+        "espadas",
+        "paus"
+      ],
+      "valor": [
+        "9",
+        "9"
+      ],
+      "width_profile_ratio": 0.921
+    },
+    {
+      "arquivo": "ouros_4_01.jpg",
+      "naipe": [
+        "ouros",
+        "ouros"
+      ],
+      "valor": [
+        "4",
+        "K"
+      ],
+      "width_profile_ratio": 1.031
+    },
+    {
+      "arquivo": "ouros_4_02.jpg",
+      "naipe": [
+        "ouros",
+        "ouros"
+      ],
+      "valor": [
+        "4",
+        "K"
+      ],
+      "width_profile_ratio": 1.018
+    },
+    {
+      "arquivo": "ouros_K_01.jpg",
+      "naipe": [
+        "ouros",
+        "ouros"
+      ],
+      "valor": [
+        "K",
+        "A"
+      ],
+      "width_profile_ratio": 1.039
+    },
+    {
+      "arquivo": "ouros_K_02.jpg",
+      "naipe": [
+        "ouros",
+        "ouros"
+      ],
+      "valor": [
+        "K",
+        "A"
+      ],
+      "width_profile_ratio": 1.039
+    },
+    {
+      "arquivo": "paus_3_01.jpg",
+      "naipe": [
+        "paus",
+        "paus"
+      ],
+      "valor": [
+        "3",
+        "5"
+      ],
+      "width_profile_ratio": 1.054
+    },
+    {
+      "arquivo": "paus_3_02.jpg",
+      "naipe": [
+        "paus",
+        "paus"
+      ],
+      "valor": [
+        "3",
+        "5"
+      ],
+      "width_profile_ratio": 1.09
+    },
+    {
+      "arquivo": "paus_K_01.jpg",
+      "naipe": [
+        "paus",
+        "paus"
+      ],
+      "valor": [
+        "K",
+        "A"
+      ],
+      "width_profile_ratio": 1.066
+    },
+    {
+      "arquivo": "paus_K_02.jpg",
+      "naipe": [
+        "paus",
+        "paus"
+      ],
+      "valor": [
+        "K",
+        "A"
+      ],
+      "width_profile_ratio": 1.079
+    },
+    {
+      "arquivo": "paus_Q_01.jpg",
+      "naipe": [
+        "paus",
+        "paus"
+      ],
+      "valor": [
+        "Q",
+        "A"
+      ],
+      "width_profile_ratio": 1.097
+    },
+    {
+      "arquivo": "paus_Q_02.jpg",
+      "naipe": [
+        "paus",
+        "paus"
+      ],
+      "valor": [
+        "Q",
+        "A"
+      ],
+      "width_profile_ratio": 1.096
+    }
+  ]
+}
