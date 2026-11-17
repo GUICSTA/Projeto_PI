@@ -52,8 +52,14 @@ def decide(color, feats, rules):
     return rule["acima"] if feats[rule["feature"]] > rule["limiar"] else rule["abaixo"]
 
 
+JOKER = "coringa"
+
+
 def classify_suit(image_path, rules=None):
-    extracted = extract(preprocessing.load_rgb(image_path))
+    try:
+        extracted = extract(preprocessing.load_rgb(image_path))
+    except segmentation.JokerFound:
+        return {"naipe": JOKER, "cor": None, "threshold_otsu": None, "features": None}
     if rules is None:
         rules = (load_rules() if extracted["foto"] else None) or SYNTHETIC_RULES
 

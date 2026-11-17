@@ -13,6 +13,9 @@ CORNER_HEIGHT_RATIO = 0.45
 CORNER_PAD_RATIO = 0.06
 EDGE_MARGIN_RATIO = 0.015
 MIN_ELEMENT_AREA_RATIO = 0.002
+# Coringa: as letras "JOKER" empilhadas formam um elemento com ~78% da altura do canto;
+# nas 104 fotos com naipe o maior elemento ocupa no máximo 33%. 0,55 fica entre os dois.
+JOKER_HEIGHT_RATIO = 0.55
 NEIGHBORS = [(-1, -1), (-1, 0), (-1, 1), (0, -1), (0, 1), (1, -1), (1, 0), (1, 1)]
 
 
@@ -204,6 +207,15 @@ def corner_elements(rgb_crop, inside, morphology=None, radius=1, median=0):
     return labels, elements, threshold
 
 
+class JokerFound(ValueError):
+    """O canto tem o padrão do coringa (um elemento alto, sem símbolo de naipe)."""
+
+
+def is_joker(elements, corner_height):
+    tallest = max((c["bbox"][1] - c["bbox"][0] + 1 for c in elements), default=0)
+    return tallest > JOKER_HEIGHT_RATIO * corner_height
+
+
 def split_value_and_symbol(elements):
     if not elements:
         raise ValueError("Nenhum elemento encontrado no canto da carta.")
@@ -234,6 +246,8 @@ def segment_corner(rgb_array, card=None, margin=5, morphology=None, radius=1, me
         card = card_mask(rgb_array)
     rgb_crop, inside, (y0, y1, x0, x1) = corner_region(rgb_array, card)
     labels, elements, threshold = corner_elements(rgb_crop, inside, morphology, radius, median)
+    if is_joker(elements, labels.shape[0]):
+        raise JokerFound("Coringa: elemento alto sem símbolo de naipe no canto.")
     value, symbol = split_value_and_symbol(elements)
 
     sy0, sy1, sx0, sx1 = symbol["bbox"]
