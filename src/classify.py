@@ -55,6 +55,9 @@ def decide(color, feats, rules):
 
 
 JOKER = "coringa"
+# Configuração final da M3, escolhida no conjunto de ajuste (experimentos 4 e 6 em src/robustez.py).
+FINAL_CONFIG = {"morphology": "abertura", "radius": 1, "median": 0, "adaptive_card": True, "otsu_inside": True}
+BASELINE_M2_CONFIG = {"morphology": None, "radius": 1, "median": 0, "adaptive_card": False, "otsu_inside": False}
 
 
 def classify_suit(image_path, rules=None):

@@ -38,15 +38,24 @@ def _draw_box(draw, bbox, origin, color, width):
 
 
 def save_intermediate(rgb, out_dir, morphology=None):
+    """morphology pode ser o nome da morfologia (M2) ou um dicionário de configuração (classify.FINAL_CONFIG)."""
+    config = morphology if isinstance(morphology, dict) else {"morphology": morphology}
+    morphology = config.get("morphology")
+    corner_options = {
+        "morphology": morphology,
+        "radius": config.get("radius", 1),
+        "median": config.get("median", 0),
+        "otsu_inside": config.get("otsu_inside", False),
+    }
     os.makedirs(out_dir, exist_ok=True)
-    card = segmentation.card_mask(rgb)
+    card = segmentation.card_mask(rgb, adaptive=config.get("adaptive_card", False))
     Image.fromarray(card.astype(np.uint8) * 255).resize((card.shape[1] // 4, card.shape[0] // 4)).save(
         os.path.join(out_dir, "1_mascara_carta.png"))
 
     rgb_crop, inside, region = segmentation.corner_region(rgb, card)
     Image.fromarray(rgb_crop).save(os.path.join(out_dir, "2_canto.png"))
 
-    labels, elements, _ = segmentation.corner_elements(rgb_crop, inside, morphology)
+    labels, elements, _ = segmentation.corner_elements(rgb_crop, inside, **corner_options)
     Image.fromarray(colorize_labels(labels)).save(os.path.join(out_dir, "3_componentes_rotulados.png"))
 
     boxes = Image.fromarray(rgb_crop).copy()
@@ -54,7 +63,7 @@ def save_intermediate(rgb, out_dir, morphology=None):
     for element in elements:
         _draw_box(draw, element["bbox"], (0, 0), (255, 190, 0), 2)
     try:
-        corner = segmentation.segment_corner(rgb, card, morphology=morphology)
+        corner = segmentation.segment_corner(rgb, card, **corner_options)
     except ValueError as error:
         boxes.save(os.path.join(out_dir, "4_valor_e_naipe.png"))
         return {"erro": str(error)}

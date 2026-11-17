@@ -1,6 +1,8 @@
 """
 Uso:
-    python -m src.main caminho/para/imagem.jpg [--saida pasta] [--morfologia abertura|fechamento] [--mediana RAIO]
+    python -m src.main caminho/para/imagem.jpg [--saida pasta] [--baseline-m2]
+
+Por padrão usa a configuração final da M3 (classify.FINAL_CONFIG); --baseline-m2 usa a da M2.
 
 """
 import argparse
@@ -14,13 +16,13 @@ def main(argv=None):
     parser = argparse.ArgumentParser(description="Identifica o naipe de uma carta de baralho.")
     parser.add_argument("imagem")
     parser.add_argument("--saida", help="pasta para salvar as saídas intermediárias")
-    parser.add_argument("--morfologia", choices=["abertura", "fechamento"])
-    parser.add_argument("--mediana", type=int, default=0, help="raio do filtro de mediana antes do Otsu (0 = desligado)")
+    parser.add_argument("--baseline-m2", action="store_true", help="usa a configuração da M2 (sem abertura, limiares fixos)")
     args = parser.parse_args(argv)
+    config = classify.BASELINE_M2_CONFIG if args.baseline_m2 else classify.FINAL_CONFIG
 
     rgb = preprocessing.load_rgb(args.imagem)
     try:
-        extracted = classify.extract(rgb, morphology=args.morfologia, median=args.mediana)
+        extracted = classify.extract(rgb, **config)
     except segmentation.JokerFound:
         print(f"Imagem: {args.imagem}")
         print("Carta identificada: coringa (sem naipe)")
@@ -43,7 +45,7 @@ def main(argv=None):
     print(f"Características: { {k: round(float(v), 4) for k, v in extracted['features'].items()} }")
 
     if args.saida and extracted["foto"]:
-        corner = visualize.save_intermediate(rgb, args.saida, args.morfologia)
+        corner = visualize.save_intermediate(rgb, args.saida, config)
         print(f"Caixa do valor (y0, y1, x0, x1): {tuple(int(v) for v in corner['valor'])}")
         print(f"Caixa do naipe (y0, y1, x0, x1): {tuple(int(v) for v in corner['naipe'])}")
         print(f"Saídas intermediárias salvas em: {args.saida}")
