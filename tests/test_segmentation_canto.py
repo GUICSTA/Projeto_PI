@@ -150,3 +150,14 @@ def test_corner_segmentation_with_median_keeps_symbol_on_clean_photo():
     filtered = segmentation.segment_corner(rgb, median=1)
     assert _inside(filtered["naipe"], plain["regiao"])
     assert abs(filtered["naipe"][0] - plain["naipe"][0]) <= 5
+
+
+def test_adaptive_card_mask_handles_dim_photo():
+    rgb = _load("paus_5_01.jpg")
+    dim = (rgb.astype(np.float64) * 0.55).astype(np.uint8)
+    fixed = segmentation.card_mask(dim)
+    adaptive = segmentation.card_mask(dim, adaptive=True)
+    reference = segmentation.card_mask(rgb)
+    overlap = (adaptive & reference).sum() / reference.sum()
+    assert overlap > 0.95
+    assert (fixed & reference).sum() / reference.sum() < overlap

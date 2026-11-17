@@ -120,10 +120,13 @@ def closing(mask, radius):
 MORPHOLOGY = {"abertura": opening, "fechamento": closing}
 
 
-def card_mask(rgb_array, scale=CARD_SCALE):
+def card_mask(rgb_array, scale=CARD_SCALE, adaptive=False):
+    """Máscara da carta. adaptive=True troca o limiar fixo do papel por Otsu sobre min(R,G,B)."""
     h, w = rgb_array.shape[:2]
     small = rgb_array[::scale, ::scale]
-    paper = small.min(axis=2) >= PAPER_MIN_BRIGHTNESS
+    level = small.min(axis=2)
+    threshold = preprocessing._otsu_threshold(level) if adaptive else PAPER_MIN_BRIGHTNESS
+    paper = level >= threshold
 
     labels, components = connected_components(paper)
     if not components:
@@ -188,12 +191,14 @@ def _offset(bbox, y0, x0):
     return (bbox[0] + y0, bbox[1] + y0, bbox[2] + x0, bbox[3] + x0)
 
 
-def corner_elements(rgb_crop, inside, morphology=None, radius=1, median=0):
+def corner_elements(rgb_crop, inside, morphology=None, radius=1, median=0, otsu_inside=False):
+    """otsu_inside=True calcula o Otsu só nos pixels da região útil (sem o fundo forçado a 255)."""
     ink_level = rgb_crop.min(axis=2)
     if median:
         ink_level = preprocessing.median_filter(ink_level, median)
     ink_level = np.where(inside, ink_level, 255).astype(np.uint8)
-    binary, threshold = preprocessing.binarize(ink_level)
+    threshold = preprocessing._otsu_threshold(ink_level[inside]) if otsu_inside and inside.any() else None
+    binary, threshold = preprocessing.binarize(ink_level, threshold)
     binary[~inside] = 0
     if morphology:
         binary = MORPHOLOGY[morphology](binary > 0, radius).astype(np.uint8) * 255
@@ -241,11 +246,11 @@ def split_value_and_symbol(elements):
     return value, symbol
 
 
-def segment_corner(rgb_array, card=None, margin=5, morphology=None, radius=1, median=0):
+def segment_corner(rgb_array, card=None, margin=5, morphology=None, radius=1, median=0, otsu_inside=False):
     if card is None:
         card = card_mask(rgb_array)
     rgb_crop, inside, (y0, y1, x0, x1) = corner_region(rgb_array, card)
-    labels, elements, threshold = corner_elements(rgb_crop, inside, morphology, radius, median)
+    labels, elements, threshold = corner_elements(rgb_crop, inside, morphology, radius, median, otsu_inside)
     if is_joker(elements, labels.shape[0]):
         raise JokerFound("Coringa: elemento alto sem símbolo de naipe no canto.")
     value, symbol = split_value_and_symbol(elements)
