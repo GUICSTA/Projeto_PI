@@ -127,3 +127,26 @@ def test_closing_fills_small_gap():
 def test_corner_segmentation_with_morphology(morphology):
     corner = segmentation.segment_corner(_load(SUIT_PHOTOS[0]), morphology=morphology)
     assert corner["naipe"][0] > corner["valor"][1]
+
+
+def test_median_filter_removes_isolated_points_and_keeps_regions():
+    gray = np.full((9, 9), 200, dtype=np.uint8)
+    gray[4, 4] = 0
+    gray[0:4, 0:4] = 10
+    filtered = preprocessing.median_filter(gray, 1)
+    assert filtered[4, 4] == 200
+    assert filtered[1, 1] == 10
+    assert filtered.shape == gray.shape
+
+
+def test_median_filter_radius_zero_is_identity():
+    gray = np.arange(25, dtype=np.uint8).reshape(5, 5)
+    assert np.array_equal(preprocessing.median_filter(gray, 0), gray)
+
+
+def test_corner_segmentation_with_median_keeps_symbol_on_clean_photo():
+    rgb = _load("paus_5_01.jpg")
+    plain = segmentation.segment_corner(rgb)
+    filtered = segmentation.segment_corner(rgb, median=1)
+    assert _inside(filtered["naipe"], plain["regiao"])
+    assert abs(filtered["naipe"][0] - plain["naipe"][0]) <= 5

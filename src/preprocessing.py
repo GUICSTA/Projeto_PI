@@ -52,3 +52,13 @@ def _otsu_threshold(gray_array):
             best_thresh = t
 
     return best_thresh
+
+
+def median_filter(gray_array, radius):
+    """Filtro de mediana com janela quadrada (2*radius+1)², borda replicada."""
+    if radius <= 0:
+        return gray_array
+    size = 2 * radius + 1
+    padded = np.pad(gray_array, radius, mode="edge")
+    windows = np.lib.stride_tricks.sliding_window_view(padded, (size, size))
+    return np.median(windows, axis=(2, 3)).astype(gray_array.dtype)

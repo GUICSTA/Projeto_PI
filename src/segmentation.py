@@ -185,8 +185,11 @@ def _offset(bbox, y0, x0):
     return (bbox[0] + y0, bbox[1] + y0, bbox[2] + x0, bbox[3] + x0)
 
 
-def corner_elements(rgb_crop, inside, morphology=None, radius=1):
-    ink_level = np.where(inside, rgb_crop.min(axis=2), 255).astype(np.uint8)
+def corner_elements(rgb_crop, inside, morphology=None, radius=1, median=0):
+    ink_level = rgb_crop.min(axis=2)
+    if median:
+        ink_level = preprocessing.median_filter(ink_level, median)
+    ink_level = np.where(inside, ink_level, 255).astype(np.uint8)
     binary, threshold = preprocessing.binarize(ink_level)
     binary[~inside] = 0
     if morphology:
@@ -226,11 +229,11 @@ def split_value_and_symbol(elements):
     return value, symbol
 
 
-def segment_corner(rgb_array, card=None, margin=5, morphology=None, radius=1):
+def segment_corner(rgb_array, card=None, margin=5, morphology=None, radius=1, median=0):
     if card is None:
         card = card_mask(rgb_array)
     rgb_crop, inside, (y0, y1, x0, x1) = corner_region(rgb_array, card)
-    labels, elements, threshold = corner_elements(rgb_crop, inside, morphology, radius)
+    labels, elements, threshold = corner_elements(rgb_crop, inside, morphology, radius, median)
     value, symbol = split_value_and_symbol(elements)
 
     sy0, sy1, sx0, sx1 = symbol["bbox"]
