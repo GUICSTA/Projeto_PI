@@ -267,6 +267,7 @@ def segment_corner(rgb_array, card=None, margin=5, morphology=None, radius=1, me
         "naipe": _offset(symbol["bbox"], y0, x0),
         "simbolo_rgb": rgb_crop[sy0:sy1, sx0:sx1],
         "simbolo_mascara": symbol_mask,
+        "simbolo_origem": (y0 + sy0, x0 + sx0),
         "valor_mascara": value_mask,
         "valor_elementos": len(value),
         "threshold": threshold,
