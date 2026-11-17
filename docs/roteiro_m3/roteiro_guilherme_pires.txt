@@ -1,31 +1,31 @@
 ﻿ROTEIRO — Guilherme Pires
 Apresentação M3 · Identificação de Naipe e Valor em Cartas de Baralho
-Slides: 9, 10, 11, 12, 13  ·  ~4 min de fala (511 palavras a ~140/min)
+Ordem: Guilherme Pires → Vinicius Lohn Ramires → Guilherme Cassettari
+Slides: 1, 2, 3, 4  ·  ~3 min de fala (422 palavras a ~140/min)
 
-=== Slide 9 — Segmentação contra referência ===
-Para medir a segmentação, usamos as vinte máscaras de referência que aparecem aqui, com o contorno em verde.
-Elas foram geradas com um limiar fixo de 128, sem Otsu, pegando o maior componente numa caixa ampliada e preenchendo os buracos. Assim a referência não depende da decisão do pipeline. Depois conferimos cada contorno visualmente.
-Nas fotos limpas, o Dice médio é 0,998 e o IoU é 0,996. Ou seja, a máscara do símbolo segue a borda real com precisão de poucos pixels.
+=== Slide 1 — Título ===
+Olá, nós somos o grupo 13. Eu sou o Guilherme Pires, e comigo estão o Vinicius Lohn Ramires e o Guilherme Cassettari.
+Este é o vídeo da etapa M3, a versão final do nosso projeto. O sistema recebe a foto de uma carta de baralho e identifica o naipe, o valor e também o coringa.
+Eu começo pelo escopo, pelos dados e pelo pipeline. O Vinicius mostra a execução, o reconhecimento do valor, o coringa e as condições de captura. E o Guilherme Cassettari fecha com a avaliação da segmentação, as ablações, as limitações e a conclusão.
 
-=== Slide 10 — Ablação de ruído ===
-Esta é a ablação de pré-processamento com ruído forte, sigma 60. A pergunta foi: qual componente ajuda a segmentar com ruído?
-Comparamos cinco configurações. A escolha foi feita no conjunto de ajuste, nas barras claras, e só depois medimos no teste, nas barras vermelhas.
-Sem nada, como na M2, só 27,5% dos símbolos são localizados no teste. A abertura sobe isso para 60% e foi a escolhida. A mediana ajuda, mas menos, e somar mediana com abertura não melhora nada.
-Então a configuração mais complexa não foi a melhor, e a mesma ordem apareceu no ajuste e no teste.
+=== Slide 2 — Escopo final: da M1 à M3 ===
+Na M1 trabalhamos só com vinte imagens sintéticas e limiares definidos à mão.
+Na M2, seguindo a devolutiva, passamos para 108 fotos reais, separamos ajuste e teste antes de calibrar, segmentamos o canto da carta e chegamos a quarenta acertos em quarenta no naipe.
+Na M3, ampliamos o escopo: agora o valor da carta é reconhecido, de A a K, e o coringa virou uma classe própria. Também deixamos o pré-processamento mais robusto e fizemos a avaliação com baseline, ablações e máscaras de referência.
+Uma mudança em relação ao plano: o teste externo com fotos novas foi substituído por condições de captura simuladas. Isso está declarado no relatório como limitação.
 
-=== Slide 11 — Iluminação fraca ===
-Com iluminação fraca, a configuração da M2 falhava em todas as fotos. Investigamos no ajuste e encontramos a causa: o Otsu do canto incluía o fundo forçado a 255, e com pouca luz ele passava a separar só esse fundo do resto. O canto inteiro virava um único componente, como na imagem do meio.
-Testamos três configurações. Só trocar o limiar da carta pelo Otsu não resolve. Com Otsu na carta e Otsu do canto só na região útil, o acerto vai de 0 a 100% no ajuste e também no teste, sem perder nada nas fotos originais.
-As duas mudanças só funcionam juntas, e a ablação mostra isso.
+=== Slide 3 — Dados e protocolo ===
+Os dados são as mesmas 108 fotos da M2: as 52 cartas fotografadas duas vezes, mais quatro coringas.
+A divisão continua congelada: 64 fotos de ajuste e 40 de teste, e as duas fotos da mesma carta ficam sempre no mesmo conjunto.
+Na M3, tudo o que foi ajustado — os templates do valor e a escolha das configurações de pré-processamento — usou só o ajuste. O teste serve apenas para medir.
+Para avaliar a segmentação, criamos vinte máscaras de referência do símbolo, com um método independente do pipeline, e conferimos cada uma visualmente.
+Duas ressalvas: o teste não tem nenhuma carta 2, 5 ou 10, e os coringas são avaliados à parte.
 
-=== Slide 12 — Onde o método falha ===
-Agora as falhas. Com rotação de 25 graus, o naipe cai para 50% e o valor para 45%. As copas viram ouros e as espadas viram paus, porque o descritor de perfil de largura compara a metade de cima com a de baixo e depende da orientação. O template do valor também não é invariante à rotação: o três inclinado vira cinco. Uma correção possível é girar o canto a partir da borda da carta.
-Com fundo claro, o acerto é zero: o método separa a carta pelo brilho, e o papel e o fundo têm brilho parecido.
-Com ruído forte, 40% dos símbolos ainda se perdem. E temos um único baralho, uma mesa e um teste de 40 fotos.
+=== Slide 4 — Pipeline final ===
+Este é o pipeline final. Em vermelho estão as etapas novas ou alteradas na M3.
+Primeiro localizamos a carta, agora com Otsu em vez do limiar fixo 115. Depois recortamos o canto, onde ficam o valor e o símbolo.
+Na binarização, o Otsu passou a usar só os pixels da região útil, e aplicamos uma abertura morfológica para remover ruído.
+Nos componentes conectados verificamos o coringa. Se não for coringa, o naipe sai da cor e dos três descritores de forma, como na M2.
+E o valor sai de duas regras estruturais e de template matching, que o Vinicius vai explicar agora.
 
-=== Slide 13 — Conclusão ===
-Para concluir: no teste, acertamos todos os naipes e todos os valores, com a ressalva de que o resultado do valor é otimista. Os quatro coringas foram reconhecidos, e com iluminação fraca passamos de zero para cem por cento.
-A solução atende o escopo para uma carta vista de cima, pouco inclinada, sobre fundo escuro. Cada mudança da M3 foi escolhida no ajuste e medida contra o baseline da M2.
-Os próximos passos seriam corrigir a rotação, separar a carta por bordas e testar com outro baralho.
-O código, o relatório final e as instruções de reprodução estão no repositório. Obrigado.
-
+(Ao terminar, passe a palavra para Vinicius Lohn Ramires.)
