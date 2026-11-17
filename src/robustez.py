@@ -7,7 +7,11 @@ Experimento 4 — ablação do pré-processamento com ruído gaussiano.
 Experimento 5 — condições de captura simuladas sobre as 40 fotos de teste:
     fundo claro, iluminação fraca, gradiente de luz, rotação e escala reduzida.
 
-Uso: python -m src.robustez   (gera images/results/experimentos_m3.json)
+Experimento 6 — limiar fixo × Otsu na separação carta/fundo.
+
+Uso:
+    python -m src.robustez          # experimentos 4 e 5 (gera images/results/experimentos_m3.json)
+    python -m src.robustez carta    # experimento 6 (acrescenta ao mesmo arquivo)
 """
 import json
 import os
@@ -44,7 +48,11 @@ def run(names, transform, config, rules, templates, references=None):
         rgb = transform(preprocessing.load_rgb(os.path.join(split.REAL_DIR, name)), index)
         start = time.perf_counter()
         try:
-            extracted = classify.extract(rgb, morphology=config["morphology"], median=config["median"])
+            extracted = classify.extract(
+                rgb, morphology=config["morphology"], median=config["median"],
+                adaptive_card=config.get("adaptive_card", False),
+                otsu_inside=config.get("otsu_inside", False),
+            )
         except ValueError as error:
             outputs[name] = {"falha": str(error)}
             continue
@@ -169,6 +177,60 @@ def experiment_conditions(rules, templates, test_names, config_names):
     }
 
 
+CARD_CONFIGS = {
+    "limiar_fixo_115": {"median": 0, "morphology": "abertura", "adaptive_card": False},
+    "limiar_otsu": {"median": 0, "morphology": "abertura", "adaptive_card": True},
+    "limiar_otsu_canto_na_regiao": {"median": 0, "morphology": "abertura", "adaptive_card": True, "otsu_inside": True},
+}
+CARD_SELECTION_CONDITIONS = ("original", "iluminacao_fraca_55")
+
+
+def experiment_card_threshold(rules, templates, adjust_names, test_names):
+    """Experimento 6 — limiar fixo × Otsu na separação carta/fundo e Otsu do canto só na região útil.
+
+    A escolha usa só o AJUSTE (original e iluminação fraca): vence a configuração que não perde
+    nada nas fotos originais e acerta mais no total; no empate, a mais simples (primeira).
+    """
+    selection = {
+        condition: {
+            name: summarize(adjust_names, run(adjust_names, CONDITIONS[condition], c, rules, templates))
+            for name, c in CARD_CONFIGS.items()
+        }
+        for condition in CARD_SELECTION_CONDITIONS
+    }
+    baseline = "limiar_fixo_115"
+
+    def score(name):
+        keeps = selection["original"][name]["acerto_naipe"] >= selection["original"][baseline]["acerto_naipe"]
+        total = sum(selection[c][name]["acerto_naipe"] for c in selection)
+        return (keeps, total, -list(CARD_CONFIGS).index(name))
+
+    chosen = max(CARD_CONFIGS, key=score)
+    test = {
+        condition: {name: summarize(test_names, run(test_names, transform, c, rules, templates)) for name, c in CARD_CONFIGS.items()}
+        for condition, transform in CONDITIONS.items()
+    }
+    return {"configuracoes": CARD_CONFIGS, "selecao_no_ajuste": selection, "configuracao_escolhida": chosen, "teste": test}
+
+
+def main_card():
+    division = split.load_split(split.REAL_SPLIT_PATH)
+    result = experiment_card_threshold(classify.load_rules(), rank.load_templates(), division["ajuste"], division["teste"])
+    with open(M3_PATH, encoding="utf-8") as f:
+        results = json.load(f)
+    results["experimento_6_limiar_da_carta"] = result
+    with open(M3_PATH, "w", encoding="utf-8") as f:
+        json.dump(results, f, indent=2, ensure_ascii=False)
+        f.write("\n")
+    print(f"E6 escolhida no ajuste: {result['configuracao_escolhida']}")
+    for condition, configs_result in result["selecao_no_ajuste"].items():
+        for name, r in configs_result.items():
+            print(f"  ajuste {condition} {name}: naipe {r['acerto_naipe']:.0%}, valor {r['acerto_valor']:.0%}")
+    for condition, configs_result in result["teste"].items():
+        for name, r in configs_result.items():
+            print(f"E6 {condition} {name}: seg {r['segmentadas']}/40, naipe {r['acerto_naipe']:.0%}, valor {r['acerto_valor']:.0%}, {r['tempo_medio_ms']} ms")
+
+
 def main():
     division = split.load_split(split.REAL_SPLIT_PATH)
     rules = classify.load_rules()
@@ -205,4 +267,4 @@ def main():
 
 
 if __name__ == "__main__":
-    sys.exit(main())
+    sys.exit(main_card() if sys.argv[1:] == ["carta"] else main())
