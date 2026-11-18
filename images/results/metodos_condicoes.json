@@ -1,0 +1,2208 @@
+{
+  "divisao": "split_reais.json",
+  "ajuste": "64 fotos, extração da M2 (compare.py), parâmetros da M2",
+  "teste": "40 fotos de teste em cada condição, segmentação final (classify.FINAL_CONFIG)",
+  "parametros": {
+    "template_tamanho": 32,
+    "knn_k": 3,
+    "ruido_semente": 7
+  },
+  "condicoes": {
+    "original": {
+      "falhas_segmentacao": [],
+      "metodos": {
+        "regras": {
+          "acertos": 40,
+          "total": 40,
+          "acuracia": 1.0,
+          "f1_macro": 1.0,
+          "metricas_por_classe": {
+            "copas": {
+              "suporte": 10,
+              "precisao": 1.0,
+              "revocacao": 1.0,
+              "f1": 1.0
+            },
+            "espadas": {
+              "suporte": 10,
+              "precisao": 1.0,
+              "revocacao": 1.0,
+              "f1": 1.0
+            },
+            "ouros": {
+              "suporte": 10,
+              "precisao": 1.0,
+              "revocacao": 1.0,
+              "f1": 1.0
+            },
+            "paus": {
+              "suporte": 10,
+              "precisao": 1.0,
+              "revocacao": 1.0,
+              "f1": 1.0
+            }
+          },
+          "matriz_confusao": {
+            "copas": {
+              "copas": 10,
+              "espadas": 0,
+              "ouros": 0,
+              "paus": 0,
+              "falha": 0
+            },
+            "espadas": {
+              "copas": 0,
+              "espadas": 10,
+              "ouros": 0,
+              "paus": 0,
+              "falha": 0
+            },
+            "ouros": {
+              "copas": 0,
+              "espadas": 0,
+              "ouros": 10,
+              "paus": 0,
+              "falha": 0
+            },
+            "paus": {
+              "copas": 0,
+              "espadas": 0,
+              "ouros": 0,
+              "paus": 10,
+              "falha": 0
+            }
+          },
+          "erros_decisao": [],
+          "tempo_decisao_ms": 0.0013
+        },
+        "template_matching": {
+          "acertos": 40,
+          "total": 40,
+          "acuracia": 1.0,
+          "f1_macro": 1.0,
+          "metricas_por_classe": {
+            "copas": {
+              "suporte": 10,
+              "precisao": 1.0,
+              "revocacao": 1.0,
+              "f1": 1.0
+            },
+            "espadas": {
+              "suporte": 10,
+              "precisao": 1.0,
+              "revocacao": 1.0,
+              "f1": 1.0
+            },
+            "ouros": {
+              "suporte": 10,
+              "precisao": 1.0,
+              "revocacao": 1.0,
+              "f1": 1.0
+            },
+            "paus": {
+              "suporte": 10,
+              "precisao": 1.0,
+              "revocacao": 1.0,
+              "f1": 1.0
+            }
+          },
+          "matriz_confusao": {
+            "copas": {
+              "copas": 10,
+              "espadas": 0,
+              "ouros": 0,
+              "paus": 0,
+              "falha": 0
+            },
+            "espadas": {
+              "copas": 0,
+              "espadas": 10,
+              "ouros": 0,
+              "paus": 0,
+              "falha": 0
+            },
+            "ouros": {
+              "copas": 0,
+              "espadas": 0,
+              "ouros": 10,
+              "paus": 0,
+              "falha": 0
+            },
+            "paus": {
+              "copas": 0,
+              "espadas": 0,
+              "ouros": 0,
+              "paus": 10,
+              "falha": 0
+            }
+          },
+          "erros_decisao": [],
+          "tempo_decisao_ms": 0.2703
+        },
+        "knn": {
+          "acertos": 40,
+          "total": 40,
+          "acuracia": 1.0,
+          "f1_macro": 1.0,
+          "metricas_por_classe": {
+            "copas": {
+              "suporte": 10,
+              "precisao": 1.0,
+              "revocacao": 1.0,
+              "f1": 1.0
+            },
+            "espadas": {
+              "suporte": 10,
+              "precisao": 1.0,
+              "revocacao": 1.0,
+              "f1": 1.0
+            },
+            "ouros": {
+              "suporte": 10,
+              "precisao": 1.0,
+              "revocacao": 1.0,
+              "f1": 1.0
+            },
+            "paus": {
+              "suporte": 10,
+              "precisao": 1.0,
+              "revocacao": 1.0,
+              "f1": 1.0
+            }
+          },
+          "matriz_confusao": {
+            "copas": {
+              "copas": 10,
+              "espadas": 0,
+              "ouros": 0,
+              "paus": 0,
+              "falha": 0
+            },
+            "espadas": {
+              "copas": 0,
+              "espadas": 10,
+              "ouros": 0,
+              "paus": 0,
+              "falha": 0
+            },
+            "ouros": {
+              "copas": 0,
+              "espadas": 0,
+              "ouros": 10,
+              "paus": 0,
+              "falha": 0
+            },
+            "paus": {
+              "copas": 0,
+              "espadas": 0,
+              "ouros": 0,
+              "paus": 10,
+              "falha": 0
+            }
+          },
+          "erros_decisao": [],
+          "tempo_decisao_ms": 0.0622
+        }
+      }
+    },
+    "fundo_claro": {
+      "falhas_segmentacao": [
+        {
+          "arquivo": "copas_3_01.jpg",
+          "naipe": "copas",
+          "motivo": "Carta não separada do fundo (imagem tratada como sem fundo)."
+        },
+        {
+          "arquivo": "copas_3_02.jpg",
+          "naipe": "copas",
+          "motivo": "Carta não separada do fundo (imagem tratada como sem fundo)."
+        },
+        {
+          "arquivo": "copas_7_01.jpg",
+          "naipe": "copas",
+          "motivo": "Carta não separada do fundo (imagem tratada como sem fundo)."
+        },
+        {
+          "arquivo": "copas_7_02.jpg",
+          "naipe": "copas",
+          "motivo": "Carta não separada do fundo (imagem tratada como sem fundo)."
+        },
+        {
+          "arquivo": "copas_8_01.jpg",
+          "naipe": "copas",
+          "motivo": "Carta não separada do fundo (imagem tratada como sem fundo)."
+        },
+        {
+          "arquivo": "copas_8_02.jpg",
+          "naipe": "copas",
+          "motivo": "Carta não separada do fundo (imagem tratada como sem fundo)."
+        },
+        {
+          "arquivo": "copas_A_01.jpg",
+          "naipe": "copas",
+          "motivo": "Carta não separada do fundo (imagem tratada como sem fundo)."
+        },
+        {
+          "arquivo": "copas_A_02.jpg",
+          "naipe": "copas",
+          "motivo": "Carta não separada do fundo (imagem tratada como sem fundo)."
+        },
+        {
+          "arquivo": "copas_Q_01.jpg",
+          "naipe": "copas",
+          "motivo": "Carta não separada do fundo (imagem tratada como sem fundo)."
+        },
+        {
+          "arquivo": "copas_Q_02.jpg",
+          "naipe": "copas",
+          "motivo": "Carta não separada do fundo (imagem tratada como sem fundo)."
+        },
+        {
+          "arquivo": "espadas_3_01.jpg",
+          "naipe": "espadas",
+          "motivo": "Carta não separada do fundo (imagem tratada como sem fundo)."
+        },
+        {
+          "arquivo": "espadas_3_02.jpg",
+          "naipe": "espadas",
+          "motivo": "Carta não separada do fundo (imagem tratada como sem fundo)."
+        },
+        {
+          "arquivo": "espadas_6_01.jpg",
+          "naipe": "espadas",
+          "motivo": "Carta não separada do fundo (imagem tratada como sem fundo)."
+        },
+        {
+          "arquivo": "espadas_6_02.jpg",
+          "naipe": "espadas",
+          "motivo": "Carta não separada do fundo (imagem tratada como sem fundo)."
+        },
+        {
+          "arquivo": "espadas_7_01.jpg",
+          "naipe": "espadas",
+          "motivo": "Carta não separada do fundo (imagem tratada como sem fundo)."
+        },
+        {
+          "arquivo": "espadas_7_02.jpg",
+          "naipe": "espadas",
+          "motivo": "Carta não separada do fundo (imagem tratada como sem fundo)."
+        },
+        {
+          "arquivo": "espadas_8_01.jpg",
+          "naipe": "espadas",
+          "motivo": "Carta não separada do fundo (imagem tratada como sem fundo)."
+        },
+        {
+          "arquivo": "espadas_8_02.jpg",
+          "naipe": "espadas",
+          "motivo": "Carta não separada do fundo (imagem tratada como sem fundo)."
+        },
+        {
+          "arquivo": "espadas_9_01.jpg",
+          "naipe": "espadas",
+          "motivo": "Carta não separada do fundo (imagem tratada como sem fundo)."
+        },
+        {
+          "arquivo": "espadas_9_02.jpg",
+          "naipe": "espadas",
+          "motivo": "Carta não separada do fundo (imagem tratada como sem fundo)."
+        },
+        {
+          "arquivo": "ouros_4_01.jpg",
+          "naipe": "ouros",
+          "motivo": "Carta não separada do fundo (imagem tratada como sem fundo)."
+        },
+        {
+          "arquivo": "ouros_4_02.jpg",
+          "naipe": "ouros",
+          "motivo": "Carta não separada do fundo (imagem tratada como sem fundo)."
+        },
+        {
+          "arquivo": "ouros_8_01.jpg",
+          "naipe": "ouros",
+          "motivo": "Carta não separada do fundo (imagem tratada como sem fundo)."
+        },
+        {
+          "arquivo": "ouros_8_02.jpg",
+          "naipe": "ouros",
+          "motivo": "Carta não separada do fundo (imagem tratada como sem fundo)."
+        },
+        {
+          "arquivo": "ouros_9_01.jpg",
+          "naipe": "ouros",
+          "motivo": "Carta não separada do fundo (imagem tratada como sem fundo)."
+        },
+        {
+          "arquivo": "ouros_9_02.jpg",
+          "naipe": "ouros",
+          "motivo": "Carta não separada do fundo (imagem tratada como sem fundo)."
+        },
+        {
+          "arquivo": "ouros_J_01.jpg",
+          "naipe": "ouros",
+          "motivo": "Carta não separada do fundo (imagem tratada como sem fundo)."
+        },
+        {
+          "arquivo": "ouros_J_02.jpg",
+          "naipe": "ouros",
+          "motivo": "Carta não separada do fundo (imagem tratada como sem fundo)."
+        },
+        {
+          "arquivo": "ouros_K_01.jpg",
+          "naipe": "ouros",
+          "motivo": "Carta não separada do fundo (imagem tratada como sem fundo)."
+        },
+        {
+          "arquivo": "ouros_K_02.jpg",
+          "naipe": "ouros",
+          "motivo": "Carta não separada do fundo (imagem tratada como sem fundo)."
+        },
+        {
+          "arquivo": "paus_3_01.jpg",
+          "naipe": "paus",
+          "motivo": "Carta não separada do fundo (imagem tratada como sem fundo)."
+        },
+        {
+          "arquivo": "paus_3_02.jpg",
+          "naipe": "paus",
+          "motivo": "Carta não separada do fundo (imagem tratada como sem fundo)."
+        },
+        {
+          "arquivo": "paus_8_01.jpg",
+          "naipe": "paus",
+          "motivo": "Carta não separada do fundo (imagem tratada como sem fundo)."
+        },
+        {
+          "arquivo": "paus_8_02.jpg",
+          "naipe": "paus",
+          "motivo": "Carta não separada do fundo (imagem tratada como sem fundo)."
+        },
+        {
+          "arquivo": "paus_9_01.jpg",
+          "naipe": "paus",
+          "motivo": "Carta não separada do fundo (imagem tratada como sem fundo)."
+        },
+        {
+          "arquivo": "paus_9_02.jpg",
+          "naipe": "paus",
+          "motivo": "Carta não separada do fundo (imagem tratada como sem fundo)."
+        },
+        {
+          "arquivo": "paus_K_01.jpg",
+          "naipe": "paus",
+          "motivo": "Carta não separada do fundo (imagem tratada como sem fundo)."
+        },
+        {
+          "arquivo": "paus_K_02.jpg",
+          "naipe": "paus",
+          "motivo": "Carta não separada do fundo (imagem tratada como sem fundo)."
+        },
+        {
+          "arquivo": "paus_Q_01.jpg",
+          "naipe": "paus",
+          "motivo": "Carta não separada do fundo (imagem tratada como sem fundo)."
+        },
+        {
+          "arquivo": "paus_Q_02.jpg",
+          "naipe": "paus",
+          "motivo": "Carta não separada do fundo (imagem tratada como sem fundo)."
+        }
+      ],
+      "metodos": {
+        "regras": {
+          "acertos": 0,
+          "total": 40,
+          "acuracia": 0.0,
+          "f1_macro": 0.0,
+          "metricas_por_classe": {
+            "copas": {
+              "suporte": 10,
+              "precisao": null,
+              "revocacao": 0.0,
+              "f1": 0.0
+            },
+            "espadas": {
+              "suporte": 10,
+              "precisao": null,
+              "revocacao": 0.0,
+              "f1": 0.0
+            },
+            "ouros": {
+              "suporte": 10,
+              "precisao": null,
+              "revocacao": 0.0,
+              "f1": 0.0
+            },
+            "paus": {
+              "suporte": 10,
+              "precisao": null,
+              "revocacao": 0.0,
+              "f1": 0.0
+            }
+          },
+          "matriz_confusao": {
+            "copas": {
+              "copas": 0,
+              "espadas": 0,
+              "ouros": 0,
+              "paus": 0,
+              "falha": 10
+            },
+            "espadas": {
+              "copas": 0,
+              "espadas": 0,
+              "ouros": 0,
+              "paus": 0,
+              "falha": 10
+            },
+            "ouros": {
+              "copas": 0,
+              "espadas": 0,
+              "ouros": 0,
+              "paus": 0,
+              "falha": 10
+            },
+            "paus": {
+              "copas": 0,
+              "espadas": 0,
+              "ouros": 0,
+              "paus": 0,
+              "falha": 10
+            }
+          },
+          "erros_decisao": [],
+          "tempo_decisao_ms": 0.0007
+        },
+        "template_matching": {
+          "acertos": 0,
+          "total": 40,
+          "acuracia": 0.0,
+          "f1_macro": 0.0,
+          "metricas_por_classe": {
+            "copas": {
+              "suporte": 10,
+              "precisao": null,
+              "revocacao": 0.0,
+              "f1": 0.0
+            },
+            "espadas": {
+              "suporte": 10,
+              "precisao": null,
+              "revocacao": 0.0,
+              "f1": 0.0
+            },
+            "ouros": {
+              "suporte": 10,
+              "precisao": null,
+              "revocacao": 0.0,
+              "f1": 0.0
+            },
+            "paus": {
+              "suporte": 10,
+              "precisao": null,
+              "revocacao": 0.0,
+              "f1": 0.0
+            }
+          },
+          "matriz_confusao": {
+            "copas": {
+              "copas": 0,
+              "espadas": 0,
+              "ouros": 0,
+              "paus": 0,
+              "falha": 10
+            },
+            "espadas": {
+              "copas": 0,
+              "espadas": 0,
+              "ouros": 0,
+              "paus": 0,
+              "falha": 10
+            },
+            "ouros": {
+              "copas": 0,
+              "espadas": 0,
+              "ouros": 0,
+              "paus": 0,
+              "falha": 10
+            },
+            "paus": {
+              "copas": 0,
+              "espadas": 0,
+              "ouros": 0,
+              "paus": 0,
+              "falha": 10
+            }
+          },
+          "erros_decisao": [],
+          "tempo_decisao_ms": 0.0004
+        },
+        "knn": {
+          "acertos": 0,
+          "total": 40,
+          "acuracia": 0.0,
+          "f1_macro": 0.0,
+          "metricas_por_classe": {
+            "copas": {
+              "suporte": 10,
+              "precisao": null,
+              "revocacao": 0.0,
+              "f1": 0.0
+            },
+            "espadas": {
+              "suporte": 10,
+              "precisao": null,
+              "revocacao": 0.0,
+              "f1": 0.0
+            },
+            "ouros": {
+              "suporte": 10,
+              "precisao": null,
+              "revocacao": 0.0,
+              "f1": 0.0
+            },
+            "paus": {
+              "suporte": 10,
+              "precisao": null,
+              "revocacao": 0.0,
+              "f1": 0.0
+            }
+          },
+          "matriz_confusao": {
+            "copas": {
+              "copas": 0,
+              "espadas": 0,
+              "ouros": 0,
+              "paus": 0,
+              "falha": 10
+            },
+            "espadas": {
+              "copas": 0,
+              "espadas": 0,
+              "ouros": 0,
+              "paus": 0,
+              "falha": 10
+            },
+            "ouros": {
+              "copas": 0,
+              "espadas": 0,
+              "ouros": 0,
+              "paus": 0,
+              "falha": 10
+            },
+            "paus": {
+              "copas": 0,
+              "espadas": 0,
+              "ouros": 0,
+              "paus": 0,
+              "falha": 10
+            }
+          },
+          "erros_decisao": [],
+          "tempo_decisao_ms": 0.0003
+        }
+      }
+    },
+    "iluminacao_fraca_55": {
+      "falhas_segmentacao": [],
+      "metodos": {
+        "regras": {
+          "acertos": 40,
+          "total": 40,
+          "acuracia": 1.0,
+          "f1_macro": 1.0,
+          "metricas_por_classe": {
+            "copas": {
+              "suporte": 10,
+              "precisao": 1.0,
+              "revocacao": 1.0,
+              "f1": 1.0
+            },
+            "espadas": {
+              "suporte": 10,
+              "precisao": 1.0,
+              "revocacao": 1.0,
+              "f1": 1.0
+            },
+            "ouros": {
+              "suporte": 10,
+              "precisao": 1.0,
+              "revocacao": 1.0,
+              "f1": 1.0
+            },
+            "paus": {
+              "suporte": 10,
+              "precisao": 1.0,
+              "revocacao": 1.0,
+              "f1": 1.0
+            }
+          },
+          "matriz_confusao": {
+            "copas": {
+              "copas": 10,
+              "espadas": 0,
+              "ouros": 0,
+              "paus": 0,
+              "falha": 0
+            },
+            "espadas": {
+              "copas": 0,
+              "espadas": 10,
+              "ouros": 0,
+              "paus": 0,
+              "falha": 0
+            },
+            "ouros": {
+              "copas": 0,
+              "espadas": 0,
+              "ouros": 10,
+              "paus": 0,
+              "falha": 0
+            },
+            "paus": {
+              "copas": 0,
+              "espadas": 0,
+              "ouros": 0,
+              "paus": 10,
+              "falha": 0
+            }
+          },
+          "erros_decisao": [],
+          "tempo_decisao_ms": 0.0033
+        },
+        "template_matching": {
+          "acertos": 40,
+          "total": 40,
+          "acuracia": 1.0,
+          "f1_macro": 1.0,
+          "metricas_por_classe": {
+            "copas": {
+              "suporte": 10,
+              "precisao": 1.0,
+              "revocacao": 1.0,
+              "f1": 1.0
+            },
+            "espadas": {
+              "suporte": 10,
+              "precisao": 1.0,
+              "revocacao": 1.0,
+              "f1": 1.0
+            },
+            "ouros": {
+              "suporte": 10,
+              "precisao": 1.0,
+              "revocacao": 1.0,
+              "f1": 1.0
+            },
+            "paus": {
+              "suporte": 10,
+              "precisao": 1.0,
+              "revocacao": 1.0,
+              "f1": 1.0
+            }
+          },
+          "matriz_confusao": {
+            "copas": {
+              "copas": 10,
+              "espadas": 0,
+              "ouros": 0,
+              "paus": 0,
+              "falha": 0
+            },
+            "espadas": {
+              "copas": 0,
+              "espadas": 10,
+              "ouros": 0,
+              "paus": 0,
+              "falha": 0
+            },
+            "ouros": {
+              "copas": 0,
+              "espadas": 0,
+              "ouros": 10,
+              "paus": 0,
+              "falha": 0
+            },
+            "paus": {
+              "copas": 0,
+              "espadas": 0,
+              "ouros": 0,
+              "paus": 10,
+              "falha": 0
+            }
+          },
+          "erros_decisao": [],
+          "tempo_decisao_ms": 0.3095
+        },
+        "knn": {
+          "acertos": 40,
+          "total": 40,
+          "acuracia": 1.0,
+          "f1_macro": 1.0,
+          "metricas_por_classe": {
+            "copas": {
+              "suporte": 10,
+              "precisao": 1.0,
+              "revocacao": 1.0,
+              "f1": 1.0
+            },
+            "espadas": {
+              "suporte": 10,
+              "precisao": 1.0,
+              "revocacao": 1.0,
+              "f1": 1.0
+            },
+            "ouros": {
+              "suporte": 10,
+              "precisao": 1.0,
+              "revocacao": 1.0,
+              "f1": 1.0
+            },
+            "paus": {
+              "suporte": 10,
+              "precisao": 1.0,
+              "revocacao": 1.0,
+              "f1": 1.0
+            }
+          },
+          "matriz_confusao": {
+            "copas": {
+              "copas": 10,
+              "espadas": 0,
+              "ouros": 0,
+              "paus": 0,
+              "falha": 0
+            },
+            "espadas": {
+              "copas": 0,
+              "espadas": 10,
+              "ouros": 0,
+              "paus": 0,
+              "falha": 0
+            },
+            "ouros": {
+              "copas": 0,
+              "espadas": 0,
+              "ouros": 10,
+              "paus": 0,
+              "falha": 0
+            },
+            "paus": {
+              "copas": 0,
+              "espadas": 0,
+              "ouros": 0,
+              "paus": 10,
+              "falha": 0
+            }
+          },
+          "erros_decisao": [],
+          "tempo_decisao_ms": 0.0884
+        }
+      }
+    },
+    "gradiente_de_luz": {
+      "falhas_segmentacao": [],
+      "metodos": {
+        "regras": {
+          "acertos": 40,
+          "total": 40,
+          "acuracia": 1.0,
+          "f1_macro": 1.0,
+          "metricas_por_classe": {
+            "copas": {
+              "suporte": 10,
+              "precisao": 1.0,
+              "revocacao": 1.0,
+              "f1": 1.0
+            },
+            "espadas": {
+              "suporte": 10,
+              "precisao": 1.0,
+              "revocacao": 1.0,
+              "f1": 1.0
+            },
+            "ouros": {
+              "suporte": 10,
+              "precisao": 1.0,
+              "revocacao": 1.0,
+              "f1": 1.0
+            },
+            "paus": {
+              "suporte": 10,
+              "precisao": 1.0,
+              "revocacao": 1.0,
+              "f1": 1.0
+            }
+          },
+          "matriz_confusao": {
+            "copas": {
+              "copas": 10,
+              "espadas": 0,
+              "ouros": 0,
+              "paus": 0,
+              "falha": 0
+            },
+            "espadas": {
+              "copas": 0,
+              "espadas": 10,
+              "ouros": 0,
+              "paus": 0,
+              "falha": 0
+            },
+            "ouros": {
+              "copas": 0,
+              "espadas": 0,
+              "ouros": 10,
+              "paus": 0,
+              "falha": 0
+            },
+            "paus": {
+              "copas": 0,
+              "espadas": 0,
+              "ouros": 0,
+              "paus": 10,
+              "falha": 0
+            }
+          },
+          "erros_decisao": [],
+          "tempo_decisao_ms": 0.0011
+        },
+        "template_matching": {
+          "acertos": 40,
+          "total": 40,
+          "acuracia": 1.0,
+          "f1_macro": 1.0,
+          "metricas_por_classe": {
+            "copas": {
+              "suporte": 10,
+              "precisao": 1.0,
+              "revocacao": 1.0,
+              "f1": 1.0
+            },
+            "espadas": {
+              "suporte": 10,
+              "precisao": 1.0,
+              "revocacao": 1.0,
+              "f1": 1.0
+            },
+            "ouros": {
+              "suporte": 10,
+              "precisao": 1.0,
+              "revocacao": 1.0,
+              "f1": 1.0
+            },
+            "paus": {
+              "suporte": 10,
+              "precisao": 1.0,
+              "revocacao": 1.0,
+              "f1": 1.0
+            }
+          },
+          "matriz_confusao": {
+            "copas": {
+              "copas": 10,
+              "espadas": 0,
+              "ouros": 0,
+              "paus": 0,
+              "falha": 0
+            },
+            "espadas": {
+              "copas": 0,
+              "espadas": 10,
+              "ouros": 0,
+              "paus": 0,
+              "falha": 0
+            },
+            "ouros": {
+              "copas": 0,
+              "espadas": 0,
+              "ouros": 10,
+              "paus": 0,
+              "falha": 0
+            },
+            "paus": {
+              "copas": 0,
+              "espadas": 0,
+              "ouros": 0,
+              "paus": 10,
+              "falha": 0
+            }
+          },
+          "erros_decisao": [],
+          "tempo_decisao_ms": 0.3167
+        },
+        "knn": {
+          "acertos": 40,
+          "total": 40,
+          "acuracia": 1.0,
+          "f1_macro": 1.0,
+          "metricas_por_classe": {
+            "copas": {
+              "suporte": 10,
+              "precisao": 1.0,
+              "revocacao": 1.0,
+              "f1": 1.0
+            },
+            "espadas": {
+              "suporte": 10,
+              "precisao": 1.0,
+              "revocacao": 1.0,
+              "f1": 1.0
+            },
+            "ouros": {
+              "suporte": 10,
+              "precisao": 1.0,
+              "revocacao": 1.0,
+              "f1": 1.0
+            },
+            "paus": {
+              "suporte": 10,
+              "precisao": 1.0,
+              "revocacao": 1.0,
+              "f1": 1.0
+            }
+          },
+          "matriz_confusao": {
+            "copas": {
+              "copas": 10,
+              "espadas": 0,
+              "ouros": 0,
+              "paus": 0,
+              "falha": 0
+            },
+            "espadas": {
+              "copas": 0,
+              "espadas": 10,
+              "ouros": 0,
+              "paus": 0,
+              "falha": 0
+            },
+            "ouros": {
+              "copas": 0,
+              "espadas": 0,
+              "ouros": 10,
+              "paus": 0,
+              "falha": 0
+            },
+            "paus": {
+              "copas": 0,
+              "espadas": 0,
+              "ouros": 0,
+              "paus": 10,
+              "falha": 0
+            }
+          },
+          "erros_decisao": [],
+          "tempo_decisao_ms": 0.0905
+        }
+      }
+    },
+    "rotacao_10": {
+      "falhas_segmentacao": [],
+      "metodos": {
+        "regras": {
+          "acertos": 40,
+          "total": 40,
+          "acuracia": 1.0,
+          "f1_macro": 1.0,
+          "metricas_por_classe": {
+            "copas": {
+              "suporte": 10,
+              "precisao": 1.0,
+              "revocacao": 1.0,
+              "f1": 1.0
+            },
+            "espadas": {
+              "suporte": 10,
+              "precisao": 1.0,
+              "revocacao": 1.0,
+              "f1": 1.0
+            },
+            "ouros": {
+              "suporte": 10,
+              "precisao": 1.0,
+              "revocacao": 1.0,
+              "f1": 1.0
+            },
+            "paus": {
+              "suporte": 10,
+              "precisao": 1.0,
+              "revocacao": 1.0,
+              "f1": 1.0
+            }
+          },
+          "matriz_confusao": {
+            "copas": {
+              "copas": 10,
+              "espadas": 0,
+              "ouros": 0,
+              "paus": 0,
+              "falha": 0
+            },
+            "espadas": {
+              "copas": 0,
+              "espadas": 10,
+              "ouros": 0,
+              "paus": 0,
+              "falha": 0
+            },
+            "ouros": {
+              "copas": 0,
+              "espadas": 0,
+              "ouros": 10,
+              "paus": 0,
+              "falha": 0
+            },
+            "paus": {
+              "copas": 0,
+              "espadas": 0,
+              "ouros": 0,
+              "paus": 10,
+              "falha": 0
+            }
+          },
+          "erros_decisao": [],
+          "tempo_decisao_ms": 0.0011
+        },
+        "template_matching": {
+          "acertos": 40,
+          "total": 40,
+          "acuracia": 1.0,
+          "f1_macro": 1.0,
+          "metricas_por_classe": {
+            "copas": {
+              "suporte": 10,
+              "precisao": 1.0,
+              "revocacao": 1.0,
+              "f1": 1.0
+            },
+            "espadas": {
+              "suporte": 10,
+              "precisao": 1.0,
+              "revocacao": 1.0,
+              "f1": 1.0
+            },
+            "ouros": {
+              "suporte": 10,
+              "precisao": 1.0,
+              "revocacao": 1.0,
+              "f1": 1.0
+            },
+            "paus": {
+              "suporte": 10,
+              "precisao": 1.0,
+              "revocacao": 1.0,
+              "f1": 1.0
+            }
+          },
+          "matriz_confusao": {
+            "copas": {
+              "copas": 10,
+              "espadas": 0,
+              "ouros": 0,
+              "paus": 0,
+              "falha": 0
+            },
+            "espadas": {
+              "copas": 0,
+              "espadas": 10,
+              "ouros": 0,
+              "paus": 0,
+              "falha": 0
+            },
+            "ouros": {
+              "copas": 0,
+              "espadas": 0,
+              "ouros": 10,
+              "paus": 0,
+              "falha": 0
+            },
+            "paus": {
+              "copas": 0,
+              "espadas": 0,
+              "ouros": 0,
+              "paus": 10,
+              "falha": 0
+            }
+          },
+          "erros_decisao": [],
+          "tempo_decisao_ms": 0.2694
+        },
+        "knn": {
+          "acertos": 39,
+          "total": 40,
+          "acuracia": 0.975,
+          "f1_macro": 0.9749,
+          "metricas_por_classe": {
+            "copas": {
+              "suporte": 10,
+              "precisao": 1.0,
+              "revocacao": 1.0,
+              "f1": 1.0
+            },
+            "espadas": {
+              "suporte": 10,
+              "precisao": 1.0,
+              "revocacao": 0.9,
+              "f1": 0.9474
+            },
+            "ouros": {
+              "suporte": 10,
+              "precisao": 1.0,
+              "revocacao": 1.0,
+              "f1": 1.0
+            },
+            "paus": {
+              "suporte": 10,
+              "precisao": 0.9091,
+              "revocacao": 1.0,
+              "f1": 0.9524
+            }
+          },
+          "matriz_confusao": {
+            "copas": {
+              "copas": 10,
+              "espadas": 0,
+              "ouros": 0,
+              "paus": 0,
+              "falha": 0
+            },
+            "espadas": {
+              "copas": 0,
+              "espadas": 9,
+              "ouros": 0,
+              "paus": 1,
+              "falha": 0
+            },
+            "ouros": {
+              "copas": 0,
+              "espadas": 0,
+              "ouros": 10,
+              "paus": 0,
+              "falha": 0
+            },
+            "paus": {
+              "copas": 0,
+              "espadas": 0,
+              "ouros": 0,
+              "paus": 10,
+              "falha": 0
+            }
+          },
+          "erros_decisao": [
+            {
+              "arquivo": "espadas_6_02.jpg",
+              "esperado": "espadas",
+              "previsto": "paus"
+            }
+          ],
+          "tempo_decisao_ms": 0.0803
+        }
+      }
+    },
+    "rotacao_25": {
+      "falhas_segmentacao": [
+        {
+          "arquivo": "espadas_7_01.jpg",
+          "naipe": "espadas",
+          "motivo": "Nenhum símbolo de naipe encontrado abaixo do valor."
+        },
+        {
+          "arquivo": "espadas_7_02.jpg",
+          "naipe": "espadas",
+          "motivo": "Nenhum símbolo de naipe encontrado abaixo do valor."
+        }
+      ],
+      "metodos": {
+        "regras": {
+          "acertos": 20,
+          "total": 40,
+          "acuracia": 0.5,
+          "f1_macro": 0.3453,
+          "metricas_por_classe": {
+            "copas": {
+              "suporte": 10,
+              "precisao": null,
+              "revocacao": 0.0,
+              "f1": 0.0
+            },
+            "espadas": {
+              "suporte": 10,
+              "precisao": null,
+              "revocacao": 0.0,
+              "f1": 0.0
+            },
+            "ouros": {
+              "suporte": 10,
+              "precisao": 0.5,
+              "revocacao": 1.0,
+              "f1": 0.6667
+            },
+            "paus": {
+              "suporte": 10,
+              "precisao": 0.5556,
+              "revocacao": 1.0,
+              "f1": 0.7143
+            }
+          },
+          "matriz_confusao": {
+            "copas": {
+              "copas": 0,
+              "espadas": 0,
+              "ouros": 10,
+              "paus": 0,
+              "falha": 0
+            },
+            "espadas": {
+              "copas": 0,
+              "espadas": 0,
+              "ouros": 0,
+              "paus": 8,
+              "falha": 2
+            },
+            "ouros": {
+              "copas": 0,
+              "espadas": 0,
+              "ouros": 10,
+              "paus": 0,
+              "falha": 0
+            },
+            "paus": {
+              "copas": 0,
+              "espadas": 0,
+              "ouros": 0,
+              "paus": 10,
+              "falha": 0
+            }
+          },
+          "erros_decisao": [
+            {
+              "arquivo": "copas_3_01.jpg",
+              "esperado": "copas",
+              "previsto": "ouros"
+            },
+            {
+              "arquivo": "copas_3_02.jpg",
+              "esperado": "copas",
+              "previsto": "ouros"
+            },
+            {
+              "arquivo": "copas_7_01.jpg",
+              "esperado": "copas",
+              "previsto": "ouros"
+            },
+            {
+              "arquivo": "copas_7_02.jpg",
+              "esperado": "copas",
+              "previsto": "ouros"
+            },
+            {
+              "arquivo": "copas_8_01.jpg",
+              "esperado": "copas",
+              "previsto": "ouros"
+            },
+            {
+              "arquivo": "copas_8_02.jpg",
+              "esperado": "copas",
+              "previsto": "ouros"
+            },
+            {
+              "arquivo": "copas_A_01.jpg",
+              "esperado": "copas",
+              "previsto": "ouros"
+            },
+            {
+              "arquivo": "copas_A_02.jpg",
+              "esperado": "copas",
+              "previsto": "ouros"
+            },
+            {
+              "arquivo": "copas_Q_01.jpg",
+              "esperado": "copas",
+              "previsto": "ouros"
+            },
+            {
+              "arquivo": "copas_Q_02.jpg",
+              "esperado": "copas",
+              "previsto": "ouros"
+            },
+            {
+              "arquivo": "espadas_3_01.jpg",
+              "esperado": "espadas",
+              "previsto": "paus"
+            },
+            {
+              "arquivo": "espadas_3_02.jpg",
+              "esperado": "espadas",
+              "previsto": "paus"
+            },
+            {
+              "arquivo": "espadas_6_01.jpg",
+              "esperado": "espadas",
+              "previsto": "paus"
+            },
+            {
+              "arquivo": "espadas_6_02.jpg",
+              "esperado": "espadas",
+              "previsto": "paus"
+            },
+            {
+              "arquivo": "espadas_8_01.jpg",
+              "esperado": "espadas",
+              "previsto": "paus"
+            },
+            {
+              "arquivo": "espadas_8_02.jpg",
+              "esperado": "espadas",
+              "previsto": "paus"
+            },
+            {
+              "arquivo": "espadas_9_01.jpg",
+              "esperado": "espadas",
+              "previsto": "paus"
+            },
+            {
+              "arquivo": "espadas_9_02.jpg",
+              "esperado": "espadas",
+              "previsto": "paus"
+            }
+          ],
+          "tempo_decisao_ms": 0.0013
+        },
+        "template_matching": {
+          "acertos": 28,
+          "total": 40,
+          "acuracia": 0.7,
+          "f1_macro": 0.6429,
+          "metricas_por_classe": {
+            "copas": {
+              "suporte": 10,
+              "precisao": 1.0,
+              "revocacao": 1.0,
+              "f1": 1.0
+            },
+            "espadas": {
+              "suporte": 10,
+              "precisao": 0.4444,
+              "revocacao": 0.8,
+              "f1": 0.5714
+            },
+            "ouros": {
+              "suporte": 10,
+              "precisao": 1.0,
+              "revocacao": 1.0,
+              "f1": 1.0
+            },
+            "paus": {
+              "suporte": 10,
+              "precisao": null,
+              "revocacao": 0.0,
+              "f1": 0.0
+            }
+          },
+          "matriz_confusao": {
+            "copas": {
+              "copas": 10,
+              "espadas": 0,
+              "ouros": 0,
+              "paus": 0,
+              "falha": 0
+            },
+            "espadas": {
+              "copas": 0,
+              "espadas": 8,
+              "ouros": 0,
+              "paus": 0,
+              "falha": 2
+            },
+            "ouros": {
+              "copas": 0,
+              "espadas": 0,
+              "ouros": 10,
+              "paus": 0,
+              "falha": 0
+            },
+            "paus": {
+              "copas": 0,
+              "espadas": 10,
+              "ouros": 0,
+              "paus": 0,
+              "falha": 0
+            }
+          },
+          "erros_decisao": [
+            {
+              "arquivo": "paus_3_01.jpg",
+              "esperado": "paus",
+              "previsto": "espadas"
+            },
+            {
+              "arquivo": "paus_3_02.jpg",
+              "esperado": "paus",
+              "previsto": "espadas"
+            },
+            {
+              "arquivo": "paus_8_01.jpg",
+              "esperado": "paus",
+              "previsto": "espadas"
+            },
+            {
+              "arquivo": "paus_8_02.jpg",
+              "esperado": "paus",
+              "previsto": "espadas"
+            },
+            {
+              "arquivo": "paus_9_01.jpg",
+              "esperado": "paus",
+              "previsto": "espadas"
+            },
+            {
+              "arquivo": "paus_9_02.jpg",
+              "esperado": "paus",
+              "previsto": "espadas"
+            },
+            {
+              "arquivo": "paus_K_01.jpg",
+              "esperado": "paus",
+              "previsto": "espadas"
+            },
+            {
+              "arquivo": "paus_K_02.jpg",
+              "esperado": "paus",
+              "previsto": "espadas"
+            },
+            {
+              "arquivo": "paus_Q_01.jpg",
+              "esperado": "paus",
+              "previsto": "espadas"
+            },
+            {
+              "arquivo": "paus_Q_02.jpg",
+              "esperado": "paus",
+              "previsto": "espadas"
+            }
+          ],
+          "tempo_decisao_ms": 0.2735
+        },
+        "knn": {
+          "acertos": 38,
+          "total": 40,
+          "acuracia": 0.95,
+          "f1_macro": 0.9722,
+          "metricas_por_classe": {
+            "copas": {
+              "suporte": 10,
+              "precisao": 1.0,
+              "revocacao": 1.0,
+              "f1": 1.0
+            },
+            "espadas": {
+              "suporte": 10,
+              "precisao": 1.0,
+              "revocacao": 0.8,
+              "f1": 0.8889
+            },
+            "ouros": {
+              "suporte": 10,
+              "precisao": 1.0,
+              "revocacao": 1.0,
+              "f1": 1.0
+            },
+            "paus": {
+              "suporte": 10,
+              "precisao": 1.0,
+              "revocacao": 1.0,
+              "f1": 1.0
+            }
+          },
+          "matriz_confusao": {
+            "copas": {
+              "copas": 10,
+              "espadas": 0,
+              "ouros": 0,
+              "paus": 0,
+              "falha": 0
+            },
+            "espadas": {
+              "copas": 0,
+              "espadas": 8,
+              "ouros": 0,
+              "paus": 0,
+              "falha": 2
+            },
+            "ouros": {
+              "copas": 0,
+              "espadas": 0,
+              "ouros": 10,
+              "paus": 0,
+              "falha": 0
+            },
+            "paus": {
+              "copas": 0,
+              "espadas": 0,
+              "ouros": 0,
+              "paus": 10,
+              "falha": 0
+            }
+          },
+          "erros_decisao": [],
+          "tempo_decisao_ms": 0.0731
+        }
+      }
+    },
+    "escala_50": {
+      "falhas_segmentacao": [],
+      "metodos": {
+        "regras": {
+          "acertos": 40,
+          "total": 40,
+          "acuracia": 1.0,
+          "f1_macro": 1.0,
+          "metricas_por_classe": {
+            "copas": {
+              "suporte": 10,
+              "precisao": 1.0,
+              "revocacao": 1.0,
+              "f1": 1.0
+            },
+            "espadas": {
+              "suporte": 10,
+              "precisao": 1.0,
+              "revocacao": 1.0,
+              "f1": 1.0
+            },
+            "ouros": {
+              "suporte": 10,
+              "precisao": 1.0,
+              "revocacao": 1.0,
+              "f1": 1.0
+            },
+            "paus": {
+              "suporte": 10,
+              "precisao": 1.0,
+              "revocacao": 1.0,
+              "f1": 1.0
+            }
+          },
+          "matriz_confusao": {
+            "copas": {
+              "copas": 10,
+              "espadas": 0,
+              "ouros": 0,
+              "paus": 0,
+              "falha": 0
+            },
+            "espadas": {
+              "copas": 0,
+              "espadas": 10,
+              "ouros": 0,
+              "paus": 0,
+              "falha": 0
+            },
+            "ouros": {
+              "copas": 0,
+              "espadas": 0,
+              "ouros": 10,
+              "paus": 0,
+              "falha": 0
+            },
+            "paus": {
+              "copas": 0,
+              "espadas": 0,
+              "ouros": 0,
+              "paus": 10,
+              "falha": 0
+            }
+          },
+          "erros_decisao": [],
+          "tempo_decisao_ms": 0.0009
+        },
+        "template_matching": {
+          "acertos": 40,
+          "total": 40,
+          "acuracia": 1.0,
+          "f1_macro": 1.0,
+          "metricas_por_classe": {
+            "copas": {
+              "suporte": 10,
+              "precisao": 1.0,
+              "revocacao": 1.0,
+              "f1": 1.0
+            },
+            "espadas": {
+              "suporte": 10,
+              "precisao": 1.0,
+              "revocacao": 1.0,
+              "f1": 1.0
+            },
+            "ouros": {
+              "suporte": 10,
+              "precisao": 1.0,
+              "revocacao": 1.0,
+              "f1": 1.0
+            },
+            "paus": {
+              "suporte": 10,
+              "precisao": 1.0,
+              "revocacao": 1.0,
+              "f1": 1.0
+            }
+          },
+          "matriz_confusao": {
+            "copas": {
+              "copas": 10,
+              "espadas": 0,
+              "ouros": 0,
+              "paus": 0,
+              "falha": 0
+            },
+            "espadas": {
+              "copas": 0,
+              "espadas": 10,
+              "ouros": 0,
+              "paus": 0,
+              "falha": 0
+            },
+            "ouros": {
+              "copas": 0,
+              "espadas": 0,
+              "ouros": 10,
+              "paus": 0,
+              "falha": 0
+            },
+            "paus": {
+              "copas": 0,
+              "espadas": 0,
+              "ouros": 0,
+              "paus": 10,
+              "falha": 0
+            }
+          },
+          "erros_decisao": [],
+          "tempo_decisao_ms": 0.1096
+        },
+        "knn": {
+          "acertos": 30,
+          "total": 40,
+          "acuracia": 0.75,
+          "f1_macro": 0.6667,
+          "metricas_por_classe": {
+            "copas": {
+              "suporte": 10,
+              "precisao": 1.0,
+              "revocacao": 1.0,
+              "f1": 1.0
+            },
+            "espadas": {
+              "suporte": 10,
+              "precisao": null,
+              "revocacao": 0.0,
+              "f1": 0.0
+            },
+            "ouros": {
+              "suporte": 10,
+              "precisao": 1.0,
+              "revocacao": 1.0,
+              "f1": 1.0
+            },
+            "paus": {
+              "suporte": 10,
+              "precisao": 0.5,
+              "revocacao": 1.0,
+              "f1": 0.6667
+            }
+          },
+          "matriz_confusao": {
+            "copas": {
+              "copas": 10,
+              "espadas": 0,
+              "ouros": 0,
+              "paus": 0,
+              "falha": 0
+            },
+            "espadas": {
+              "copas": 0,
+              "espadas": 0,
+              "ouros": 0,
+              "paus": 10,
+              "falha": 0
+            },
+            "ouros": {
+              "copas": 0,
+              "espadas": 0,
+              "ouros": 10,
+              "paus": 0,
+              "falha": 0
+            },
+            "paus": {
+              "copas": 0,
+              "espadas": 0,
+              "ouros": 0,
+              "paus": 10,
+              "falha": 0
+            }
+          },
+          "erros_decisao": [
+            {
+              "arquivo": "espadas_3_01.jpg",
+              "esperado": "espadas",
+              "previsto": "paus"
+            },
+            {
+              "arquivo": "espadas_3_02.jpg",
+              "esperado": "espadas",
+              "previsto": "paus"
+            },
+            {
+              "arquivo": "espadas_6_01.jpg",
+              "esperado": "espadas",
+              "previsto": "paus"
+            },
+            {
+              "arquivo": "espadas_6_02.jpg",
+              "esperado": "espadas",
+              "previsto": "paus"
+            },
+            {
+              "arquivo": "espadas_7_01.jpg",
+              "esperado": "espadas",
+              "previsto": "paus"
+            },
+            {
+              "arquivo": "espadas_7_02.jpg",
+              "esperado": "espadas",
+              "previsto": "paus"
+            },
+            {
+              "arquivo": "espadas_8_01.jpg",
+              "esperado": "espadas",
+              "previsto": "paus"
+            },
+            {
+              "arquivo": "espadas_8_02.jpg",
+              "esperado": "espadas",
+              "previsto": "paus"
+            },
+            {
+              "arquivo": "espadas_9_01.jpg",
+              "esperado": "espadas",
+              "previsto": "paus"
+            },
+            {
+              "arquivo": "espadas_9_02.jpg",
+              "esperado": "espadas",
+              "previsto": "paus"
+            }
+          ],
+          "tempo_decisao_ms": 0.0542
+        }
+      }
+    },
+    "ruido_30": {
+      "falhas_segmentacao": [],
+      "metodos": {
+        "regras": {
+          "acertos": 40,
+          "total": 40,
+          "acuracia": 1.0,
+          "f1_macro": 1.0,
+          "metricas_por_classe": {
+            "copas": {
+              "suporte": 10,
+              "precisao": 1.0,
+              "revocacao": 1.0,
+              "f1": 1.0
+            },
+            "espadas": {
+              "suporte": 10,
+              "precisao": 1.0,
+              "revocacao": 1.0,
+              "f1": 1.0
+            },
+            "ouros": {
+              "suporte": 10,
+              "precisao": 1.0,
+              "revocacao": 1.0,
+              "f1": 1.0
+            },
+            "paus": {
+              "suporte": 10,
+              "precisao": 1.0,
+              "revocacao": 1.0,
+              "f1": 1.0
+            }
+          },
+          "matriz_confusao": {
+            "copas": {
+              "copas": 10,
+              "espadas": 0,
+              "ouros": 0,
+              "paus": 0,
+              "falha": 0
+            },
+            "espadas": {
+              "copas": 0,
+              "espadas": 10,
+              "ouros": 0,
+              "paus": 0,
+              "falha": 0
+            },
+            "ouros": {
+              "copas": 0,
+              "espadas": 0,
+              "ouros": 10,
+              "paus": 0,
+              "falha": 0
+            },
+            "paus": {
+              "copas": 0,
+              "espadas": 0,
+              "ouros": 0,
+              "paus": 10,
+              "falha": 0
+            }
+          },
+          "erros_decisao": [],
+          "tempo_decisao_ms": 0.0013
+        },
+        "template_matching": {
+          "acertos": 40,
+          "total": 40,
+          "acuracia": 1.0,
+          "f1_macro": 1.0,
+          "metricas_por_classe": {
+            "copas": {
+              "suporte": 10,
+              "precisao": 1.0,
+              "revocacao": 1.0,
+              "f1": 1.0
+            },
+            "espadas": {
+              "suporte": 10,
+              "precisao": 1.0,
+              "revocacao": 1.0,
+              "f1": 1.0
+            },
+            "ouros": {
+              "suporte": 10,
+              "precisao": 1.0,
+              "revocacao": 1.0,
+              "f1": 1.0
+            },
+            "paus": {
+              "suporte": 10,
+              "precisao": 1.0,
+              "revocacao": 1.0,
+              "f1": 1.0
+            }
+          },
+          "matriz_confusao": {
+            "copas": {
+              "copas": 10,
+              "espadas": 0,
+              "ouros": 0,
+              "paus": 0,
+              "falha": 0
+            },
+            "espadas": {
+              "copas": 0,
+              "espadas": 10,
+              "ouros": 0,
+              "paus": 0,
+              "falha": 0
+            },
+            "ouros": {
+              "copas": 0,
+              "espadas": 0,
+              "ouros": 10,
+              "paus": 0,
+              "falha": 0
+            },
+            "paus": {
+              "copas": 0,
+              "espadas": 0,
+              "ouros": 0,
+              "paus": 10,
+              "falha": 0
+            }
+          },
+          "erros_decisao": [],
+          "tempo_decisao_ms": 0.3059
+        },
+        "knn": {
+          "acertos": 39,
+          "total": 40,
+          "acuracia": 0.975,
+          "f1_macro": 0.9749,
+          "metricas_por_classe": {
+            "copas": {
+              "suporte": 10,
+              "precisao": 1.0,
+              "revocacao": 1.0,
+              "f1": 1.0
+            },
+            "espadas": {
+              "suporte": 10,
+              "precisao": 1.0,
+              "revocacao": 0.9,
+              "f1": 0.9474
+            },
+            "ouros": {
+              "suporte": 10,
+              "precisao": 1.0,
+              "revocacao": 1.0,
+              "f1": 1.0
+            },
+            "paus": {
+              "suporte": 10,
+              "precisao": 0.9091,
+              "revocacao": 1.0,
+              "f1": 0.9524
+            }
+          },
+          "matriz_confusao": {
+            "copas": {
+              "copas": 10,
+              "espadas": 0,
+              "ouros": 0,
+              "paus": 0,
+              "falha": 0
+            },
+            "espadas": {
+              "copas": 0,
+              "espadas": 9,
+              "ouros": 0,
+              "paus": 1,
+              "falha": 0
+            },
+            "ouros": {
+              "copas": 0,
+              "espadas": 0,
+              "ouros": 10,
+              "paus": 0,
+              "falha": 0
+            },
+            "paus": {
+              "copas": 0,
+              "espadas": 0,
+              "ouros": 0,
+              "paus": 10,
+              "falha": 0
+            }
+          },
+          "erros_decisao": [
+            {
+              "arquivo": "espadas_6_02.jpg",
+              "esperado": "espadas",
+              "previsto": "paus"
+            }
+          ],
+          "tempo_decisao_ms": 0.0826
+        }
+      }
+    },
+    "ruido_60": {
+      "falhas_segmentacao": [],
+      "metodos": {
+        "regras": {
+          "acertos": 40,
+          "total": 40,
+          "acuracia": 1.0,
+          "f1_macro": 1.0,
+          "metricas_por_classe": {
+            "copas": {
+              "suporte": 10,
+              "precisao": 1.0,
+              "revocacao": 1.0,
+              "f1": 1.0
+            },
+            "espadas": {
+              "suporte": 10,
+              "precisao": 1.0,
+              "revocacao": 1.0,
+              "f1": 1.0
+            },
+            "ouros": {
+              "suporte": 10,
+              "precisao": 1.0,
+              "revocacao": 1.0,
+              "f1": 1.0
+            },
+            "paus": {
+              "suporte": 10,
+              "precisao": 1.0,
+              "revocacao": 1.0,
+              "f1": 1.0
+            }
+          },
+          "matriz_confusao": {
+            "copas": {
+              "copas": 10,
+              "espadas": 0,
+              "ouros": 0,
+              "paus": 0,
+              "falha": 0
+            },
+            "espadas": {
+              "copas": 0,
+              "espadas": 10,
+              "ouros": 0,
+              "paus": 0,
+              "falha": 0
+            },
+            "ouros": {
+              "copas": 0,
+              "espadas": 0,
+              "ouros": 10,
+              "paus": 0,
+              "falha": 0
+            },
+            "paus": {
+              "copas": 0,
+              "espadas": 0,
+              "ouros": 0,
+              "paus": 10,
+              "falha": 0
+            }
+          },
+          "erros_decisao": [],
+          "tempo_decisao_ms": 0.0011
+        },
+        "template_matching": {
+          "acertos": 40,
+          "total": 40,
+          "acuracia": 1.0,
+          "f1_macro": 1.0,
+          "metricas_por_classe": {
+            "copas": {
+              "suporte": 10,
+              "precisao": 1.0,
+              "revocacao": 1.0,
+              "f1": 1.0
+            },
+            "espadas": {
+              "suporte": 10,
+              "precisao": 1.0,
+              "revocacao": 1.0,
+              "f1": 1.0
+            },
+            "ouros": {
+              "suporte": 10,
+              "precisao": 1.0,
+              "revocacao": 1.0,
+              "f1": 1.0
+            },
+            "paus": {
+              "suporte": 10,
+              "precisao": 1.0,
+              "revocacao": 1.0,
+              "f1": 1.0
+            }
+          },
+          "matriz_confusao": {
+            "copas": {
+              "copas": 10,
+              "espadas": 0,
+              "ouros": 0,
+              "paus": 0,
+              "falha": 0
+            },
+            "espadas": {
+              "copas": 0,
+              "espadas": 10,
+              "ouros": 0,
+              "paus": 0,
+              "falha": 0
+            },
+            "ouros": {
+              "copas": 0,
+              "espadas": 0,
+              "ouros": 10,
+              "paus": 0,
+              "falha": 0
+            },
+            "paus": {
+              "copas": 0,
+              "espadas": 0,
+              "ouros": 0,
+              "paus": 10,
+              "falha": 0
+            }
+          },
+          "erros_decisao": [],
+          "tempo_decisao_ms": 0.2586
+        },
+        "knn": {
+          "acertos": 39,
+          "total": 40,
+          "acuracia": 0.975,
+          "f1_macro": 0.9749,
+          "metricas_por_classe": {
+            "copas": {
+              "suporte": 10,
+              "precisao": 1.0,
+              "revocacao": 1.0,
+              "f1": 1.0
+            },
+            "espadas": {
+              "suporte": 10,
+              "precisao": 1.0,
+              "revocacao": 0.9,
+              "f1": 0.9474
+            },
+            "ouros": {
+              "suporte": 10,
+              "precisao": 1.0,
+              "revocacao": 1.0,
+              "f1": 1.0
+            },
+            "paus": {
+              "suporte": 10,
+              "precisao": 0.9091,
+              "revocacao": 1.0,
+              "f1": 0.9524
+            }
+          },
+          "matriz_confusao": {
+            "copas": {
+              "copas": 10,
+              "espadas": 0,
+              "ouros": 0,
+              "paus": 0,
+              "falha": 0
+            },
+            "espadas": {
+              "copas": 0,
+              "espadas": 9,
+              "ouros": 0,
+              "paus": 1,
+              "falha": 0
+            },
+            "ouros": {
+              "copas": 0,
+              "espadas": 0,
+              "ouros": 10,
+              "paus": 0,
+              "falha": 0
+            },
+            "paus": {
+              "copas": 0,
+              "espadas": 0,
+              "ouros": 0,
+              "paus": 10,
+              "falha": 0
+            }
+          },
+          "erros_decisao": [
+            {
+              "arquivo": "espadas_3_02.jpg",
+              "esperado": "espadas",
+              "previsto": "paus"
+            }
+          ],
+          "tempo_decisao_ms": 0.0579
+        }
+      }
+    }
+  }
+}
