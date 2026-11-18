@@ -11,9 +11,11 @@ Registros das etapas anteriores: [relatório da M2](relatorio_m2.md), [README da
 
 Dada uma foto de uma carta de baralho francês, tirada de cima sobre uma mesa, o sistema identifica:
 
-- o **naipe**: copas, ouros, espadas ou paus;
-- o **valor**: A, 2–10, J, Q ou K;
-- o **coringa**, como classe própria.
+- o **naipe**: copas, ouros, espadas ou paus — **objetivo obrigatório**;
+- o **valor**: A, 2–10, J, Q ou K — extensão;
+- o **coringa**, como classe própria — extensão.
+
+Seguindo o feedback da M2, o naipe continua sendo o objetivo principal, e o valor e o coringa são extensões que não alteram a avaliação do naipe.
 
 **Contexto:** automação de jogos de cartas. Uma câmera sobre a mesa identifica as cartas conforme são reveladas.
 
@@ -172,9 +174,11 @@ Cada experimento responde a uma pergunta e varia um componente por vez, sempre c
 | **4** | Qual pré-processamento resiste melhor ao ruído? | nenhum / abertura / mediana r1 / mediana r2 / mediana + abertura | ajuste, σ = 60 | `experimentos_m3.json` |
 | **5** | O pipeline resiste a fundo, luz, rotação e escala? | condição de captura | — | `experimentos_m3.json` |
 | **6** | Limiar adaptativo da carta e Otsu na região útil ajudam com pouca luz? | fixo / Otsu na carta / Otsu na carta + no canto | ajuste, original + iluminação fraca | `experimentos_m3.json` |
+| **4b** | Como a configuração final se comporta com ruído? | σ = 0, 30, 60 | — (só medida) | `experimentos_m3.json` |
 | **7** | As regras estruturais melhoram o valor? | só template × template + regras | — | `avaliacao_valor.json` |
+| **8** | Regras, template ou k-NN fora das condições originais? | método de decisão × 9 condições | modelos ajustados como na M2 | `metodos_condicoes.json` |
 
-Para reproduzir: `python -m src.robustez`, `python -m src.robustez carta` e `python -m src.rank` (Seção 12).
+Para reproduzir: `python -m src.robustez`, `python -m src.robustez carta`, `python -m src.robustez final`, `python -m src.rank` e `python -m src.metodos_condicoes` (Seção 12).
 
 ## 7. Resultados quantitativos e qualitativos
 
@@ -187,13 +191,14 @@ Para reproduzir: `python -m src.robustez`, `python -m src.robustez carta` e `pyt
 | Valor, fotos limpas | final (template + regras) | **40/40** (otimista, ver 3.4); F1 macro 1,00 |
 | Coringa | final | 4/4 detectados, 0 falsos coringas nas 104 fotos com naipe (exploratório) |
 | Segmentação do naipe, limpas | final | Dice 0,998; IoU 0,996 (20 máscaras) |
-| Segmentação, σ = 60 | baseline × final | Dice 0,19 × **0,59**; localizados 27,5% × **60%** |
+| Ruído σ = 60 | baseline (M2) × só abertura × final | naipe 27,5% × 62,5% × **100%**; Dice 0,19 × 0,59 × **0,985** |
 | Iluminação fraca (×0,55) | baseline × final | 0/40 × **40/40** |
 | Gradiente de luz | baseline e final | 40/40 |
 | Escala 50% | baseline e final | 40/40 |
 | Rotação 10° | baseline × final | 39/40 × 40/40 |
 | Rotação 25° | final | naipe 20/40, valor 18/40 |
 | Fundo claro | baseline e final | **0/40** |
+| Regras × template × k-NN, 9 condições | final | nenhum método domina; ver 7.5 |
 
 Matrizes de confusão: [`avaliacao_reais.json`](../images/results/avaliacao_reais.json) (naipe) e [`avaliacao_valor.json`](../images/results/avaliacao_valor.json) (valor 13 × 13).
 
@@ -221,6 +226,16 @@ Medição no **teste**: Dice médio contra as 20 máscaras de referência / acer
 - Somar mediana e abertura não melhora nada em relação à mediana sozinha.
 - A configuração mais complexa não é a melhor.
 
+**Experimento 4b — configuração final com ruído.** O experimento 4 foi feito antes do experimento 6, ou seja, antes de o Otsu do canto passar a usar só a região útil. Medida depois, com as mesmas sementes, a configuração final (abertura + Otsu adaptativo na carta + Otsu só na região útil) não perde nenhuma foto de teste:
+
+| σ | Segmentadas | Localizados (IoU ≥ 0,5) | Dice | Naipe | Valor |
+|---:|---:|---:|---:|---:|---:|
+| 0 | 40/40 | 100% | 0,998 | 100% | 100% |
+| 30 | 40/40 | 100% | 0,994 | 100% | 100% |
+| 60 | 40/40 | 100% | 0,985 | 100% | 100% |
+
+A causa é a mesma da iluminação fraca: na configuração da M2, os pixels fora da carta, forçados a 255, entravam no histograma do Otsu do canto. Com ruído, isso deslocava o limiar e ligava o símbolo à moldura. Esse ganho não foi usado para escolher nada: a configuração já estava fixada pelo ajuste nos experimentos 4 e 6.
+
 ### 7.3 Experimento 6 — limiar da carta com pouca luz
 
 | Condição | fixo 115 (M2) | Otsu na carta | Otsu na carta + no canto (final) |
@@ -242,7 +257,35 @@ Só o Otsu na carta não basta: ele encontra a carta, mas o canto ainda falha pe
 
 O 8 não tem amostra no ajuste, então o template nunca pode acertá-lo. O 6 é o template mais parecido com o 8, por ter um buraco embaixo. A regra estrutural resolve isso sem precisar de exemplo.
 
-### 7.5 Tempo de execução
+### 7.5 Experimento 8 — regras × template matching × k-NN nas condições simuladas
+
+O feedback da M2 pediu para repetir a comparação dos três métodos fora do conjunto original. Os modelos foram ajustados exatamente como na M2 (mesmas 64 fotos, template 32 × 32, k = 3, semente 42). As 40 fotos de teste passaram por cada condição e foram segmentadas com a configuração final; a mesma segmentação alimenta os três métodos. Falha de segmentação conta como erro.
+
+| Condição | Falhas de segmentação | Regras | Template | k-NN |
+|---|---:|---:|---:|---:|
+| Original | 0 | 100% (1,00) | 100% (1,00) | 100% (1,00) |
+| Ruído σ = 30 | 0 | 100% (1,00) | 100% (1,00) | 97,5% (0,97) |
+| Ruído σ = 60 | 0 | 100% (1,00) | 100% (1,00) | 97,5% (0,97) |
+| Iluminação fraca | 0 | 100% (1,00) | 100% (1,00) | 100% (1,00) |
+| Gradiente de luz | 0 | 100% (1,00) | 100% (1,00) | 100% (1,00) |
+| Escala 50% | 0 | 100% (1,00) | 100% (1,00) | **75% (0,67)** |
+| Rotação 10° | 0 | 100% (1,00) | 100% (1,00) | 97,5% (0,97) |
+| Rotação 25° | 2 | **50% (0,35)** | 70% (0,64) | **95% (0,97)** |
+| Fundo claro | 40 | 0% | 0% | 0% |
+
+Acurácia (macro-F1). Matrizes de confusão por naipe, com uma coluna para falhas de segmentação, em [`metodos_condicoes.json`](../images/results/metodos_condicoes.json).
+
+**Tempo relativo da decisão** (só a decisão, por foto): regras ~0,001 ms, k-NN ~0,07 ms, template ~0,3 ms. A segmentação domina o tempo total (Seção 7.6).
+
+**Interpretação:**
+
+- Nenhum método domina. As regras, que foram mantidas na M2 por empatarem nas fotos limpas, são as mais frágeis à rotação: dependem só do perfil de largura (metade de cima ÷ metade de baixo).
+- O k-NN usa também a ocupação e a simetria, que mudam pouco com a rotação, e por isso acerta 95% com 25°.
+- O k-NN, porém, erra todas as espadas na escala de 50%, que viram paus. O recorte do símbolo usa uma margem fixa de 5 px, e por isso o `fill_ratio` depende da resolução da foto. Regras e template não usam esse atributo e não são afetados.
+- Fundo claro é uma falha de segmentação, e nenhum método de decisão a resolve.
+- A decisão das regras foi mantida na configuração final porque é a única sem nenhum erro em 7 das 9 condições. A combinação com o k-NN para cartas inclinadas fica como melhoria futura.
+
+### 7.6 Tempo de execução
 
 | Medida | Valor |
 |---|---|
@@ -253,7 +296,7 @@ O 8 não tem amostra no ajuste, então o template nunca pode acertá-lo. O 6 é 
 
 O tempo é só complementar e não foi critério de escolha.
 
-### 7.6 Exemplos qualitativos
+### 7.7 Exemplos qualitativos
 
 As saídas intermediárias de cada caso estão em `images/results/intermediarias_m3/<caso>/`, nesta ordem:
 
@@ -268,7 +311,7 @@ Figura 1 — **Sucesso:** iluminação fraca com a configuração final. Valor 4
 
 ![ouros 4 escuro, final](../images/results/intermediarias_m3/ouros_4_01_iluminacao_fraca_final/4_valor_e_naipe.png)
 
-Figura 2 — **Sucesso parcial:** ruído σ = 60 com abertura (`ouros_5_01`), o mesmo caso que falhava na Figura 1 da M2.
+Figura 2 — **Sucesso:** ruído σ = 60 com a configuração final (`ouros_5_01`), o mesmo caso que falhava na Figura 1 da M2. Valor 5 e naipe ouros corretos.
 
 ![ouros 5 ruído final](../images/results/intermediarias_m3/ouros_5_01_ruido60_final/4_valor_e_naipe.png)
 
@@ -295,7 +338,8 @@ Figura 5 — **Falha:** fundo claro (`copas_8_01`). A máscara da carta cobre a 
   - As 2 fotos de espadas 7 perdem o símbolo, que sai da janela do canto.
   - **Correção possível:** estimar a inclinação pela borda da carta e girar o canto antes da análise. Não foi implementada.
 - **Fundo claro:** 0/40. O pipeline assume que o fundo é mais escuro que o papel; com brilho parecido, nenhum limiar de brilho separa os dois. Seria preciso usar outra pista, como a borda da carta (gradiente) ou a saturação. Essa é a principal limitação de uso.
-- **Ruído forte (σ = 60):** mesmo com abertura, 40% dos símbolos não são localizados. O ruído liga o símbolo à moldura, e o componente é descartado por tocar a borda (Figura 2).
+- **Ruído forte (σ = 60):** a configuração final não erra nenhuma foto (Exp. 4b). Só com a abertura, sem o Otsu restrito à região útil, 40% dos símbolos se perdiam, porque o ruído ligava o símbolo à moldura.
+- **Escala 50% com k-NN:** as 10 espadas viram paus. O `fill_ratio` não é invariante à resolução, por causa da margem fixa de 5 px no recorte (Exp. 8).
 - **Fotos limpas:** nenhum erro de naipe, valor ou coringa no teste.
 
 ### 8.2 Ameaças à validade
@@ -306,6 +350,7 @@ Figura 5 — **Falha:** fundo claro (`copas_8_01`). A máscara da carta cobre a 
 - **Coringa** avaliado com os mesmos 4 exemplos usados para definir o limiar.
 - **Regras e templates calibrados com a segmentação da M2.** Nas fotos limpas a segmentação final é praticamente idêntica (Dice 0,998 nas duas), e o resultado se manteve em 100%. Mesmo assim, não houve recalibração com a configuração final.
 - **Referências de segmentação semi-automáticas,** conferidas visualmente, mas não desenhadas à mão.
+- **Condições simuladas aplicadas às mesmas 40 cartas de teste.** Elas testam iluminação, ruído, rotação, escala e fundo, mas não outro baralho, outra câmera nem perspectiva. Não é o teste externo com imagens novas recomendado no feedback da M2.
 
 ## 9. Atendimento aos objetivos, conclusão e melhorias futuras
 
@@ -314,19 +359,20 @@ Figura 5 — **Falha:** fundo claro (`copas_8_01`). A máscara da carta cobre a 
 | Naipe em fotos reais, sem ajuste manual por imagem | atendido | 40/40 no teste |
 | Valor da carta | atendido, com ressalva | 40/40 (otimista); 2, 5 e 10 só no ajuste |
 | Coringa como classe | atendido, exploratório | 4/4 |
-| Robustez a ruído forte | parcialmente | σ = 60: 27,5% → 62,5% de naipes corretos |
+| Robustez a ruído forte | atendido nas condições testadas | σ = 60: 27,5% → 100% de naipes corretos (Exp. 4b) |
+| Comparar métodos fora do conjunto original (feedback da M2) | atendido, por simulação | Exp. 8: 3 métodos × 9 condições |
 | Teste com outro fundo e outra luz | parcialmente, por simulação | luz fraca 0% → 100%; fundo claro 0% |
 | Máscaras de referência e Dice/IoU | atendido | 20 máscaras, Dice 0,998 |
 
-**Conclusão:** para a situação prevista (carta vista de cima, pouco inclinada, sobre fundo mais escuro que o papel), o pipeline clássico reconhece naipe, valor e coringa sem erros no teste. As duas mudanças de pré-processamento da M3 (abertura e Otsu adaptativo) ampliaram a faixa de ruído e de iluminação tolerada, e a ablação mostra a contribuição de cada uma. Os limites ficaram claros:
+**Conclusão:** para a situação prevista (carta vista de cima, pouco inclinada, sobre fundo mais escuro que o papel), o pipeline clássico reconhece naipe, valor e coringa sem erros no teste. As mudanças de pré-processamento da M3 (abertura e Otsu adaptativo) ampliaram a faixa de ruído e de iluminação tolerada, e a ablação mostra a contribuição de cada uma. Os 100% no conjunto original não são prova de robustez irrestrita, e os testes mostraram claramente os limites:
 
-- fundo claro;
-- rotação forte;
-- ruído muito forte.
+- fundo claro (falha de segmentação);
+- rotação forte com a decisão por regras;
+- escala reduzida com a decisão por k-NN.
 
 **Melhorias futuras:**
 
-1. corrigir a rotação a partir da borda da carta;
+1. corrigir a rotação a partir da borda da carta, ou usar o k-NN quando a carta estiver inclinada;
 2. separar carta e fundo por bordas em vez de brilho;
 3. fotografar outro baralho e outro ambiente como teste externo real;
 4. recalibrar regras e templates com a configuração final.
@@ -349,6 +395,17 @@ Pontos do plano da M2 e como foram tratados:
 | Reconhecer o valor | `src/rank.py`, Exp. 7 |
 | Coringa como classe | `segmentation.is_joker` |
 | Relatório e README | este documento e o README atualizado |
+
+Resposta ao feedback individualizado da M2:
+
+| Recomendação do feedback | Tratamento na M3 | Evidência |
+|---|---|---|
+| Manter o naipe como objetivo obrigatório; valor como extensão | naipe é o objetivo obrigatório; valor e coringa estão como extensões | Seção 1 |
+| Reservar imagens novas de outro baralho, iluminação, rotação ou fundo | **parcialmente:** não houve fotos novas; as condições de iluminação, rotação, escala, ruído e fundo foram simuladas sobre as 40 fotos de teste, que nunca entraram no ajuste | Seções 3.5 e 8.2 |
+| Repetir regras × template × k-NN no novo teste, com as mesmas sementes e parâmetros | feito nas 9 condições, com os modelos e parâmetros da M2 | Exp. 8, Seção 7.5 |
+| Matriz por naipe, macro-F1, tempo relativo e erros de segmentação do símbolo | matriz e F1 por classe no teste e em cada condição; tempo de decisão por método; falhas de segmentação contadas e Dice/IoU contra máscaras de referência | Seções 7.1–7.6 e 8.1 |
+| Explicitar os limites de imagens controladas; documentar instalação, extração de atributos e entrada/saída | limites nas Seções 8 e 9; README com instalação, entrada/saída e tabela de atributos | README |
+| Não considerar 100% no conjunto original como prova de robustez | declarado nas Seções 8.2 e 9; falhas documentadas por condição | Seções 7.5, 8.1 e 9 |
 
 O histórico completo está no Git. Cada mudança da M3 tem um commit próprio, de "Preservar o README da entrega M2 como registro" até a versão final.
 
@@ -382,6 +439,8 @@ python -m src.experiments        # Exp. 1–3 (M2)
 python -m src.reference gerar    # máscaras de referência (já versionadas)
 python -m src.robustez           # Exp. 4 e 5
 python -m src.robustez carta     # Exp. 6
+python -m src.robustez final     # Exp. 4b
+python -m src.metodos_condicoes  # Exp. 8
 python -m src.figuras_m3         # figuras e erros da M3
 pytest tests/ -v                 # testes
 ```
