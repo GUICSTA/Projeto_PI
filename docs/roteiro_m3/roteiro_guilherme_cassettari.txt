@@ -1,32 +1,33 @@
 ﻿ROTEIRO — Guilherme Cassettari
 Apresentação M3 · Identificação de Naipe e Valor em Cartas de Baralho
 Ordem: Guilherme Pires → Vinicius Lohn Ramires → Guilherme Cassettari
-Slides: 9, 10, 11, 12, 13  ·  ~4 min de fala (511 palavras a ~140/min)
+Slides: 10, 11, 12, 13, 14  ·  ~4 min de fala (570 palavras a ~140/min)
 
-=== Slide 9 — Segmentação contra referência ===
+=== Slide 10 — Segmentação contra referência ===
 Para medir a segmentação, usamos as vinte máscaras de referência que aparecem aqui, com o contorno em verde.
 Elas foram geradas com um limiar fixo de 128, sem Otsu, pegando o maior componente numa caixa ampliada e preenchendo os buracos. Assim a referência não depende da decisão do pipeline. Depois conferimos cada contorno visualmente.
 Nas fotos limpas, o Dice médio é 0,998 e o IoU é 0,996. Ou seja, a máscara do símbolo segue a borda real com precisão de poucos pixels.
 
-=== Slide 10 — Ablação de ruído ===
+=== Slide 11 — Ablação de ruído ===
 Esta é a ablação de pré-processamento com ruído forte, sigma 60. A pergunta foi: qual componente ajuda a segmentar com ruído?
 Comparamos cinco configurações. A escolha foi feita no conjunto de ajuste, nas barras claras, e só depois medimos no teste, nas barras vermelhas.
 Sem nada, como na M2, só 27,5% dos símbolos são localizados no teste. A abertura sobe isso para 60% e foi a escolhida. A mediana ajuda, mas menos, e somar mediana com abertura não melhora nada.
 Então a configuração mais complexa não foi a melhor, e a mesma ordem apareceu no ajuste e no teste.
+Depois, com a mudança do próximo slide, o Otsu calculado só na região útil, a configuração final passou a acertar todas as fotos com sigma 60, com Dice de 0,985.
 
-=== Slide 11 — Iluminação fraca ===
+=== Slide 12 — Iluminação fraca ===
 Com iluminação fraca, a configuração da M2 falhava em todas as fotos. Investigamos no ajuste e encontramos a causa: o Otsu do canto incluía o fundo forçado a 255, e com pouca luz ele passava a separar só esse fundo do resto. O canto inteiro virava um único componente, como na imagem do meio.
 Testamos três configurações. Só trocar o limiar da carta pelo Otsu não resolve. Com Otsu na carta e Otsu do canto só na região útil, o acerto vai de 0 a 100% no ajuste e também no teste, sem perder nada nas fotos originais.
 As duas mudanças só funcionam juntas, e a ablação mostra isso.
 
-=== Slide 12 — Onde o método falha ===
+=== Slide 13 — Onde o método falha ===
 Agora as falhas. Com rotação de 25 graus, o naipe cai para 50% e o valor para 45%. As copas viram ouros e as espadas viram paus, porque o descritor de perfil de largura compara a metade de cima com a de baixo e depende da orientação. O template do valor também não é invariante à rotação: o três inclinado vira cinco. Uma correção possível é girar o canto a partir da borda da carta.
 Com fundo claro, o acerto é zero: o método separa a carta pelo brilho, e o papel e o fundo têm brilho parecido.
-Com ruído forte, 40% dos símbolos ainda se perdem. E temos um único baralho, uma mesa e um teste de 40 fotos.
+Com a decisão por k-NN, a escala de 50% derruba as espadas. E temos um único baralho, uma mesa e um teste de 40 fotos: os 100% no conjunto original não provam robustez.
 
-=== Slide 13 — Conclusão ===
-Para concluir: no teste, acertamos todos os naipes e todos os valores, com a ressalva de que o resultado do valor é otimista. Os quatro coringas foram reconhecidos, e com iluminação fraca passamos de zero para cem por cento.
-A solução atende o escopo para uma carta vista de cima, pouco inclinada, sobre fundo escuro. Cada mudança da M3 foi escolhida no ajuste e medida contra o baseline da M2.
-Os próximos passos seriam corrigir a rotação, separar a carta por bordas e testar com outro baralho.
+=== Slide 14 — Conclusão ===
+Para concluir: no teste, acertamos todos os naipes e todos os valores, com a ressalva de que o resultado do valor é otimista. Os quatro coringas foram reconhecidos, com iluminação fraca passamos de zero para cem por cento e com ruído forte de 27,5 para cem por cento.
+O objetivo obrigatório, o naipe, está atendido para uma carta vista de cima, pouco inclinada, sobre fundo escuro. Cada mudança da M3 foi escolhida no ajuste e medida contra o baseline da M2.
+Os próximos passos seriam corrigir a rotação ou usar o k-NN em cartas inclinadas, separar a carta por bordas e testar com outro baralho.
 O código, o relatório final e as instruções de reprodução estão no repositório. Obrigado.
 
