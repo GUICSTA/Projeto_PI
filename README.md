@@ -20,8 +20,9 @@ Dada uma foto de uma carta de baralho francês, identificar automaticamente o **
 
 ## Objetivos
 
-- Reconhecer naipe e valor em fotos reais a partir do índice do canto da carta, com um pipeline clássico de PDI, explicável e sem ajuste manual por imagem.
-- Avaliar num conjunto de teste congelado, separado do conjunto de ajuste, com baseline, ablações, métricas por classe e análise de erros.
+- **Obrigatório:** reconhecer o naipe em fotos reais a partir do índice do canto da carta, com um pipeline clássico de PDI, explicável e sem ajuste manual por imagem.
+- **Extensões (M3):** reconhecer o valor da carta e detectar o coringa.
+- Avaliar num conjunto de teste congelado, separado do conjunto de ajuste, com baseline, ablações, métricas por classe e análise de erros. Os 100% no conjunto original **não** provam robustez: a generalização foi investigada com condições simuladas (ruído, luz, rotação, escala, fundo), que mostram onde o método falha.
 
 ## Entradas e saídas
 
@@ -44,6 +45,21 @@ foto RGB → máscara da carta (Otsu sobre min(R,G,B)) → recorte do canto
 
 A fundamentação, os parâmetros e os experimentos estão no [relatório final](docs/relatorio_final.md).
 
+### Atributos extraídos
+
+Todos são calculados sobre a máscara binária do símbolo do naipe (`src/features.py`), são adimensionais. O `fill_ratio` é sensível à resolução, porque o recorte do símbolo usa uma margem fixa de 5 px (relatório, Seção 7.5):
+
+| Atributo | Cálculo | Uso |
+|---|---|---|
+| cor dominante | `R − (G+B)/2 > 15` nos pixels do símbolo → vermelho, senão preto | separa {copas, ouros} de {espadas, paus} |
+| `fill_ratio` | pixels do símbolo ÷ área do recorte | k-NN |
+| `vertical_symmetry` | fração de pixels iguais entre a metade de cima e a de baixo espelhada | k-NN |
+| `width_profile_ratio` | largura média da metade de cima ÷ da metade de baixo | regra calibrada e k-NN |
+| máscara 32×32 | máscara redimensionada | template matching do naipe e do valor |
+| elementos e buracos do valor | componentes do valor e buracos fechados | regras do 10 e do 8 |
+
+A tabela com os atributos de cada foto é gerada por `python -m src.visualize` em [`images/results/tabela_features.csv`](images/results/tabela_features.csv).
+
 ## Estágio atual (final)
 
 - [x] 108 fotos reais (52 cartas × 2 + 4 coringas), divisão ajuste/teste congelada
@@ -54,6 +70,7 @@ A fundamentação, os parâmetros e os experimentos estão no [relatório final]
 - [x] Robustez a ruído e a iluminação fraca, com ablação escolhida no ajuste (M3)
 - [x] Condições de captura simuladas: fundo claro, luz, rotação, escala (M3)
 - [ ] Teste com fotos de outro baralho/ambiente (substituído por simulação; ver limitações)
+- [x] Regras × template × k-NN repetidos nas condições simuladas (M3)
 - [ ] Fundo claro e rotações fortes (limitações conhecidas)
 
 ## Resultados principais
@@ -66,12 +83,13 @@ Conjunto de teste: 40 fotos, 5 cartas por naipe que não aparecem no ajuste.
 | Valor, fotos limpas | 32/40 (só template) | **40/40** (otimista; ver relatório, 3.4) |
 | Coringa | rejeitado com erro | **4/4** (exploratório) |
 | Segmentação do naipe (Dice, 20 máscaras), limpas | 0,998 | 0,998 |
-| Naipe com ruído σ = 60 | 27,5% | **62,5%** |
+| Naipe com ruído σ = 60 | 27,5% | **100%** |
 | Naipe com iluminação fraca (×0,55) | 0% | **100%** |
 | Naipe com rotação de 25° | 50% | 50% |
 | Fundo claro | 0% | 0% |
+| Regras × template × k-NN em 9 condições | — | nenhum método domina: rotação 25° 50% × 70% × 95%; escala 50% 100% × 100% × 75% |
 
-Matrizes de confusão: [`avaliacao_reais.json`](images/results/avaliacao_reais.json) (naipe) e [`avaliacao_valor.json`](images/results/avaliacao_valor.json) (valor). Experimentos da M3: [`experimentos_m3.json`](images/results/experimentos_m3.json).
+Matrizes de confusão: [`avaliacao_reais.json`](images/results/avaliacao_reais.json) (naipe) e [`avaliacao_valor.json`](images/results/avaliacao_valor.json) (valor). Experimentos da M3: [`experimentos_m3.json`](images/results/experimentos_m3.json) e [`metodos_condicoes.json`](images/results/metodos_condicoes.json).
 
 ## Tecnologias
 
@@ -110,6 +128,7 @@ Otsu, componentes conectados, erosão/dilatação, mediana, descritores, calibra
 │       ├── avaliacao_valor.json      # valor no teste: baseline × final, matriz 13×13 + P/R/F1
 │       ├── experimentos.json         # experimentos 1–3 (M2)
 │       ├── experimentos_m3.json      # experimentos 4–6 (M3)
+│       ├── metodos_condicoes.json    # experimento 8: 3 métodos × 9 condições (M3)
 │       ├── erros_rotacao_25.json     # análise de erros da rotação
 │       ├── comparacao_metodos.json   # regras × template × k-NN (M2)
 │       ├── tabela_features.csv       # features por imagem
@@ -128,6 +147,7 @@ Otsu, componentes conectados, erosão/dilatação, mediana, descritores, calibra
 │   ├── compare.py                    # regras × template × k-NN (M2)
 │   ├── experiments.py                # experimentos 1–3 (M2)
 │   ├── robustez.py                   # experimentos 4–6 (M3)
+│   ├── metodos_condicoes.py          # experimento 8 (M3)
 │   ├── visualize.py / figuras_m3.py  # saídas intermediárias
 │   ├── main.py                       # linha de comando
 │   └── generate_synthetic_cards.py   # imagens sintéticas da M1
@@ -181,6 +201,8 @@ python -m src.experiments        # experimentos 1, 2 e 3 (M2)
 python -m src.reference gerar    # máscaras de referência (já versionadas)
 python -m src.robustez           # experimentos 4 e 5 (M3)
 python -m src.robustez carta     # experimento 6 (M3)
+python -m src.robustez final     # experimento 4b: configuração final com ruído (M3)
+python -m src.metodos_condicoes  # experimento 8: regras × template × k-NN nas condições (M3)
 python -m src.visualize          # saídas intermediárias e tabela de features (M2)
 python -m src.figuras_m3         # sucessos, falhas e erros da M3
 ```
@@ -195,7 +217,7 @@ pytest tests/ -v
 
 ## Documentação
 
-- [Relatório final (M3)](docs/relatorio_final.md)
+- [Relatório final (M3)](docs/relatorio_final.md), com a resposta ao feedback da M2 na seção 10
 - [Slides da M3](Slides_M3.pdf) ([pptx](Slides_M3.pptx)) e [roteiro por integrante](docs/roteiro_m3/)
 - [Relatório parcial da M2](docs/relatorio_m2.md)
 - [Proposta revisada](docs/proposta.md)
