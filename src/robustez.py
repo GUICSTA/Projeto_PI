@@ -12,6 +12,7 @@ Experimento 6 — limiar fixo × Otsu na separação carta/fundo.
 Uso:
     python -m src.robustez          # experimentos 4 e 5 (gera images/results/experimentos_m3.json)
     python -m src.robustez carta    # experimento 6 (acrescenta ao mesmo arquivo)
+    python -m src.robustez final    # experimento 4b: configuração final com ruído (acrescenta)
 """
 import json
 import os
@@ -231,6 +232,28 @@ def main_card():
             print(f"E6 {condition} {name}: seg {r['segmentadas']}/40, naipe {r['acerto_naipe']:.0%}, valor {r['acerto_valor']:.0%}, {r['tempo_medio_ms']} ms")
 
 
+def main_final():
+    """Experimento 4b — a configuração final (escolhida nos exp. 4 e 6) medida com ruído no teste."""
+    division = split.load_split(split.REAL_SPLIT_PATH)
+    test_names = division["teste"]
+    rules, templates = classify.load_rules(), rank.load_templates()
+    references = {n: reference.load_reference(n) for n in reference.reference_names(test_names)}
+    clean = {n: o.get("caixa") for n, o in run(test_names, noise(0), CONFIGS["baseline_m2"], rules, templates).items()}
+    final = dict(classify.FINAL_CONFIG)
+    result = {
+        f"sigma_{sigma}": summarize(test_names, run(test_names, noise(sigma), final, rules, templates, references), clean, references)
+        for sigma in NOISE_LEVELS
+    }
+    with open(M3_PATH, encoding="utf-8") as f:
+        results = json.load(f)
+    results["experimento_4b_configuracao_final_ruido"] = {"configuracao": final, "teste": result}
+    with open(M3_PATH, "w", encoding="utf-8") as f:
+        json.dump(results, f, indent=2, ensure_ascii=False)
+        f.write("\n")
+    for sigma, r in result.items():
+        print(f"E4b {sigma} final: seg {r['segmentadas']}/40, loc {r['localizado_iou_0_5']:.0%}, Dice {r['dice_medio_referencia']:.3f}, naipe {r['acerto_naipe']:.0%}, valor {r['acerto_valor']:.0%}")
+
+
 def main():
     division = split.load_split(split.REAL_SPLIT_PATH)
     rules = classify.load_rules()
@@ -267,4 +290,5 @@ def main():
 
 
 if __name__ == "__main__":
-    sys.exit(main_card() if sys.argv[1:] == ["carta"] else main())
+    commands = {"carta": main_card, "final": main_final}
+    sys.exit(commands[sys.argv[1]]() if sys.argv[1:] and sys.argv[1] in commands else main())

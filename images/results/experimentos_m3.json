@@ -1454,5 +1454,52 @@
         }
       }
     }
+  },
+  "experimento_4b_configuracao_final_ruido": {
+    "configuracao": {
+      "morphology": "abertura",
+      "radius": 1,
+      "median": 0,
+      "adaptive_card": true,
+      "otsu_inside": true
+    },
+    "teste": {
+      "sigma_0": {
+        "segmentadas": 40,
+        "total": 40,
+        "acerto_naipe": 1.0,
+        "acerto_valor": 1.0,
+        "falhas": {},
+        "iou_medio_caixa": 0.9971,
+        "localizado_iou_0_5": 1.0,
+        "dice_medio_referencia": 0.9977,
+        "iou_medio_referencia": 0.9955,
+        "tempo_medio_ms": 576.3
+      },
+      "sigma_30": {
+        "segmentadas": 40,
+        "total": 40,
+        "acerto_naipe": 1.0,
+        "acerto_valor": 1.0,
+        "falhas": {},
+        "iou_medio_caixa": 0.9865,
+        "localizado_iou_0_5": 1.0,
+        "dice_medio_referencia": 0.9939,
+        "iou_medio_referencia": 0.9879,
+        "tempo_medio_ms": 573.1
+      },
+      "sigma_60": {
+        "segmentadas": 40,
+        "total": 40,
+        "acerto_naipe": 1.0,
+        "acerto_valor": 1.0,
+        "falhas": {},
+        "iou_medio_caixa": 0.9751,
+        "localizado_iou_0_5": 1.0,
+        "dice_medio_referencia": 0.985,
+        "iou_medio_referencia": 0.9705,
+        "tempo_medio_ms": 585.0
+      }
+    }
   }
 }
